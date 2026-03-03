@@ -261,8 +261,18 @@ a{color:inherit;text-decoration:none}
       <label>Contraseña</label>
       <input type="password" id="f-pass" placeholder="••••••••" autocomplete="current-password"/>
     </div>
+    <div id="login-script-row" style="display:none;margin-bottom:12px">
+      <div class="field">
+        <label>URL del Apps Script (backend)</label>
+        <input type="url" id="login-script-url" placeholder="https://script.google.com/macros/s/.../exec"
+          oninput="guardarScriptUrl(this.value)" autocomplete="off"/>
+        <div style="font-size:11px;color:var(--txt3);margin-top:4px">Pégala aquí y vuelve a intentar.</div>
+      </div>
+    </div>
     <button class="btn-primary" id="btn-login" onclick="doLogin()">Iniciar sesión</button>
-    <p style="font-size:12px;color:var(--txt3);text-align:center;margin-top:16px">¿Primera vez? Usa tu código de licencia para activar tu cuenta.</p>
+    <p style="font-size:12px;color:var(--txt3);text-align:center;margin-top:16px">
+      ¿Sin URL del backend? Ve a ⚙️ Configuración tras el primer acceso.
+    </p>
   </div>
 </div>
 
@@ -418,7 +428,7 @@ a{color:inherit;text-decoration:none}
         <div class="field">
           <label>Script URL (backend)</label>
           <input type="url" id="cfg-script" placeholder="https://script.google.com/macros/s/.../exec" oninput="saveConfigField('backend.url',this.value)"/>
-          <div class="field-hint">https://script.google.com/macros/s/AKfycbzXWbd3wyJ7hG7OyOQshQcdXAJfgoywD0ka9NkW4khqlSR9Z83KDJt3HdoW03v-h2k/exec</div>
+          <div class="field-hint">Pega aquí la URL de tu Apps Script desplegado como Web App.</div>
         </div>
         <button class="btn-primary" style="margin-top:8px" onclick="testConnection()">🔗 Probar conexión</button>
       </div>
@@ -636,7 +646,15 @@ function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ r
 function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 
 // ── BASE URL ──────────────────────────────────────────
-function base(){ return S.config.backend?.url || lsGet("sp_script") || ""; }
+function base(){
+  // Busca en: 1) estado memoria, 2) localStorage sp_config, 3) sp_script legacy
+  if (S.config.backend?.url) return S.config.backend.url;
+  try {
+    const c = JSON.parse(localStorage.getItem("sp_config") || "{}");
+    if (c.backend?.url) return c.backend.url;
+  } catch(e){}
+  return localStorage.getItem("sp_script") || "";
+}
 
 // ── API FETCH ─────────────────────────────────────────
 async function api(action, extra={}) {
@@ -664,15 +682,24 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("splash").classList.add("fade");
     setTimeout(initApp, 500);
   }, 1600);
+  // Si no hay URL guardada, mostrar el campo desde el inicio
+  setTimeout(() => {
+    if (!base()) document.getElementById("login-script-row").style.display = "block";
+  }, 2200);
   document.getElementById("dash-fecha").textContent = new Date().toLocaleDateString("es-MX",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
   document.getElementById("f-email").addEventListener("keydown", e => { if(e.key==="Enter") document.getElementById("f-pass").focus(); });
   document.getElementById("f-pass").addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
 });
 
 function initApp() {
-  // Cargar config
+  // Cargar config con deep merge para no perder subkeys
   const storedCfg = lsGet("sp_config");
-  if (storedCfg) S.config = Object.assign(S.config, storedCfg);
+  if (storedCfg) {
+    S.config.perfil   = Object.assign(S.config.perfil,   storedCfg.perfil   || {});
+    S.config.modulos  = Object.assign(S.config.modulos,  storedCfg.modulos  || {});
+    S.config.tema     = Object.assign(S.config.tema,     storedCfg.tema     || {});
+    S.config.backend  = Object.assign(S.config.backend,  storedCfg.backend  || {});
+  }
   applyConfig();
 
   // Verificar sesión
@@ -709,7 +736,7 @@ async function doLogin() {
   const banner = document.getElementById("login-banner");
   if (!email || !pass) { showBanner("Ingresa tu correo y contraseña"); return; }
   const url = base();
-  if (!url) { showBanner("Configura primero la URL del Apps Script en Configuración"); return; }
+  if (!url) { showBanner("Falta la URL del Apps Script. Pégala abajo ↓"); document.getElementById("login-script-row").style.display="block"; return; }
   btn.disabled = true; btn.textContent = "Verificando…";
   try {
     const qs = new URLSearchParams({ action:"checkLicense", email, pass });
@@ -806,6 +833,16 @@ function applyModulos() {
   toggle("nav-agenda",  m?.agenda !== false);
   toggle("nav-recetas", m?.recetas !== false);
   toggle("nav-pagos",   m?.pagos !== false);
+}
+
+function guardarScriptUrl(val) {
+  if (!val) return;
+  S.config.backend = S.config.backend || {};
+  S.config.backend.url = val;
+  lsSet("sp_script", val);
+  const cfg = lsGet("sp_config") || S.config;
+  cfg.backend = { url: val };
+  lsSet("sp_config", cfg);
 }
 
 function saveConfigField(path, value) {
