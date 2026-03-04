@@ -184,6 +184,15 @@ input,select,textarea{font-family:var(--ff);outline:none}
 .toggle input:checked~.ttrack .tthumb{left:22px}
 .cpick{width:30px;height:30px;border-radius:var(--rs);border:2px solid var(--border);overflow:hidden;cursor:pointer}
 .cpick input{width:200%;height:200%;margin:-25%;border:none;cursor:pointer}
+.logo-wrap{display:flex;align-items:center;gap:12px;margin-top:6px}
+.logo-preview{width:64px;height:64px;border-radius:var(--rs);border:2px solid var(--border);object-fit:contain;background:var(--bg2);display:none}
+.logo-preview.on{display:block}
+.logo-placeholder{width:64px;height:64px;border-radius:var(--rs);border:2px dashed var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--txt3);flex-shrink:0}
+.logo-actions{display:flex;flex-direction:column;gap:6px}
+.btn-upload{background:var(--card2);color:var(--txt);border:1px solid var(--border);padding:7px 13px;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;display:inline-block;text-align:center}
+.btn-upload:hover{background:var(--border)}
+.btn-rm{background:rgba(220,38,38,.1);color:#FCA5A5;border:1px solid rgba(220,38,38,.3);padding:5px 13px;border-radius:var(--rs);font-size:12px;cursor:pointer;display:none}
+.btn-rm.on{display:inline-block}
 
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
@@ -232,7 +241,10 @@ input,select,textarea{font-family:var(--ff);outline:none}
 <!-- APP -->
 <div id="app">
   <div class="topbar">
-    <div class="tb-logo">Salud<span>Pro</span></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <img id="tb-logo-img" src="" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;display:none"/>
+      <div class="tb-logo" id="tb-logo-txt">Salud<span>Pro</span></div>
+    </div>
     <div class="tb-info">
       <div class="tb-name" id="tb-name">Mi Consultorio</div>
       <div class="tb-esp" id="tb-esp">Médico General</div>
@@ -328,6 +340,19 @@ input,select,textarea{font-family:var(--ff);outline:none}
         </div>
         <div class="field"><label>Teléfono</label><input type="tel" id="c-tel" oninput="saveCfg('perfil.telefono',this.value)"/></div>
         <div class="field"><label>Dirección</label><input type="text" id="c-dir" oninput="saveCfg('perfil.direccion',this.value)"/></div>
+        <div class="field">
+          <label>Logo del consultorio</label>
+          <div class="logo-wrap">
+            <div class="logo-placeholder" id="logo-ph">🏥</div>
+            <img id="logo-preview" class="logo-preview" src="" alt="Logo"/>
+            <div class="logo-actions">
+              <label class="btn-upload" for="logo-file">📁 Subir imagen</label>
+              <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="handleLogoFile(this)"/>
+              <button class="btn-rm" id="btn-rm-logo" onclick="removeLogo()">✕ Quitar logo</button>
+            </div>
+          </div>
+          <div class="hint">PNG, JPG o SVG — se guarda localmente en el dispositivo.</div>
+        </div>
       </div>
       <div class="cfg-sec">
         <div class="cfg-lbl">Módulos Activos</div>
@@ -688,6 +713,7 @@ function loadCfgUI(){
   document.getElementById("c-tel").value    = S.cfg.perfil.telefono || "";
   document.getElementById("c-dir").value    = S.cfg.perfil.direccion || "";
   document.getElementById("c-url").value    = getUrl();
+  applyLogo(S.cfg.perfil.logo || "");
   document.getElementById("c-dark").checked = S.cfg.tema.dark !== false;
   document.getElementById("c-color").value  = S.cfg.tema.color || "#1A7FC1";
   document.getElementById("m-agenda").checked  = S.cfg.modulos.agenda  !== false;
@@ -710,6 +736,10 @@ function saveCfgToLS(){ lsSet("sp_cfg", S.cfg); }
 function applyTema(){
   document.documentElement.setAttribute("data-theme", S.cfg.tema.dark===false ? "light" : "dark");
   if (S.cfg.tema.color) applyColor(S.cfg.tema.color);
+  // Logo se aplica después de que el DOM esté listo
+  if (S.cfg.perfil && S.cfg.perfil.logo) {
+    setTimeout(function(){ applyLogo(S.cfg.perfil.logo); }, 100);
+  }
 }
 
 function applyColor(hex){
@@ -1165,6 +1195,51 @@ function emp(icon,t,s){ return '<div class="empty"><div class="empty-i">'+icon+'
 
 function openM(id){ document.getElementById(id).classList.add("on"); }
 function closeM(id){ document.getElementById(id).classList.remove("on"); }
+
+// ══════════════════════════════════════════════
+//  LOGO
+// ══════════════════════════════════════════════
+function handleLogoFile(input){
+  var file = input.files[0];
+  if (!file) return;
+  if (file.size > 500*1024) { toast("Imagen muy grande (máx 500KB)","err"); return; }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var b64 = e.target.result;
+    S.cfg.perfil.logo = b64;
+    saveCfgToLS();
+    applyLogo(b64);
+    toast("✅ Logo guardado","ok");
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyLogo(src){
+  var prev  = document.getElementById("logo-preview");
+  var ph    = document.getElementById("logo-ph");
+  var rm    = document.getElementById("btn-rm-logo");
+  var tbImg = document.getElementById("tb-logo-img");
+  var tbTxt = document.getElementById("tb-logo-txt");
+  if (src) {
+    prev.src = src; prev.classList.add("on"); ph.style.display="none";
+    rm.classList.add("on");
+    tbImg.src = src; tbImg.style.display="block";
+    tbTxt.style.display="none";
+  } else {
+    prev.src=""; prev.classList.remove("on"); ph.style.display="flex";
+    rm.classList.remove("on");
+    tbImg.style.display="none"; tbImg.src="";
+    tbTxt.style.display="";
+  }
+}
+
+function removeLogo(){
+  S.cfg.perfil.logo = "";
+  saveCfgToLS();
+  applyLogo("");
+  document.getElementById("logo-file").value="";
+  toast("Logo eliminado","ok");
+}
 
 var _toastT;
 function toast(msg,type){
