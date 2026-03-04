@@ -214,6 +214,26 @@ input,select,textarea{font-family:var(--ff);outline:none}
 .loc-coords.on{display:block}
 .loc-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(26,127,193,.1);border:1px solid rgba(26,127,193,.25);color:var(--p2);padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;margin-top:6px}
 
+/* SERVICIOS CONFIG */
+.srv-list-cfg{margin-top:4px}
+.srv-item{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:.15s}
+.srv-item:hover{border-color:rgba(26,127,193,.4);background:var(--bg2)}
+.srv-item-ico{font-size:22px;flex-shrink:0;width:32px;text-align:center}
+.srv-item-body{flex:1;min-width:0}
+.srv-item-name{font-size:14px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srv-item-meta{font-size:11px;color:var(--txt2);margin-top:1px}
+.srv-item-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.srv-vis-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;letter-spacing:.3px}
+.srv-vis-badge.on{background:rgba(22,163,74,.15);color:#4ADE80;border:1px solid rgba(22,163,74,.3)}
+.srv-vis-badge.off{background:rgba(74,106,133,.15);color:var(--txt2);border:1px solid var(--border)}
+.srv-add-btn{width:100%;background:transparent;border:2px dashed var(--border);color:var(--txt2);border-radius:var(--rs);padding:10px;font-size:13px;font-weight:600;transition:.15s;margin-top:4px}
+.srv-add-btn:hover{border-color:var(--p);color:var(--p2);background:rgba(26,127,193,.05)}
+.ico-pick-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.ico-opt{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:var(--rs);border:2px solid var(--border);background:var(--bg2);cursor:pointer;transition:.15s}
+.ico-opt:hover,.ico-opt.on{border-color:var(--p);background:rgba(26,127,193,.1)}
+.srv-empty{text-align:center;padding:28px 10px;color:var(--txt3);font-size:13px}
+.srv-empty-i{font-size:32px;margin-bottom:8px;opacity:.4}
+
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
 
@@ -415,6 +435,17 @@ input,select,textarea{font-family:var(--ff);outline:none}
         <div id="loc-coords-display" class="loc-coords"></div>
       </div>
 
+      <!-- ══ SERVICIOS DE LA LANDING ══ -->
+      <div class="cfg-sec">
+        <div class="cfg-lbl" style="display:flex;align-items:center;justify-content:space-between">
+          <span>🏥 Servicios de la Landing</span>
+          <button class="btn-sm" style="font-size:12px;padding:5px 11px" onclick="openM('m-srv');resetSrv()">+ Agregar</button>
+        </div>
+        <div class="hint" style="margin-bottom:10px">Los servicios que aparecen en tu página pública. Toca uno para editarlo.</div>
+        <div class="srv-list-cfg" id="srv-list-cfg"></div>
+        <button class="srv-add-btn" onclick="openM('m-srv');resetSrv()">＋ Agregar servicio</button>
+      </div>
+
       <!-- Módulos -->
       <div class="cfg-sec">
         <div class="cfg-lbl">Módulos Activos</div>
@@ -607,13 +638,45 @@ input,select,textarea{font-family:var(--ff);outline:none}
 
 <div id="toast"></div>
 
+<!-- Modal Servicio Landing -->
+<div class="mbg" id="m-srv">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="m-srv-t">Nuevo Servicio</div>
+    <input type="hidden" id="srv-id"/>
+    <div class="field">
+      <label>Ícono</label>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div id="srv-ico-preview" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs)">🏥</div>
+        <input type="text" id="srv-ico" value="🏥" maxlength="4" style="width:80px;background:var(--bg2);border:1px solid var(--border);color:var(--txt);padding:10px;border-radius:var(--rs);font-size:20px;text-align:center" oninput="document.getElementById('srv-ico-preview').textContent=this.value||'🏥'"/>
+      </div>
+      <div class="ico-pick-wrap" id="ico-pick"></div>
+    </div>
+    <div class="field"><label>Nombre del servicio *</label><input type="text" id="srv-nombre" placeholder="Consulta General"/></div>
+    <div class="field"><label>Descripción</label><input type="text" id="srv-desc" placeholder="Breve descripción visible en la landing..."/></div>
+    <div class="field"><label>Precio (opcional)</label><input type="text" id="srv-precio" placeholder="ej: 500 o Desde $350"/></div>
+    <div class="cfg-row" style="padding:8px 0">
+      <div>
+        <div class="cfg-rl">Visible en la landing</div>
+        <div class="cfg-rs">Los servicios ocultos no aparecen públicamente</div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="srv-vis" checked><div class="ttrack"><div class="tthumb"></div></div></label>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-sec" onclick="closeM('m-srv')">Cancelar</button>
+      <button class="btn btn-danger" id="btn-del-srv" onclick="delSrv()" style="display:none">Eliminar</button>
+      <button class="btn" onclick="saveSrv()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ══════════════════════════════════════════════
 //  ESTADO
 // ══════════════════════════════════════════════
 var S = {
   user: null,
-  cfg: { perfil:{nombre:"",especialidad:"medico",telefono:"",direccion:"",locDireccion:"",lat:"",lng:""}, modulos:{agenda:true,recetas:true,pagos:true,inventario:true}, tema:{dark:true,color:"#1A7FC1"}, url:"" },
+  cfg: { perfil:{nombre:"",especialidad:"medico",telefono:"",direccion:"",locDireccion:"",lat:"",lng:""}, modulos:{agenda:true,recetas:true,pagos:true,inventario:true}, tema:{dark:true,color:"#1A7FC1"}, url:"", servicios:[] },
   pac:[], citas:[], pagos:[], inv:[], rec:[],
   page:"p-dash", online:true,
   _citaPacId:"", _citaPacNombre:"",
@@ -680,6 +743,7 @@ function initApp(){
     if (saved.modulos) Object.assign(S.cfg.modulos, saved.modulos);
     if (saved.tema)    Object.assign(S.cfg.tema,    saved.tema);
     if (saved.url)     S.cfg.url = saved.url;
+    if (saved.servicios) S.cfg.servicios = saved.servicios;
   }
   var oldUrl = localStorage.getItem("sp_url") || localStorage.getItem("sp_script") || "";
   if (oldUrl && !S.cfg.url) S.cfg.url = oldUrl;
@@ -786,6 +850,9 @@ function loadCfgUI(){
   if (S.cfg.perfil.lat && S.cfg.perfil.lng) {
     showMapPreview(S.cfg.perfil.lat, S.cfg.perfil.lng);
   }
+  // Servicios landing
+  if (!S.cfg.servicios) S.cfg.servicios = [];
+  renderServiciosCfg();
 }
 
 function saveCfg(path, val){
@@ -865,13 +932,12 @@ function showMapPreview(lat, lng){
   var coordsEl = document.getElementById("loc-coords-display");
 
   // Usamos OpenStreetMap embed (sin API key necesaria)
-  var zoom = 16;
-  var src = "https://www.openstreetmap.org/export/embed.html?bbox="
+  var mapUrl = "https://www.openstreetmap.org/export/embed.html?bbox="
     + (parseFloat(lng)-0.003) + "%2C" + (parseFloat(lat)-0.002) + "%2C"
     + (parseFloat(lng)+0.003) + "%2C" + (parseFloat(lat)+0.002)
     + "&layer=mapnik&marker=" + lat + "%2C" + lng;
 
-  iframe.src = src;
+  iframe.src = mapUrl;
   ph.style.display = "none";
   mp.classList.add("on");
   coordsEl.textContent = "📍 " + parseFloat(lat).toFixed(6) + ", " + parseFloat(lng).toFixed(6);
@@ -930,6 +996,118 @@ function copyMapLink(){
     ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
     toast("🔗 Enlace copiado","ok");
   }
+}
+
+// ══════════════════════════════════════════════
+//  SERVICIOS LANDING
+// ══════════════════════════════════════════════
+var ICO_OPTS = ["🏥","🩺","💉","💊","📋","🦷","✨","🔧","🧠","👨‍👩‍👧","😌","📊","🦴","💆","🏃","❤️","🔬","🩻","🩹","🧬","💪","🌡️","👁️","👂","🤰","👶","🧒","🧓","🏋️","🧘"];
+
+function renderServiciosCfg(){
+  var list = S.cfg.servicios || [];
+  var el = document.getElementById("srv-list-cfg");
+  if (!el) return;
+  if (!list.length){
+    el.innerHTML = '<div class="srv-empty"><div class="srv-empty-i">🏥</div>Sin servicios configurados.<br>Agrega los servicios que ofrece tu consultorio.</div>';
+    return;
+  }
+  el.innerHTML = list.map(function(s){
+    var vis = s.visible !== false;
+    return '<div class="srv-item" onclick="editSrv(\''+s.id+'\''+')">'
+      +'<div class="srv-item-ico">'+(s.icono||"🏥")+'</div>'
+      +'<div class="srv-item-body">'
+        +'<div class="srv-item-name">'+esc(s.nombre)+'</div>'
+        +'<div class="srv-item-meta">'+(s.precio?'$'+esc(s.precio):'Sin precio')+(s.descripcion?' · '+esc(s.descripcion.slice(0,40)):'')+'</div>'
+      +'</div>'
+      +'<div class="srv-item-right">'
+        +'<span class="srv-vis-badge '+(vis?"on":"off")+'">'+(vis?"Visible":"Oculto")+'</span>'
+        +'<span style="color:var(--txt3);font-size:15px">›</span>'
+      +'</div>'
+      +'</div>';
+  }).join("");
+}
+
+function resetSrv(){
+  document.getElementById("m-srv-t").textContent = "Nuevo Servicio";
+  document.getElementById("srv-id").value = "";
+  document.getElementById("srv-ico").value = "🏥";
+  document.getElementById("srv-ico-preview").textContent = "🏥";
+  document.getElementById("srv-nombre").value = "";
+  document.getElementById("srv-desc").value = "";
+  document.getElementById("srv-precio").value = "";
+  document.getElementById("srv-vis").checked = true;
+  document.getElementById("btn-del-srv").style.display = "none";
+  // Render icono picker
+  var pick = document.getElementById("ico-pick");
+  pick.innerHTML = ICO_OPTS.map(function(ico){
+    return '<div class="ico-opt" onclick="pickIco(\''+ico+'\')">' + ico + '</div>';
+  }).join("");
+}
+
+function pickIco(ico){
+  document.getElementById("srv-ico").value = ico;
+  document.getElementById("srv-ico-preview").textContent = ico;
+  document.querySelectorAll(".ico-opt").forEach(function(el){
+    el.classList.toggle("on", el.textContent.trim() === ico);
+  });
+}
+
+function editSrv(id){
+  var s = (S.cfg.servicios||[]).find(function(x){ return x.id===id; });
+  if (!s) return;
+  document.getElementById("m-srv-t").textContent = "Editar Servicio";
+  document.getElementById("srv-id").value = s.id;
+  document.getElementById("srv-ico").value = s.icono || "🏥";
+  document.getElementById("srv-ico-preview").textContent = s.icono || "🏥";
+  document.getElementById("srv-nombre").value = s.nombre || "";
+  document.getElementById("srv-desc").value = s.descripcion || "";
+  document.getElementById("srv-precio").value = s.precio || "";
+  document.getElementById("srv-vis").checked = s.visible !== false;
+  document.getElementById("btn-del-srv").style.display = "";
+  // Render picker con seleccionado
+  var pick = document.getElementById("ico-pick");
+  pick.innerHTML = ICO_OPTS.map(function(ico){
+    return '<div class="ico-opt'+(ico===s.icono?" on":"")+'" onclick="pickIco(\''+ico+'\')">' + ico + '</div>';
+  }).join("");
+  openM("m-srv");
+}
+
+function saveSrv(){
+  var nombre = document.getElementById("srv-nombre").value.trim();
+  if (!nombre){ toast("El nombre es obligatorio","err"); return; }
+  if (!S.cfg.servicios) S.cfg.servicios = [];
+  var isNew = !document.getElementById("srv-id").value;
+  var id    = document.getElementById("srv-id").value || ("s" + Date.now());
+  var d = {
+    id:          id,
+    icono:       document.getElementById("srv-ico").value || "🏥",
+    nombre:      nombre,
+    descripcion: document.getElementById("srv-desc").value.trim(),
+    precio:      document.getElementById("srv-precio").value.trim(),
+    visible:     document.getElementById("srv-vis").checked
+  };
+  if (isNew){
+    S.cfg.servicios.push(d);
+  } else {
+    var idx = S.cfg.servicios.findIndex(function(x){ return x.id===id; });
+    if (idx > -1) S.cfg.servicios[idx] = d;
+    else S.cfg.servicios.push(d); // fallback: ID no encontrado → agregar
+  }
+  saveCfgToLS();
+  closeM("m-srv");
+  renderServiciosCfg();
+  toast(isNew ? "✅ Servicio agregado" : "✅ Servicio actualizado", "ok");
+}
+
+function delSrv(){
+  var id = document.getElementById("srv-id").value;
+  if (!id) return;
+  if (!confirm("¿Eliminar este servicio?")) return;
+  S.cfg.servicios = (S.cfg.servicios||[]).filter(function(s){ return s.id!==id; });
+  saveCfgToLS();
+  closeM("m-srv");
+  renderServiciosCfg();
+  toast("Servicio eliminado","ok");
 }
 
 // ══════════════════════════════════════════════
@@ -1009,7 +1187,7 @@ function renderDash(){
   else el.innerHTML = citasH.sort(function(a,b){return a.hora.localeCompare(b.hora);}).map(function(c){
     return '<div class="cita" onclick="editCita(\''+c.id+'\')" style="border-left-color:'+citaColor(c.estado)+'">'
       +'<div style="display:flex;align-items:center;gap:10px">'
-      +'<div><div class="cita-h">'+c.hora+'</div><div style="font-size:10px;color:var(--txt3)">'+c.duracion+'min</div></div>'
+      +'<div><div class="cita-h">'+esc(c.hora)+'</div><div style="font-size:10px;color:var(--txt3)">'+esc(c.duracion)+'min</div></div>'
       +'<div style="flex:1"><div class="cita-n">'+esc(c.pacienteNombre)+'</div><div class="cita-m">'+esc(c.motivo)+'</div></div>'
       +'<span class="badge '+badgeCita(c.estado)+'">'+c.estado+'</span></div></div>';
   }).join("");
@@ -1041,7 +1219,7 @@ function renderPac(q){
   if (!list.length){ el.innerHTML=emp("👤","Sin pacientes","Agrega el primero con + Nuevo"); return; }
   el.innerHTML = list.map(function(p){
     var ini=(p.nombre||"?")[0].toUpperCase();
-    var edad=p.fechaNac?Math.floor((new Date()-new Date(p.fechaNac))/31557600000)+" años":"";
+    var edad=p.fechaNac?Math.floor((new Date()-new Date(p.fechaNac+"T12:00:00"))/31557600000)+" años":"";
     return '<div class="li" onclick="editPac(\''+p.id+'\')" ><div class="li-av">'+ini+'</div>'
       +'<div class="li-b"><div class="li-n">'+esc(p.nombre)+'</div>'
       +'<div class="li-s">'+[p.sexo,edad,p.telefono].filter(Boolean).join(" · ")+'</div>'
@@ -1079,14 +1257,18 @@ async function savePac(){
   if (!nombre){ toast("El nombre es obligatorio","err"); return; }
   var isNew=!document.getElementById("p-id").value;
   var id=document.getElementById("p-id").value||String(Date.now());
+  // Preservar campos que el frontend no edita directamente
+  var _existing = isNew ? null : S.pac.find(function(x){ return x.id===id; });
   var d={ id:id, nombre:nombre, fechaNac:document.getElementById("p-fnac").value, sexo:document.getElementById("p-sexo").value,
     telefono:document.getElementById("p-tel").value, email:document.getElementById("p-email").value,
     alergias:document.getElementById("p-alergias").value, antecedentes:document.getElementById("p-ant").value,
-    notas:document.getElementById("p-notas").value, fecha:today(), consultas:"0", camposExtra:"" };
+    notas:document.getElementById("p-notas").value, fecha:today(),
+    consultas: isNew ? "0" : ((_existing&&_existing.consultas)||"0"),
+    camposExtra: isNew ? "" : ((_existing&&_existing.camposExtra)||"") };
   try {
     var r=await api(isNew?"addPaciente":"updatePaciente",{data:d});
     if(!r.ok){ toast("❌ "+r.error,"err"); return; }
-  } catch(e){ toast("⚠ Guardado offline","ok"); }
+  } catch(e){ /* sin conexión — se guarda localmente */ }
   if (isNew) S.pac.unshift(d); else { var i=S.pac.findIndex(function(x){return x.id===id;}); if(i>-1)S.pac[i]=d; }
   closeM("m-pac"); renderPac(); toast(isNew?"✅ Paciente creado":"✅ Actualizado","ok");
 }
@@ -1125,7 +1307,7 @@ function renderAgendaDay(){
   el.innerHTML=citas.map(function(c){
     return '<div class="cita" onclick="editCita(\''+c.id+'\')" style="border-left-color:'+citaColor(c.estado)+'">'
       +'<div style="display:flex;align-items:center;gap:10px">'
-      +'<div style="min-width:50px"><div class="cita-h">'+c.hora+'</div><div style="font-size:10px;color:var(--txt3)">'+c.duracion+'min</div></div>'
+      +'<div style="min-width:50px"><div class="cita-h">'+esc(c.hora)+'</div><div style="font-size:10px;color:var(--txt3)">'+esc(c.duracion)+'min</div></div>'
       +'<div style="flex:1"><div class="cita-n">'+esc(c.pacienteNombre)+'</div><div class="cita-m">'+esc(c.motivo)+'</div></div>'
       +'<span class="badge '+badgeCita(c.estado)+'">'+c.estado+'</span></div></div>';
   }).join("");
@@ -1183,7 +1365,7 @@ async function saveCita(){
   try {
     var r=await api(isNew?"addCita":"updateCita",{data:d});
     if(!r.ok){ toast("❌ "+r.error,"err"); return; }
-  } catch(e){ toast("⚠ Guardado offline","ok"); }
+  } catch(e){ /* sin conexión — se guarda localmente */ }
   if(isNew)S.citas.push(d); else { var i=S.citas.findIndex(function(x){return x.id===id;}); if(i>-1)S.citas[i]=d; }
   closeM("m-cita"); renderAgenda(); renderDash(); toast(isNew?"✅ Cita creada":"✅ Actualizada","ok");
 }
@@ -1212,7 +1394,7 @@ function renderRec(){
       +'<div><div style="font-size:15px;font-weight:700">'+esc(r.pacienteNombre)+'</div>'
       +'<div style="font-size:12px;color:var(--txt2)">'+r.fecha+' · '+r.folio+'</div></div>'
       +'<span class="badge b-blue">Receta</span></div>'
-      +'<div style="font-size:13px;color:var(--txt2);white-space:pre-wrap">'+(r.medicamentos||"").slice(0,200)+'</div></div>';
+      +'<div style="font-size:13px;color:var(--txt2);white-space:pre-wrap">'+esc((r.medicamentos||"").slice(0,200))+'</div></div>';
   }).join("");
 }
 
@@ -1227,7 +1409,7 @@ async function saveRec(){
   var id=String(Date.now());
   var folio="R"+String(S.rec.length+1).padStart(4,"0");
   var d={id:id,pacienteId:S._recPacId,pacienteNombre:S._recPacNombre,citaId:"",fecha:today(),medicamentos:meds,indicaciones:document.getElementById("rec-ind").value,firma:S.cfg.perfil.nombre||"",folio:folio};
-  try { var r=await api("addReceta",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ toast("⚠ Guardado offline","ok"); }
+  try { var r=await api("addReceta",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ /* sin conexión — se guarda localmente */ }
   S.rec.push(d); closeM("m-rec"); renderRec(); toast("✅ Receta guardada","ok");
 }
 
@@ -1246,7 +1428,7 @@ function renderPago(){
     return '<div class="card-s" style="display:flex;align-items:center;gap:11px;margin-bottom:7px">'
       +'<div style="font-size:22px">💳</div><div style="flex:1">'
       +'<div style="font-size:14px;font-weight:600">'+esc(p.pacienteNombre)+'</div>'
-      +'<div style="font-size:12px;color:var(--txt2)">'+esc(p.concepto)+' · '+p.metodo+' · '+p.fecha+'</div></div>'
+      +'<div style="font-size:12px;color:var(--txt2)">'+esc(p.concepto)+' · '+esc(p.metodo)+' · '+esc(p.fecha)+'</div></div>'
       +'<div style="font-size:16px;font-weight:700;color:var(--ok)">$'+parseFloat(p.monto||0).toFixed(2)+'</div></div>';
   }).join("");
 }
@@ -1262,7 +1444,7 @@ async function savePago(){
   var id=String(Date.now());
   var folio="P"+String(S.pagos.length+1).padStart(4,"0");
   var d={id:id,pacienteId:S._pagPacId,pacienteNombre:S._pagPacNombre,citaId:"",fecha:today(),concepto:document.getElementById("pag-con").value,monto:String(monto),metodo:document.getElementById("pag-met").value,notas:document.getElementById("pag-notas").value,folio:folio,recibo:"false"};
-  try { var r=await api("addPago",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ toast("⚠ Guardado offline","ok"); }
+  try { var r=await api("addPago",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ /* sin conexión — se guarda localmente */ }
   S.pagos.push(d); closeM("m-pago"); renderPago(); renderDash(); toast("✅ Pago registrado","ok");
 }
 
@@ -1309,7 +1491,7 @@ async function saveInv(){
   var isNew=!document.getElementById("inv-id").value;
   var id=document.getElementById("inv-id").value||String(Date.now());
   var d={id:id,nombre:nombre,categoria:document.getElementById("inv-cat").value,stock:document.getElementById("inv-stock").value,stockMin:document.getElementById("inv-min").value,unidad:document.getElementById("inv-uni").value,precio:document.getElementById("inv-precio").value,proveedor:document.getElementById("inv-prov").value,notas:document.getElementById("inv-notas").value};
-  try { var r=await api(isNew?"addProducto":"updateProducto",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ toast("⚠ Guardado offline","ok"); }
+  try { var r=await api(isNew?"addProducto":"updateProducto",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ /* sin conexión — se guarda localmente */ }
   if(isNew)S.inv.push(d); else { var i=S.inv.findIndex(function(x){return x.id===id;}); if(i>-1)S.inv[i]=d; }
   closeM("m-inv"); renderInv(); renderDash(); toast(isNew?"✅ Insumo creado":"✅ Actualizado","ok");
 }
