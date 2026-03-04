@@ -212,27 +212,172 @@ input,select,textarea{font-family:var(--ff);outline:none}
 .map-placeholder p{font-size:12px;text-align:center;max-width:200px;line-height:1.4}
 .loc-coords{font-size:11px;color:var(--txt3);font-family:var(--fm);margin-top:6px;padding:6px 10px;background:var(--bg2);border-radius:var(--rs);border:1px solid var(--border);display:none}
 .loc-coords.on{display:block}
-.loc-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(26,127,193,.1);border:1px solid rgba(26,127,193,.25);color:var(--p2);padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;margin-top:6px}
 
-/* SERVICIOS CONFIG */
-.srv-list-cfg{margin-top:4px}
-.srv-item{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:.15s}
-.srv-item:hover{border-color:rgba(26,127,193,.4);background:var(--bg2)}
-.srv-item-ico{font-size:22px;flex-shrink:0;width:32px;text-align:center}
-.srv-item-body{flex:1;min-width:0}
-.srv-item-name{font-size:14px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.srv-item-meta{font-size:11px;color:var(--txt2);margin-top:1px}
-.srv-item-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.srv-vis-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;letter-spacing:.3px}
+/* ═══════════════════════════════════════════
+   SERVICIOS LANDING — BARRAS ESTILO NUEVO
+═══════════════════════════════════════════ */
+
+/* Barra en config — lista de tarjetas */
+.srv-bar-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+
+/* Barra individual en config (3 estilos) */
+.srv-bar-item{
+  position:relative;
+  border-radius:var(--r);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .15s, box-shadow .15s;
+  border:1px solid var(--border);
+}
+.srv-bar-item:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.3)}
+.srv-bar-item.hidden-srv{opacity:.45;filter:grayscale(.6)}
+
+/* ESTILO 1: Barra Horizontal Compacta */
+.srv-bar-item.style-compact{
+  background:var(--card);
+  display:flex;align-items:center;gap:13px;
+  padding:13px 14px;
+}
+.srv-bar-item.style-compact .srv-bar-ico{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;overflow:hidden;
+  background:rgba(26,127,193,.12);border:1px solid rgba(26,127,193,.2);
+}
+.srv-bar-item.style-compact .srv-bar-ico img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.srv-bar-item.style-compact .srv-bar-body{flex:1;min-width:0}
+.srv-bar-item.style-compact .srv-bar-name{font-size:14px;font-weight:700;color:var(--txt)}
+.srv-bar-item.style-compact .srv-bar-desc{font-size:12px;color:var(--txt2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srv-bar-item.style-compact .srv-bar-price{font-size:13px;font-weight:700;color:var(--p2);flex-shrink:0}
+
+/* ESTILO 2: Barra Ancha con Acento */
+.srv-bar-item.style-accent{
+  background:linear-gradient(100deg,var(--card2) 0%,var(--card) 100%);
+  display:flex;align-items:stretch;gap:0;
+  padding:0;
+}
+.srv-bar-item.style-accent .srv-bar-left-stripe{
+  width:5px;flex-shrink:0;
+  background:linear-gradient(180deg,var(--p),var(--p2));
+  border-radius:var(--r) 0 0 var(--r);
+}
+.srv-bar-item.style-accent .srv-bar-inner{
+  display:flex;align-items:center;gap:13px;
+  padding:14px 14px 14px 13px;flex:1;min-width:0;
+}
+.srv-bar-item.style-accent .srv-bar-ico{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;overflow:hidden;
+  background:rgba(56,189,248,.1);
+  box-shadow:0 2px 12px rgba(56,189,248,.15);
+}
+.srv-bar-item.style-accent .srv-bar-ico img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.srv-bar-item.style-accent .srv-bar-body{flex:1;min-width:0}
+.srv-bar-item.style-accent .srv-bar-name{font-size:15px;font-weight:700;color:var(--txt)}
+.srv-bar-item.style-accent .srv-bar-desc{font-size:12px;color:var(--txt2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srv-bar-item.style-accent .srv-bar-meta{display:flex;align-items:center;gap:8px;margin-top:6px}
+.srv-bar-item.style-accent .srv-bar-price{
+  font-size:12px;font-weight:700;
+  background:rgba(26,127,193,.15);border:1px solid rgba(26,127,193,.25);
+  color:var(--p2);padding:2px 9px;border-radius:99px;
+}
+.srv-bar-item.style-accent .srv-bar-arrow{
+  padding:0 14px 0 0;display:flex;align-items:center;
+  font-size:18px;color:var(--txt3);flex-shrink:0;
+}
+
+/* ESTILO 3: Tarjeta con Banner (imagen grande arriba) */
+.srv-bar-item.style-banner{
+  background:var(--card);
+  display:flex;flex-direction:column;
+}
+.srv-bar-item.style-banner .srv-bar-banner{
+  height:72px;
+  background:linear-gradient(135deg,rgba(26,127,193,.25),rgba(56,189,248,.15));
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;overflow:hidden;position:relative;
+}
+.srv-bar-item.style-banner .srv-bar-banner img{width:100%;height:100%;object-fit:cover}
+.srv-bar-item.style-banner .srv-bar-banner-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(8,13,20,.8));
+}
+.srv-bar-item.style-banner .srv-bar-bottom{
+  padding:11px 14px 13px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.srv-bar-item.style-banner .srv-bar-name{font-size:14px;font-weight:700;color:var(--txt)}
+.srv-bar-item.style-banner .srv-bar-desc{font-size:12px;color:var(--txt2);margin-top:2px}
+.srv-bar-item.style-banner .srv-bar-price{
+  font-size:14px;font-weight:800;color:var(--ok);flex-shrink:0;
+  letter-spacing:-.3px;
+}
+
+/* Badge de visibilidad en config */
+.srv-vis-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;letter-spacing:.3px;flex-shrink:0}
 .srv-vis-badge.on{background:rgba(22,163,74,.15);color:#4ADE80;border:1px solid rgba(22,163,74,.3)}
 .srv-vis-badge.off{background:rgba(74,106,133,.15);color:var(--txt2);border:1px solid var(--border)}
+
+/* Botón agregar servicio */
 .srv-add-btn{width:100%;background:transparent;border:2px dashed var(--border);color:var(--txt2);border-radius:var(--rs);padding:10px;font-size:13px;font-weight:600;transition:.15s;margin-top:4px}
 .srv-add-btn:hover{border-color:var(--p);color:var(--p2);background:rgba(26,127,193,.05)}
-.ico-pick-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.ico-opt{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:var(--rs);border:2px solid var(--border);background:var(--bg2);cursor:pointer;transition:.15s}
+
+/* Selector de estilo en modal */
+.style-selector{display:flex;gap:8px;margin-bottom:4px}
+.style-opt{flex:1;background:var(--bg2);border:2px solid var(--border);border-radius:var(--rs);padding:8px 4px;cursor:pointer;text-align:center;transition:.15s}
+.style-opt:hover{border-color:var(--txt3)}
+.style-opt.on{border-color:var(--p);background:rgba(26,127,193,.08)}
+.style-opt-ico{font-size:18px;margin-bottom:3px}
+.style-opt-lbl{font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px}
+
+/* Ícono del servicio en modal */
+.srv-ico-editor{display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);margin-bottom:4px}
+.srv-ico-preview-lg{
+  width:60px;height:60px;border-radius:12px;
+  background:rgba(26,127,193,.1);border:1px solid rgba(26,127,193,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;flex-shrink:0;overflow:hidden;position:relative;
+}
+.srv-ico-preview-lg img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.srv-ico-editor-body{flex:1}
+.srv-ico-editor-body .hint{font-size:11px;color:var(--txt3);margin-top:4px}
+.srv-ico-tabs{display:flex;gap:6px;margin-bottom:8px}
+.srv-ico-tab{padding:5px 10px;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;background:var(--border);color:var(--txt2);border:none;transition:.15s}
+.srv-ico-tab.on{background:var(--p);color:#fff}
+.ico-emoji-grid{display:flex;flex-wrap:wrap;gap:5px}
+.ico-opt{font-size:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);cursor:pointer;transition:.15s}
 .ico-opt:hover,.ico-opt.on{border-color:var(--p);background:rgba(26,127,193,.1)}
-.srv-empty{text-align:center;padding:28px 10px;color:var(--txt3);font-size:13px}
-.srv-empty-i{font-size:32px;margin-bottom:8px;opacity:.4}
+
+/* Modal descripción del servicio */
+#m-srv-desc .modal{padding-bottom:22px}
+.desc-banner{
+  margin:-18px -18px 16px;
+  height:130px;
+  background:linear-gradient(135deg,rgba(26,127,193,.3),rgba(56,189,248,.15));
+  display:flex;align-items:center;justify-content:center;
+  font-size:52px;position:relative;overflow:hidden;
+  border-radius:18px 18px 0 0;
+}
+.desc-banner img{width:100%;height:100%;object-fit:cover}
+.desc-banner-ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(8,13,20,.6))}
+.desc-title{font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px}
+.desc-price-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.25);
+  color:#4ADE80;padding:5px 13px;border-radius:99px;
+  font-size:14px;font-weight:700;margin-bottom:14px;
+}
+.desc-body{font-size:14px;color:var(--txt2);line-height:1.65;white-space:pre-wrap;margin-bottom:16px}
+.desc-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.desc-meta-chip{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--rs);padding:7px 12px;
+  font-size:12px;color:var(--txt2);display:flex;align-items:center;gap:6px;
+}
+.desc-meta-chip strong{color:var(--txt);font-weight:600}
+
+/* ═══════════════════════════════════════════ */
 
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
@@ -262,8 +407,7 @@ input,select,textarea{font-family:var(--ff);outline:none}
     <div class="banner" id="banner"></div>
     <div class="field">
       <label>URL del Apps Script</label>
-      <input type="url" id="f-url" placeholder="https://script.google.com/macros/s/.../exec"
-        oninput="saveUrl(this.value)"/>
+      <input type="url" id="f-url" placeholder="https://script.google.com/macros/s/.../exec" oninput="saveUrl(this.value)"/>
       <div class="hint">Pega aquí la URL de tu Web App de Google Apps Script.</div>
     </div>
     <div class="field">
@@ -397,10 +541,9 @@ input,select,textarea{font-family:var(--ff);outline:none}
         </div>
       </div>
 
-      <!-- ══ UBICACIÓN (nuevo) ══ -->
+      <!-- UBICACIÓN -->
       <div class="cfg-sec">
         <div class="cfg-lbl">📍 Ubicación del Consultorio</div>
-
         <div class="field">
           <label>Dirección completa</label>
           <div class="loc-input-row">
@@ -408,7 +551,6 @@ input,select,textarea{font-family:var(--ff);outline:none}
           </div>
           <div class="hint">Dirección que aparecerá en recetas y comunicaciones.</div>
         </div>
-
         <div class="field">
           <label>Coordenadas GPS <span style="color:var(--txt3);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
           <div class="loc-input-row">
@@ -421,10 +563,7 @@ input,select,textarea{font-family:var(--ff);outline:none}
             <button class="loc-btn sec" onclick="clearLocation()">✕ Limpiar</button>
             <button class="loc-btn sec" onclick="copyMapLink()">🔗 Copiar enlace</button>
           </div>
-          <div class="hint">Las coordenadas permiten mostrar un mapa y compartir la ubicación exacta del consultorio.</div>
         </div>
-
-        <!-- Vista previa del mapa -->
         <div id="map-placeholder-wrap" class="map-placeholder">
           <span>🗺️</span>
           <p>Ingresa coordenadas o usa "Usar mi ubicación" para ver el mapa</p>
@@ -435,14 +574,16 @@ input,select,textarea{font-family:var(--ff);outline:none}
         <div id="loc-coords-display" class="loc-coords"></div>
       </div>
 
-      <!-- ══ SERVICIOS DE LA LANDING ══ -->
+      <!-- ══ SERVICIOS DE LA LANDING (nuevo diseño) ══ -->
       <div class="cfg-sec">
         <div class="cfg-lbl" style="display:flex;align-items:center;justify-content:space-between">
           <span>🏥 Servicios de la Landing</span>
           <button class="btn-sm" style="font-size:12px;padding:5px 11px" onclick="openM('m-srv');resetSrv()">+ Agregar</button>
         </div>
-        <div class="hint" style="margin-bottom:10px">Los servicios que aparecen en tu página pública. Toca uno para editarlo.</div>
-        <div class="srv-list-cfg" id="srv-list-cfg"></div>
+        <div class="hint" style="margin-bottom:12px">Toca una barra para ver detalles, editar o cambiar visibilidad.</div>
+        
+        <!-- Lista de barras en config -->
+        <div class="srv-bar-list" id="srv-list-cfg"></div>
         <button class="srv-add-btn" onclick="openM('m-srv');resetSrv()">＋ Agregar servicio</button>
       </div>
 
@@ -506,7 +647,9 @@ input,select,textarea{font-family:var(--ff);outline:none}
   </nav>
 </div>
 
-<!-- MODALES -->
+<!-- ══════════════════════════════════════════
+     MODALES GENERALES
+══════════════════════════════════════════ -->
 
 <!-- Paciente -->
 <div class="mbg" id="m-pac">
@@ -514,7 +657,7 @@ input,select,textarea{font-family:var(--ff);outline:none}
     <div class="mhandle"></div>
     <div class="mtitle" id="m-pac-t">Nuevo Paciente</div>
     <input type="hidden" id="p-id"/>
-    <div class="field" style="grid-column:1/-1"><label>Nombre completo *</label><input type="text" id="p-nombre"/></div>
+    <div class="field"><label>Nombre completo *</label><input type="text" id="p-nombre"/></div>
     <div class="form-row">
       <div class="field"><label>Fecha nacimiento</label><input type="date" id="p-fnac"/></div>
       <div class="field"><label>Sexo</label><select id="p-sexo"><option value="F">Femenino</option><option value="M">Masculino</option><option value="Otro">Otro</option></select></div>
@@ -636,32 +779,107 @@ input,select,textarea{font-family:var(--ff);outline:none}
   </div>
 </div>
 
-<div id="toast"></div>
-
-<!-- Modal Servicio Landing -->
+<!-- ══════════════════════════════════════════
+     MODAL SERVICIO — CREAR / EDITAR
+══════════════════════════════════════════ -->
 <div class="mbg" id="m-srv">
   <div class="modal">
     <div class="mhandle"></div>
     <div class="mtitle" id="m-srv-t">Nuevo Servicio</div>
     <input type="hidden" id="srv-id"/>
+
+    <!-- Selector de estilo de barra -->
     <div class="field">
-      <label>Ícono</label>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div id="srv-ico-preview" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs)">🏥</div>
-        <input type="text" id="srv-ico" value="🏥" maxlength="4" style="width:80px;background:var(--bg2);border:1px solid var(--border);color:var(--txt);padding:10px;border-radius:var(--rs);font-size:20px;text-align:center" oninput="document.getElementById('srv-ico-preview').textContent=this.value||'🏥'"/>
+      <label>Estilo de barra</label>
+      <div class="style-selector" id="style-selector">
+        <div class="style-opt on" data-style="compact" onclick="selectBarStyle('compact',this)">
+          <div class="style-opt-ico">▬</div>
+          <div class="style-opt-lbl">Compacto</div>
+        </div>
+        <div class="style-opt" data-style="accent" onclick="selectBarStyle('accent',this)">
+          <div class="style-opt-ico">◼</div>
+          <div class="style-opt-lbl">Acento</div>
+        </div>
+        <div class="style-opt" data-style="banner" onclick="selectBarStyle('banner',this)">
+          <div class="style-opt-ico">⬛</div>
+          <div class="style-opt-lbl">Banner</div>
+        </div>
       </div>
-      <div class="ico-pick-wrap" id="ico-pick"></div>
+      <div class="hint">Define el aspecto visual de esta barra en la landing.</div>
     </div>
-    <div class="field"><label>Nombre del servicio *</label><input type="text" id="srv-nombre" placeholder="Consulta General"/></div>
-    <div class="field"><label>Descripción</label><input type="text" id="srv-desc" placeholder="Breve descripción visible en la landing..."/></div>
-    <div class="field"><label>Precio (opcional)</label><input type="text" id="srv-precio" placeholder="ej: 500 o Desde $350"/></div>
+
+    <!-- Editor de ícono -->
+    <div class="field">
+      <label>Ícono o imagen</label>
+      <div class="srv-ico-editor">
+        <div class="srv-ico-preview-lg" id="srv-ico-preview-lg">🏥</div>
+        <div class="srv-ico-editor-body">
+          <div class="srv-ico-tabs">
+            <button class="srv-ico-tab on" onclick="srvIcoTab('emoji',this)">Emoji</button>
+            <button class="srv-ico-tab" onclick="srvIcoTab('imagen',this)">Imagen</button>
+          </div>
+          <div id="srv-ico-panel-emoji">
+            <input type="text" id="srv-ico-txt" value="🏥" maxlength="4"
+              style="width:70px;background:var(--bg);border:1px solid var(--border);color:var(--txt);padding:8px;border-radius:var(--rs);font-size:18px;text-align:center"
+              oninput="updateSrvIcoPreview()"/>
+            <div class="hint">Escribe o pega un emoji.</div>
+          </div>
+          <div id="srv-ico-panel-imagen" style="display:none">
+            <label class="btn-upload" for="srv-ico-file" style="display:inline-block;padding:6px 12px;font-size:12px">📁 Subir imagen</label>
+            <input type="file" id="srv-ico-file" accept="image/*" style="display:none" onchange="handleSrvIcoFile(this)"/>
+            <button class="btn-rm on" id="srv-ico-rm" style="margin-top:4px" onclick="removeSrvIco()">✕ Quitar imagen</button>
+            <div class="hint">PNG, JPG — se guarda localmente.</div>
+          </div>
+        </div>
+      </div>
+      <!-- Grid de emojis frecuentes -->
+      <div class="ico-emoji-grid" id="ico-pick" style="margin-top:6px"></div>
+    </div>
+
+    <!-- Nombre editable grande -->
+    <div class="field">
+      <label>Nombre del servicio *</label>
+      <input type="text" id="srv-nombre" placeholder="Consulta General"
+        style="font-size:16px;font-weight:600"
+        oninput="updateSrvPreview()"/>
+    </div>
+
+    <div class="field">
+      <label>Descripción completa</label>
+      <textarea id="srv-desc" rows="3" placeholder="Describe el servicio, qué incluye, cómo funciona..." oninput="updateSrvPreview()"></textarea>
+      <div class="hint">Esta descripción aparece en la pantalla de detalle del servicio.</div>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Precio</label>
+        <input type="text" id="srv-precio" placeholder="ej: $500 o Desde $350" oninput="updateSrvPreview()"/>
+      </div>
+      <div class="field">
+        <label>Duración estimada</label>
+        <input type="text" id="srv-dur" placeholder="ej: 45 min"/>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Categoría / Etiqueta</label>
+      <input type="text" id="srv-cat" placeholder="ej: Preventivo, Urgencias, Estético..."/>
+    </div>
+
     <div class="cfg-row" style="padding:8px 0">
       <div>
         <div class="cfg-rl">Visible en la landing</div>
-        <div class="cfg-rs">Los servicios ocultos no aparecen públicamente</div>
+        <div class="cfg-rs">Las barras ocultas no aparecen públicamente</div>
       </div>
       <label class="toggle"><input type="checkbox" id="srv-vis" checked><div class="ttrack"><div class="tthumb"></div></div></label>
     </div>
+
+    <!-- Vista previa -->
+    <div class="field" style="margin-top:6px">
+      <label>Vista previa</label>
+      <div id="srv-preview-wrap" style="pointer-events:none"></div>
+    </div>
+
     <div class="mfoot">
       <button class="btn btn-sec" onclick="closeM('m-srv')">Cancelar</button>
       <button class="btn btn-danger" id="btn-del-srv" onclick="delSrv()" style="display:none">Eliminar</button>
@@ -670,531 +888,656 @@ input,select,textarea{font-family:var(--ff);outline:none}
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════
+     MODAL DESCRIPCIÓN DEL SERVICIO (vista detalle)
+══════════════════════════════════════════ -->
+<div class="mbg" id="m-srv-desc">
+  <div class="modal" style="padding:0;overflow:hidden">
+    <!-- Banner con ícono -->
+    <div class="desc-banner" id="desc-banner">
+      <span id="desc-banner-ico" style="position:relative;z-index:1;font-size:52px">🏥</span>
+      <img id="desc-banner-img" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/>
+      <div class="desc-banner-ov"></div>
+    </div>
+    <!-- Contenido -->
+    <div style="padding:18px">
+      <!-- Nombre editable inline en descripción -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px">
+        <div class="desc-title" id="desc-title">Servicio</div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button class="btn-sm" style="font-size:12px;padding:5px 10px;background:var(--card2);color:var(--txt2);border:1px solid var(--border)" onclick="editSrvFromDesc()">✏️ Editar</button>
+          <button class="btn-sm" id="desc-toggle-btn" style="font-size:12px;padding:5px 10px" onclick="toggleSrvVisFromDesc()">👁 Ocultar</button>
+        </div>
+      </div>
+      <div id="desc-cat-badge" style="margin-bottom:10px"></div>
+      <div id="desc-price-wrap"></div>
+      <div class="desc-body" id="desc-body">Sin descripción.</div>
+      <div class="desc-meta" id="desc-meta"></div>
+      <button class="btn btn-sec" style="margin-top:8px" onclick="closeM('m-srv-desc')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
 <script>
 // ══════════════════════════════════════════════
 //  ESTADO
 // ══════════════════════════════════════════════
 var S = {
   user: null,
-  cfg: { perfil:{nombre:"",especialidad:"medico",telefono:"",direccion:"",locDireccion:"",lat:"",lng:""}, modulos:{agenda:true,recetas:true,pagos:true,inventario:true}, tema:{dark:true,color:"#1A7FC1"}, url:"", servicios:[] },
+  cfg: {
+    perfil:{nombre:"",especialidad:"medico",telefono:"",direccion:"",locDireccion:"",lat:"",lng:""},
+    modulos:{agenda:true,recetas:true,pagos:true,inventario:true},
+    tema:{dark:true,color:"#1A7FC1"},
+    url:"",
+    servicios:[]
+  },
   pac:[], citas:[], pagos:[], inv:[], rec:[],
   page:"p-dash", online:true,
   _citaPacId:"", _citaPacNombre:"",
   _recPacId:"",  _recPacNombre:"",
-  _pagPacId:"",  _pagPacNombre:""
+  _pagPacId:"",  _pagPacNombre:"",
+  _srvStyle:"compact",
+  _srvIcoImg:"",
+  _srvDescId:""
 };
 
 // ── localStorage ──────────────────────────────
 function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
 
-// ── URL del backend ───────────────────────────
-function getUrl(){
-  return S.cfg.url || localStorage.getItem("sp_url") || "";
-}
+function getUrl(){ return S.cfg.url || localStorage.getItem("sp_url") || ""; }
 function saveUrl(v){
-  v = (v||"").trim();
-  S.cfg.url = v;
-  localStorage.setItem("sp_url", v);
-  saveCfgToLS();
+  v=(v||"").trim(); S.cfg.url=v;
+  localStorage.setItem("sp_url",v); saveCfgToLS();
 }
 
 // ── API ───────────────────────────────────────
-async function api(action, params){
-  var url = getUrl();
-  if (!url) throw new Error("URL no configurada");
-  params = params || {};
-  params.action = action;
-  if (params.data && typeof params.data === "object") {
-    params.data = JSON.stringify(params.data);
-  }
-  if (!params.sheetId && S.user && S.user.sheetId) params.sheetId = S.user.sheetId;
-  var qs = new URLSearchParams();
-  Object.keys(params).forEach(function(k){ if(params[k]!==undefined && params[k]!==null) qs.set(k, params[k]); });
-  var res = await fetch(url + "?" + qs.toString());
-  if (!res.ok) throw new Error("HTTP " + res.status);
+async function api(action,params){
+  var url=getUrl(); if(!url) throw new Error("URL no configurada");
+  params=params||{}; params.action=action;
+  if(params.data&&typeof params.data==="object") params.data=JSON.stringify(params.data);
+  if(!params.sheetId&&S.user&&S.user.sheetId) params.sheetId=S.user.sheetId;
+  var qs=new URLSearchParams();
+  Object.keys(params).forEach(function(k){ if(params[k]!==undefined&&params[k]!==null) qs.set(k,params[k]); });
+  var res=await fetch(url+"?"+qs.toString());
+  if(!res.ok) throw new Error("HTTP "+res.status);
   return await res.json();
 }
 
 // ══════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════
-window.addEventListener("DOMContentLoaded", function(){
-  document.getElementById("fecha-hoy").textContent =
+window.addEventListener("DOMContentLoaded",function(){
+  document.getElementById("fecha-hoy").textContent=
     new Date().toLocaleDateString("es-MX",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-
-  document.getElementById("f-email").addEventListener("keydown",function(e){ if(e.key==="Enter") document.getElementById("f-pass").focus(); });
-  document.getElementById("f-pass").addEventListener("keydown",function(e){ if(e.key==="Enter") doLogin(); });
-
+  document.getElementById("f-email").addEventListener("keydown",function(e){if(e.key==="Enter") document.getElementById("f-pass").focus();});
+  document.getElementById("f-pass").addEventListener("keydown",function(e){if(e.key==="Enter") doLogin();});
   document.querySelectorAll(".mbg").forEach(function(m){
-    m.addEventListener("click",function(e){ if(e.target===m) m.classList.remove("on"); });
+    m.addEventListener("click",function(e){if(e.target===m) m.classList.remove("on");});
   });
-
   setTimeout(function(){
     document.getElementById("splash").classList.add("hide");
-    setTimeout(initApp, 500);
-  }, 1600);
+    setTimeout(initApp,500);
+  },1600);
 });
 
 function initApp(){
-  var saved = lsGet("sp_cfg");
-  if (saved) {
-    if (saved.perfil)  Object.assign(S.cfg.perfil,  saved.perfil);
-    if (saved.modulos) Object.assign(S.cfg.modulos, saved.modulos);
-    if (saved.tema)    Object.assign(S.cfg.tema,    saved.tema);
-    if (saved.url)     S.cfg.url = saved.url;
-    if (saved.servicios) S.cfg.servicios = saved.servicios;
+  var saved=lsGet("sp_cfg");
+  if(saved){
+    if(saved.perfil)   Object.assign(S.cfg.perfil,saved.perfil);
+    if(saved.modulos)  Object.assign(S.cfg.modulos,saved.modulos);
+    if(saved.tema)     Object.assign(S.cfg.tema,saved.tema);
+    if(saved.url)      S.cfg.url=saved.url;
+    if(saved.servicios) S.cfg.servicios=saved.servicios;
   }
-  var oldUrl = localStorage.getItem("sp_url") || localStorage.getItem("sp_script") || "";
-  if (oldUrl && !S.cfg.url) S.cfg.url = oldUrl;
-
+  var oldUrl=localStorage.getItem("sp_url")||localStorage.getItem("sp_script")||"";
+  if(oldUrl&&!S.cfg.url) S.cfg.url=oldUrl;
   applyTema();
-
-  var urlVal = getUrl();
-  document.getElementById("f-url").value = urlVal;
-  document.getElementById("c-url").value = urlVal;
-
-  var user = lsGet("sp_user");
-  if (user && user.email) {
-    S.user = user;
-    showApp();
-  } else {
-    showLogin();
-  }
+  document.getElementById("f-url").value=getUrl();
+  document.getElementById("c-url").value=getUrl();
+  var user=lsGet("sp_user");
+  if(user&&user.email){ S.user=user; showApp(); }
+  else showLogin();
 }
 
 // ══════════════════════════════════════════════
 //  LOGIN / LOGOUT
 // ══════════════════════════════════════════════
 async function doLogin(){
-  var email = document.getElementById("f-email").value.trim();
-  var pass  = document.getElementById("f-pass").value.trim();
-  var url   = document.getElementById("f-url").value.trim();
-  if (url) saveUrl(url);
-
-  if (!getUrl()) { showBanner("Pega primero la URL del Apps Script arriba."); return; }
-  if (!email || !pass) { showBanner("Ingresa tu correo y contraseña."); return; }
-
-  var btn = document.getElementById("btn-login");
-  btn.disabled = true; btn.textContent = "Verificando…";
-  hideBanner();
-
-  try {
-    var res = await api("checkLicense", { email:email, pass:pass });
-    if (res.ok) {
-      S.user = Object.assign({ pass:pass }, res.user);
-      lsSet("sp_user", S.user);
-      showApp();
-    } else {
-      showBanner(res.error || "Credenciales incorrectas.");
-    }
-  } catch(e) {
-    showBanner("No se pudo conectar al servidor. Verifica la URL del Apps Script.\n(" + e.message + ")");
-  } finally {
-    btn.disabled = false; btn.textContent = "Iniciar sesión";
-  }
+  var email=document.getElementById("f-email").value.trim();
+  var pass=document.getElementById("f-pass").value.trim();
+  var url=document.getElementById("f-url").value.trim();
+  if(url) saveUrl(url);
+  if(!getUrl()){showBanner("Pega primero la URL del Apps Script arriba.");return;}
+  if(!email||!pass){showBanner("Ingresa tu correo y contraseña.");return;}
+  var btn=document.getElementById("btn-login");
+  btn.disabled=true;btn.textContent="Verificando…";hideBanner();
+  try{
+    var res=await api("checkLicense",{email:email,pass:pass});
+    if(res.ok){S.user=Object.assign({pass:pass},res.user);lsSet("sp_user",S.user);showApp();}
+    else showBanner(res.error||"Credenciales incorrectas.");
+  }catch(e){showBanner("No se pudo conectar al servidor. Verifica la URL.\n("+e.message+")");}
+  finally{btn.disabled=false;btn.textContent="Iniciar sesión";}
 }
-
-function showBanner(msg){ var b=document.getElementById("banner"); b.textContent=msg; b.classList.add("on"); }
-function hideBanner(){ document.getElementById("banner").classList.remove("on"); }
-
+function showBanner(msg){var b=document.getElementById("banner");b.textContent=msg;b.classList.add("on");}
+function hideBanner(){document.getElementById("banner").classList.remove("on");}
 function doLogout(){
-  if (!confirm("¿Cerrar sesión?")) return;
-  lsSet("sp_user",null);
-  S.user=null; S.pac=[]; S.citas=[]; S.pagos=[]; S.inv=[]; S.rec=[];
+  if(!confirm("¿Cerrar sesión?"))return;
+  lsSet("sp_user",null);S.user=null;S.pac=[];S.citas=[];S.pagos=[];S.inv=[];S.rec=[];
   document.getElementById("app").classList.remove("on");
   document.getElementById("login").classList.add("on");
 }
-
-function showLogin(){
-  document.getElementById("app").classList.remove("on");
-  document.getElementById("login").classList.add("on");
-}
-
+function showLogin(){document.getElementById("app").classList.remove("on");document.getElementById("login").classList.add("on");}
 function showApp(){
   document.getElementById("login").classList.remove("on");
   document.getElementById("app").classList.add("on");
-  updateTopbar();
-  loadCfgUI();
-  applyMods();
-  loadAll();
+  updateTopbar();loadCfgUI();applyMods();loadAll();
 }
 
 // ══════════════════════════════════════════════
 //  TOPBAR / CONFIG
 // ══════════════════════════════════════════════
-var ESP_LABEL = {medico:"Médico General",dentista:"Dentista",psicologo:"Psicólogo",quiropractico:"Quiropráctico"};
+var ESP_LABEL={medico:"Médico General",dentista:"Dentista",psicologo:"Psicólogo",quiropractico:"Quiropráctico"};
 
 function updateTopbar(){
-  document.getElementById("tb-name").textContent = S.cfg.perfil.nombre || (S.user&&S.user.nombre) || "Mi Consultorio";
-  document.getElementById("tb-esp").textContent  = ESP_LABEL[S.cfg.perfil.especialidad||"medico"] || "Médico General";
+  document.getElementById("tb-name").textContent=S.cfg.perfil.nombre||(S.user&&S.user.nombre)||"Mi Consultorio";
+  document.getElementById("tb-esp").textContent=ESP_LABEL[S.cfg.perfil.especialidad||"medico"]||"Médico General";
 }
 
 function loadCfgUI(){
-  document.getElementById("c-nombre").value = S.cfg.perfil.nombre || (S.user&&S.user.nombre) || "";
-  document.getElementById("c-esp").value    = S.cfg.perfil.especialidad || (S.user&&S.user.especialidad) || "medico";
-  document.getElementById("c-tel").value    = S.cfg.perfil.telefono || "";
-  document.getElementById("c-dir").value    = S.cfg.perfil.direccion || "";
-  document.getElementById("c-url").value    = getUrl();
-  applyLogo(S.cfg.perfil.logo || "");
-  document.getElementById("c-dark").checked = S.cfg.tema.dark !== false;
-  document.getElementById("c-color").value  = S.cfg.tema.color || "#1A7FC1";
-  document.getElementById("m-agenda").checked  = S.cfg.modulos.agenda  !== false;
-  document.getElementById("m-recetas").checked = S.cfg.modulos.recetas !== false;
-  document.getElementById("m-pagos").checked   = S.cfg.modulos.pagos   !== false;
-  document.getElementById("m-inv2").checked    = S.cfg.modulos.inventario !== false;
-  // Ubicación
-  document.getElementById("c-loc-dir").value = S.cfg.perfil.locDireccion || "";
-  document.getElementById("c-lat").value = S.cfg.perfil.lat || "";
-  document.getElementById("c-lng").value = S.cfg.perfil.lng || "";
-  if (S.cfg.perfil.lat && S.cfg.perfil.lng) {
-    showMapPreview(S.cfg.perfil.lat, S.cfg.perfil.lng);
-  }
-  // Servicios landing
-  if (!S.cfg.servicios) S.cfg.servicios = [];
+  document.getElementById("c-nombre").value=S.cfg.perfil.nombre||(S.user&&S.user.nombre)||"";
+  document.getElementById("c-esp").value=S.cfg.perfil.especialidad||(S.user&&S.user.especialidad)||"medico";
+  document.getElementById("c-tel").value=S.cfg.perfil.telefono||"";
+  document.getElementById("c-dir").value=S.cfg.perfil.direccion||"";
+  document.getElementById("c-url").value=getUrl();
+  applyLogo(S.cfg.perfil.logo||"");
+  document.getElementById("c-dark").checked=S.cfg.tema.dark!==false;
+  document.getElementById("c-color").value=S.cfg.tema.color||"#1A7FC1";
+  document.getElementById("m-agenda").checked=S.cfg.modulos.agenda!==false;
+  document.getElementById("m-recetas").checked=S.cfg.modulos.recetas!==false;
+  document.getElementById("m-pagos").checked=S.cfg.modulos.pagos!==false;
+  document.getElementById("m-inv2").checked=S.cfg.modulos.inventario!==false;
+  document.getElementById("c-loc-dir").value=S.cfg.perfil.locDireccion||"";
+  document.getElementById("c-lat").value=S.cfg.perfil.lat||"";
+  document.getElementById("c-lng").value=S.cfg.perfil.lng||"";
+  if(S.cfg.perfil.lat&&S.cfg.perfil.lng) showMapPreview(S.cfg.perfil.lat,S.cfg.perfil.lng);
+  if(!S.cfg.servicios) S.cfg.servicios=[];
   renderServiciosCfg();
 }
 
-function saveCfg(path, val){
-  var keys = path.split(".");
-  var obj = S.cfg;
-  for (var i=0;i<keys.length-1;i++){ if(!obj[keys[i]])obj[keys[i]]={};obj=obj[keys[i]]; }
-  obj[keys[keys.length-1]] = val;
-  saveCfgToLS();
-  updateTopbar();
+function saveCfg(path,val){
+  var keys=path.split(".");var obj=S.cfg;
+  for(var i=0;i<keys.length-1;i++){if(!obj[keys[i]])obj[keys[i]]={};obj=obj[keys[i]];}
+  obj[keys[keys.length-1]]=val;saveCfgToLS();updateTopbar();
 }
-
-function saveCfgToLS(){ lsSet("sp_cfg", S.cfg); }
+function saveCfgToLS(){lsSet("sp_cfg",S.cfg);}
 
 function applyTema(){
-  document.documentElement.setAttribute("data-theme", S.cfg.tema.dark===false ? "light" : "dark");
-  if (S.cfg.tema.color) applyColor(S.cfg.tema.color);
-  if (S.cfg.perfil && S.cfg.perfil.logo) {
-    setTimeout(function(){ applyLogo(S.cfg.perfil.logo); }, 100);
-  }
+  document.documentElement.setAttribute("data-theme",S.cfg.tema.dark===false?"light":"dark");
+  if(S.cfg.tema.color) applyColor(S.cfg.tema.color);
+  if(S.cfg.perfil&&S.cfg.perfil.logo) setTimeout(function(){applyLogo(S.cfg.perfil.logo);},100);
 }
-
-function applyColor(hex){
-  document.documentElement.style.setProperty("--p", hex);
-}
-
-function toggleDark(v){
-  S.cfg.tema.dark = v;
-  saveCfgToLS();
-  document.documentElement.setAttribute("data-theme", v?"dark":"light");
-}
-
-function toggleMod(mod, v){
-  S.cfg.modulos[mod] = v;
-  saveCfgToLS();
-  applyMods();
-}
-
+function applyColor(hex){document.documentElement.style.setProperty("--p",hex);}
+function toggleDark(v){S.cfg.tema.dark=v;saveCfgToLS();document.documentElement.setAttribute("data-theme",v?"dark":"light");}
+function toggleMod(mod,v){S.cfg.modulos[mod]=v;saveCfgToLS();applyMods();}
 function applyMods(){
-  var show = function(id,v){ var el=document.getElementById(id); if(el) el.style.display=v?"":"none"; };
-  show("n-agenda",  S.cfg.modulos.agenda  !== false);
-  show("n-rec",     S.cfg.modulos.recetas !== false);
-  show("n-pago",    S.cfg.modulos.pagos   !== false);
+  var show=function(id,v){var el=document.getElementById(id);if(el)el.style.display=v?"":"none";};
+  show("n-agenda",S.cfg.modulos.agenda!==false);
+  show("n-rec",S.cfg.modulos.recetas!==false);
+  show("n-pago",S.cfg.modulos.pagos!==false);
 }
-
 async function testConn(){
-  var url = getUrl();
-  if (!url){ toast("Falta la URL del backend","err"); return; }
-  try {
-    var r = await api("ping");
-    if (r.ok) toast("✅ Conectado — v" + r.version,"ok");
-    else toast("❌ " + r.error,"err");
-  } catch(e){ toast("❌ Sin conexión: " + e.message,"err"); }
+  var url=getUrl();if(!url){toast("Falta la URL del backend","err");return;}
+  try{var r=await api("ping");if(r.ok)toast("✅ Conectado — v"+r.version,"ok");else toast("❌ "+r.error,"err");}
+  catch(e){toast("❌ Sin conexión: "+e.message,"err");}
 }
 
 // ══════════════════════════════════════════════
 //  UBICACIÓN
 // ══════════════════════════════════════════════
 function applyCoords(){
-  var lat = document.getElementById("c-lat").value.trim();
-  var lng = document.getElementById("c-lng").value.trim();
-  if (!lat || !lng) { toast("Ingresa latitud y longitud","err"); return; }
-  var latN = parseFloat(lat), lngN = parseFloat(lng);
-  if (isNaN(latN) || isNaN(lngN) || latN < -90 || latN > 90 || lngN < -180 || lngN > 180) {
-    toast("Coordenadas inválidas","err"); return;
-  }
-  S.cfg.perfil.lat = lat;
-  S.cfg.perfil.lng = lng;
-  saveCfgToLS();
-  showMapPreview(lat, lng);
-  toast("📍 Ubicación guardada","ok");
+  var lat=document.getElementById("c-lat").value.trim();
+  var lng=document.getElementById("c-lng").value.trim();
+  if(!lat||!lng){toast("Ingresa latitud y longitud","err");return;}
+  var latN=parseFloat(lat),lngN=parseFloat(lng);
+  if(isNaN(latN)||isNaN(lngN)||latN<-90||latN>90||lngN<-180||lngN>180){toast("Coordenadas inválidas","err");return;}
+  S.cfg.perfil.lat=lat;S.cfg.perfil.lng=lng;saveCfgToLS();showMapPreview(lat,lng);toast("📍 Ubicación guardada","ok");
 }
-
-function showMapPreview(lat, lng){
-  var ph = document.getElementById("map-placeholder-wrap");
-  var mp = document.getElementById("map-preview-wrap");
-  var iframe = document.getElementById("map-iframe");
-  var coordsEl = document.getElementById("loc-coords-display");
-
-  // Usamos OpenStreetMap embed (sin API key necesaria)
-  var mapUrl = "https://www.openstreetmap.org/export/embed.html?bbox="
-    + (parseFloat(lng)-0.003) + "%2C" + (parseFloat(lat)-0.002) + "%2C"
-    + (parseFloat(lng)+0.003) + "%2C" + (parseFloat(lat)+0.002)
-    + "&layer=mapnik&marker=" + lat + "%2C" + lng;
-
-  iframe.src = mapUrl;
-  ph.style.display = "none";
-  mp.classList.add("on");
-  coordsEl.textContent = "📍 " + parseFloat(lat).toFixed(6) + ", " + parseFloat(lng).toFixed(6);
+function showMapPreview(lat,lng){
+  var ph=document.getElementById("map-placeholder-wrap");
+  var mp=document.getElementById("map-preview-wrap");
+  var iframe=document.getElementById("map-iframe");
+  var coordsEl=document.getElementById("loc-coords-display");
+  var mapUrl="https://www.openstreetmap.org/export/embed.html?bbox="
+    +(parseFloat(lng)-0.003)+"%2C"+(parseFloat(lat)-0.002)+"%2C"
+    +(parseFloat(lng)+0.003)+"%2C"+(parseFloat(lat)+0.002)
+    +"&layer=mapnik&marker="+lat+"%2C"+lng;
+  iframe.src=mapUrl;ph.style.display="none";mp.classList.add("on");
+  coordsEl.textContent="📍 "+parseFloat(lat).toFixed(6)+", "+parseFloat(lng).toFixed(6);
   coordsEl.classList.add("on");
 }
-
 function getMyLocation(){
-  if (!navigator.geolocation) { toast("Tu navegador no soporta geolocalización","err"); return; }
+  if(!navigator.geolocation){toast("Tu navegador no soporta geolocalización","err");return;}
   toast("📡 Obteniendo ubicación...");
   navigator.geolocation.getCurrentPosition(
     function(pos){
-      var lat = pos.coords.latitude.toFixed(6);
-      var lng = pos.coords.longitude.toFixed(6);
-      document.getElementById("c-lat").value = lat;
-      document.getElementById("c-lng").value = lng;
-      S.cfg.perfil.lat = lat;
-      S.cfg.perfil.lng = lng;
-      saveCfgToLS();
-      showMapPreview(lat, lng);
-      toast("📍 Ubicación capturada","ok");
+      var lat=pos.coords.latitude.toFixed(6),lng=pos.coords.longitude.toFixed(6);
+      document.getElementById("c-lat").value=lat;document.getElementById("c-lng").value=lng;
+      S.cfg.perfil.lat=lat;S.cfg.perfil.lng=lng;saveCfgToLS();showMapPreview(lat,lng);toast("📍 Ubicación capturada","ok");
     },
-    function(err){
-      var msgs = {1:"Permiso denegado",2:"Posición no disponible",3:"Tiempo agotado"};
-      toast("❌ " + (msgs[err.code] || "Error de geolocalización"), "err");
-    },
-    { enableHighAccuracy: true, timeout: 10000 }
+    function(err){var msgs={1:"Permiso denegado",2:"Posición no disponible",3:"Tiempo agotado"};toast("❌ "+(msgs[err.code]||"Error"),"err");},
+    {enableHighAccuracy:true,timeout:10000}
   );
 }
-
 function clearLocation(){
-  S.cfg.perfil.lat = "";
-  S.cfg.perfil.lng = "";
-  saveCfgToLS();
-  document.getElementById("c-lat").value = "";
-  document.getElementById("c-lng").value = "";
-  document.getElementById("map-iframe").src = "";
+  S.cfg.perfil.lat="";S.cfg.perfil.lng="";saveCfgToLS();
+  document.getElementById("c-lat").value="";document.getElementById("c-lng").value="";
+  document.getElementById("map-iframe").src="";
   document.getElementById("map-preview-wrap").classList.remove("on");
-  document.getElementById("map-placeholder-wrap").style.display = "";
+  document.getElementById("map-placeholder-wrap").style.display="";
   document.getElementById("loc-coords-display").classList.remove("on");
   toast("Ubicación eliminada","ok");
 }
-
 function copyMapLink(){
-  var lat = S.cfg.perfil.lat;
-  var lng = S.cfg.perfil.lng;
-  if (!lat || !lng) { toast("Primero guarda una ubicación","err"); return; }
-  var link = "https://www.google.com/maps?q=" + lat + "," + lng;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(link).then(function(){
-      toast("🔗 Enlace copiado","ok");
-    });
-  } else {
-    // Fallback
-    var ta = document.createElement("textarea");
-    ta.value = link; document.body.appendChild(ta);
-    ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
-    toast("🔗 Enlace copiado","ok");
-  }
+  var lat=S.cfg.perfil.lat,lng=S.cfg.perfil.lng;
+  if(!lat||!lng){toast("Primero guarda una ubicación","err");return;}
+  var link="https://www.google.com/maps?q="+lat+","+lng;
+  if(navigator.clipboard){navigator.clipboard.writeText(link).then(function(){toast("🔗 Enlace copiado","ok");});}
+  else{var ta=document.createElement("textarea");ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);toast("🔗 Enlace copiado","ok");}
 }
 
 // ══════════════════════════════════════════════
-//  SERVICIOS LANDING
+//  SERVICIOS LANDING — SISTEMA COMPLETO
 // ══════════════════════════════════════════════
-var ICO_OPTS = ["🏥","🩺","💉","💊","📋","🦷","✨","🔧","🧠","👨‍👩‍👧","😌","📊","🦴","💆","🏃","❤️","🔬","🩻","🩹","🧬","💪","🌡️","👁️","👂","🤰","👶","🧒","🧓","🏋️","🧘"];
 
+var ICO_OPTS=["🏥","🩺","💉","💊","📋","🦷","✨","🔧","🧠","👨‍👩‍👧","😌","📊","🦴","💆","🏃","❤️","🔬","🩻","🩹","🧬","💪","🌡️","👁️","👂","🤰","👶","🧒","🧓","🏋️","🧘"];
+
+// ── Render barras en config ───────────────────
 function renderServiciosCfg(){
-  var list = S.cfg.servicios || [];
-  var el = document.getElementById("srv-list-cfg");
-  if (!el) return;
-  if (!list.length){
-    el.innerHTML = '<div class="srv-empty"><div class="srv-empty-i">🏥</div>Sin servicios configurados.<br>Agrega los servicios que ofrece tu consultorio.</div>';
+  var list=S.cfg.servicios||[];
+  var el=document.getElementById("srv-list-cfg");
+  if(!el)return;
+  if(!list.length){
+    el.innerHTML='<div style="text-align:center;padding:24px 10px;color:var(--txt3);font-size:13px">'
+      +'<div style="font-size:32px;margin-bottom:8px;opacity:.4">🏥</div>'
+      +'Sin servicios configurados. Agrega el primero.</div>';
     return;
   }
-  el.innerHTML = list.map(function(s){
-    var vis = s.visible !== false;
-    return '<div class="srv-item" onclick="editSrv(\''+s.id+'\''+')">'
-      +'<div class="srv-item-ico">'+(s.icono||"🏥")+'</div>'
-      +'<div class="srv-item-body">'
-        +'<div class="srv-item-name">'+esc(s.nombre)+'</div>'
-        +'<div class="srv-item-meta">'+(s.precio?'$'+esc(s.precio):'Sin precio')+(s.descripcion?' · '+esc(s.descripcion.slice(0,40)):'')+'</div>'
-      +'</div>'
-      +'<div class="srv-item-right">'
-        +'<span class="srv-vis-badge '+(vis?"on":"off")+'">'+(vis?"Visible":"Oculto")+'</span>'
-        +'<span style="color:var(--txt3);font-size:15px">›</span>'
-      +'</div>'
-      +'</div>';
+  el.innerHTML=list.map(function(s){
+    return renderBarHtml(s,true);
   }).join("");
 }
 
+// ── HTML de una barra según estilo ────────────
+function renderBarHtml(s,withClick){
+  var vis=s.visible!==false;
+  var style=s.estilo||"compact";
+  var icoHtml=buildIcoHtml(s,style);
+  var name=esc(s.nombre||"Servicio");
+  var desc=esc((s.descripcion||"").slice(0,60));
+  var precio=s.precio?esc(s.precio):"";
+  var click=withClick?"onclick=\"openSrvDesc('"+s.id+"')\"":"";
+  var hiddenClass=vis?"":" hidden-srv";
+
+  if(style==="compact"){
+    return '<div class="srv-bar-item style-compact'+hiddenClass+'" '+click+'>'
+      +icoHtml
+      +'<div class="srv-bar-body">'
+        +'<div class="srv-bar-name">'+name+'</div>'
+        +(desc?'<div class="srv-bar-desc">'+desc+'</div>':'')
+      +'</div>'
+      +(precio?'<div class="srv-bar-price">'+precio+'</div>':'')
+      +(withClick?'<span class="srv-vis-badge '+(vis?"on":"off")+'" style="margin-left:8px">'+(vis?"Visible":"Oculto")+'</span>':'')
+      +'</div>';
+  }
+  if(style==="accent"){
+    return '<div class="srv-bar-item style-accent'+hiddenClass+'" '+click+'>'
+      +'<div class="srv-bar-left-stripe"></div>'
+      +'<div class="srv-bar-inner">'
+        +icoHtml
+        +'<div class="srv-bar-body">'
+          +'<div class="srv-bar-name">'+name+'</div>'
+          +(desc?'<div class="srv-bar-desc">'+desc+'</div>':'')
+          +(precio||s.duracion||s.categoria?
+            '<div class="srv-bar-meta">'
+            +(precio?'<span class="srv-bar-price">'+precio+'</span>':'')
+            +(s.duracion?'<span style="font-size:11px;color:var(--txt3)">⏱ '+esc(s.duracion)+'</span>':'')
+            +(s.categoria?'<span style="font-size:11px;color:var(--txt3)">· '+esc(s.categoria)+'</span>':'')
+            +'</div>':'')
+        +'</div>'
+        +(withClick?'<span class="srv-vis-badge '+(vis?"on":"off")+'">'+(vis?"Vis.":"Oculto")+'</span>':'')
+      +'</div>'
+      +'<div class="srv-bar-arrow">›</div>'
+      +'</div>';
+  }
+  // banner
+  return '<div class="srv-bar-item style-banner'+hiddenClass+'" '+click+'>'
+    +'<div class="srv-bar-banner">'
+      +(s.icoImg
+        ?'<img src="'+s.icoImg+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/>'
+        :'<span style="position:relative;z-index:1">'+esc(s.icono||"🏥")+'</span>')
+      +'<div class="srv-bar-banner-overlay"></div>'
+      +(withClick?'<span class="srv-vis-badge '+(vis?"on":"off")+'" style="position:absolute;top:8px;right:8px;z-index:2">'+(vis?"Visible":"Oculto")+'</span>':'')
+    +'</div>'
+    +'<div class="srv-bar-bottom">'
+      +'<div><div class="srv-bar-name">'+name+'</div>'+(desc?'<div class="srv-bar-desc">'+desc+'</div>':'')+'</div>'
+      +(precio?'<div class="srv-bar-price">'+precio+'</div>':'')
+    +'</div>'
+    +'</div>';
+}
+
+function buildIcoHtml(s,style){
+  if(s.icoImg){
+    return '<div class="srv-bar-ico"><img src="'+s.icoImg+'" alt=""/></div>';
+  }
+  return '<div class="srv-bar-ico">'+(s.icono||"🏥")+'</div>';
+}
+
+// ── Abrir descripción de servicio ─────────────
+function openSrvDesc(id){
+  var s=(S.cfg.servicios||[]).find(function(x){return x.id===id;});
+  if(!s)return;
+  S._srvDescId=id;
+  var vis=s.visible!==false;
+
+  // Banner
+  var banIco=document.getElementById("desc-banner-ico");
+  var banImg=document.getElementById("desc-banner-img");
+  if(s.icoImg){
+    banIco.style.display="none";
+    banImg.src=s.icoImg;banImg.style.display="block";
+  } else {
+    banIco.textContent=s.icono||"🏥";banIco.style.display="";
+    banImg.style.display="none";banImg.src="";
+  }
+
+  document.getElementById("desc-title").textContent=s.nombre||"Servicio";
+
+  // Categoría
+  var catEl=document.getElementById("desc-cat-badge");
+  catEl.innerHTML=s.categoria
+    ?'<span class="badge b-blue">'+esc(s.categoria)+'</span>':"";
+
+  // Precio
+  var priceEl=document.getElementById("desc-price-wrap");
+  priceEl.innerHTML=s.precio
+    ?'<div class="desc-price-tag">💰 '+esc(s.precio)+'</div>':"";
+
+  // Descripción
+  document.getElementById("desc-body").textContent=s.descripcion||"Sin descripción disponible.";
+
+  // Meta chips
+  var metaEl=document.getElementById("desc-meta");
+  var chips=[];
+  if(s.duracion) chips.push('<div class="desc-meta-chip">⏱ <strong>Duración:</strong> '+esc(s.duracion)+'</div>');
+  if(s.categoria) chips.push('<div class="desc-meta-chip">🏷️ <strong>Categoría:</strong> '+esc(s.categoria)+'</div>');
+  metaEl.innerHTML=chips.join("");
+
+  // Botón toggle visibilidad
+  var toggleBtn=document.getElementById("desc-toggle-btn");
+  toggleBtn.textContent=vis?"👁 Ocultar":"👁 Mostrar";
+  toggleBtn.style.background=vis?"rgba(220,38,38,.1)":"rgba(22,163,74,.1)";
+  toggleBtn.style.color=vis?"#FCA5A5":"#4ADE80";
+  toggleBtn.style.border=vis?"1px solid rgba(220,38,38,.3)":"1px solid rgba(22,163,74,.3)";
+
+  openM("m-srv-desc");
+}
+
+function toggleSrvVisFromDesc(){
+  var id=S._srvDescId;if(!id)return;
+  var s=(S.cfg.servicios||[]).find(function(x){return x.id===id;});
+  if(!s)return;
+  s.visible=!(s.visible!==false);
+  saveCfgToLS();renderServiciosCfg();
+  closeM("m-srv-desc");
+  toast(s.visible?"✅ Servicio visible":"Servicio oculto","ok");
+}
+
+function editSrvFromDesc(){
+  var id=S._srvDescId;
+  closeM("m-srv-desc");
+  if(id) setTimeout(function(){editSrv(id);},200);
+}
+
+// ── Modal crear/editar servicio ───────────────
+var _srvIcoMode="emoji";
+
 function resetSrv(){
-  document.getElementById("m-srv-t").textContent = "Nuevo Servicio";
-  document.getElementById("srv-id").value = "";
-  document.getElementById("srv-ico").value = "🏥";
-  document.getElementById("srv-ico-preview").textContent = "🏥";
-  document.getElementById("srv-nombre").value = "";
-  document.getElementById("srv-desc").value = "";
-  document.getElementById("srv-precio").value = "";
-  document.getElementById("srv-vis").checked = true;
-  document.getElementById("btn-del-srv").style.display = "none";
-  // Render icono picker
-  var pick = document.getElementById("ico-pick");
-  pick.innerHTML = ICO_OPTS.map(function(ico){
-    return '<div class="ico-opt" onclick="pickIco(\''+ico+'\')">' + ico + '</div>';
+  document.getElementById("m-srv-t").textContent="Nuevo Servicio";
+  document.getElementById("srv-id").value="";
+  document.getElementById("srv-ico-txt").value="🏥";
+  document.getElementById("srv-ico-preview-lg").innerHTML="🏥";
+  document.getElementById("srv-nombre").value="";
+  document.getElementById("srv-desc").value="";
+  document.getElementById("srv-precio").value="";
+  document.getElementById("srv-dur").value="";
+  document.getElementById("srv-cat").value="";
+  document.getElementById("srv-vis").checked=true;
+  document.getElementById("btn-del-srv").style.display="none";
+  S._srvStyle="compact";S._srvIcoImg="";
+  _srvIcoMode="emoji";
+  // Seleccionar estilo visual
+  document.querySelectorAll(".style-opt").forEach(function(o){o.classList.toggle("on",o.dataset.style==="compact");});
+  // Tabs ícono
+  document.querySelectorAll(".srv-ico-tab").forEach(function(t,i){t.classList.toggle("on",i===0);});
+  document.getElementById("srv-ico-panel-emoji").style.display="";
+  document.getElementById("srv-ico-panel-imagen").style.display="none";
+  // Emoji grid
+  renderIcoGrid("🏥");
+  updateSrvPreview();
+}
+
+function editSrv(id){
+  var s=(S.cfg.servicios||[]).find(function(x){return x.id===id;});if(!s)return;
+  document.getElementById("m-srv-t").textContent="Editar Servicio";
+  document.getElementById("srv-id").value=s.id;
+  S._srvStyle=s.estilo||"compact";S._srvIcoImg=s.icoImg||"";
+  document.getElementById("srv-ico-txt").value=s.icono||"🏥";
+  document.getElementById("srv-nombre").value=s.nombre||"";
+  document.getElementById("srv-desc").value=s.descripcion||"";
+  document.getElementById("srv-precio").value=s.precio||"";
+  document.getElementById("srv-dur").value=s.duracion||"";
+  document.getElementById("srv-cat").value=s.categoria||"";
+  document.getElementById("srv-vis").checked=s.visible!==false;
+  document.getElementById("btn-del-srv").style.display="";
+  // Estilo
+  document.querySelectorAll(".style-opt").forEach(function(o){o.classList.toggle("on",o.dataset.style===S._srvStyle);});
+  // Ícono preview
+  updateSrvIcoPreview();
+  renderIcoGrid(s.icono||"🏥");
+  // Tab imagen si tiene imagen
+  if(s.icoImg){
+    srvIcoTabByName("imagen");
+  } else {
+    srvIcoTabByName("emoji");
+  }
+  updateSrvPreview();
+  openM("m-srv");
+}
+
+function renderIcoGrid(sel){
+  var pick=document.getElementById("ico-pick");
+  pick.innerHTML=ICO_OPTS.map(function(ico){
+    return '<div class="ico-opt'+(ico===sel?" on":"")+'" onclick="pickIco(\''+ico+'\')">' +ico+'</div>';
   }).join("");
 }
 
 function pickIco(ico){
-  document.getElementById("srv-ico").value = ico;
-  document.getElementById("srv-ico-preview").textContent = ico;
-  document.querySelectorAll(".ico-opt").forEach(function(el){
-    el.classList.toggle("on", el.textContent.trim() === ico);
-  });
+  document.getElementById("srv-ico-txt").value=ico;
+  S._srvIcoImg="";
+  updateSrvIcoPreview();
+  renderIcoGrid(ico);
 }
 
-function editSrv(id){
-  var s = (S.cfg.servicios||[]).find(function(x){ return x.id===id; });
-  if (!s) return;
-  document.getElementById("m-srv-t").textContent = "Editar Servicio";
-  document.getElementById("srv-id").value = s.id;
-  document.getElementById("srv-ico").value = s.icono || "🏥";
-  document.getElementById("srv-ico-preview").textContent = s.icono || "🏥";
-  document.getElementById("srv-nombre").value = s.nombre || "";
-  document.getElementById("srv-desc").value = s.descripcion || "";
-  document.getElementById("srv-precio").value = s.precio || "";
-  document.getElementById("srv-vis").checked = s.visible !== false;
-  document.getElementById("btn-del-srv").style.display = "";
-  // Render picker con seleccionado
-  var pick = document.getElementById("ico-pick");
-  pick.innerHTML = ICO_OPTS.map(function(ico){
-    return '<div class="ico-opt'+(ico===s.icono?" on":"")+'" onclick="pickIco(\''+ico+'\')">' + ico + '</div>';
-  }).join("");
-  openM("m-srv");
+function selectBarStyle(style,el){
+  S._srvStyle=style;
+  document.querySelectorAll(".style-opt").forEach(function(o){o.classList.remove("on");});
+  el.classList.add("on");
+  updateSrvPreview();
+}
+
+function srvIcoTab(mode,btn){
+  _srvIcoMode=mode;
+  document.querySelectorAll(".srv-ico-tab").forEach(function(t){t.classList.remove("on");});
+  btn.classList.add("on");
+  document.getElementById("srv-ico-panel-emoji").style.display=mode==="emoji"?"":"none";
+  document.getElementById("srv-ico-panel-imagen").style.display=mode==="imagen"?"":"none";
+}
+function srvIcoTabByName(mode){
+  var tabs=document.querySelectorAll(".srv-ico-tab");
+  tabs.forEach(function(t,i){
+    var isTarget=(i===0&&mode==="emoji")||(i===1&&mode==="imagen");
+    t.classList.toggle("on",isTarget);
+  });
+  _srvIcoMode=mode;
+  document.getElementById("srv-ico-panel-emoji").style.display=mode==="emoji"?"":"none";
+  document.getElementById("srv-ico-panel-imagen").style.display=mode==="imagen"?"":"none";
+}
+
+function handleSrvIcoFile(input){
+  var file=input.files[0];if(!file)return;
+  if(file.size>600*1024){toast("Imagen muy grande (máx 600KB)","err");return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    S._srvIcoImg=e.target.result;
+    updateSrvIcoPreview();
+    updateSrvPreview();
+    toast("✅ Imagen cargada","ok");
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeSrvIco(){
+  S._srvIcoImg="";
+  document.getElementById("srv-ico-file").value="";
+  updateSrvIcoPreview();updateSrvPreview();
+}
+
+function updateSrvIcoPreview(){
+  var prev=document.getElementById("srv-ico-preview-lg");
+  if(S._srvIcoImg){
+    prev.innerHTML='<img src="'+S._srvIcoImg+'" style="width:100%;height:100%;object-fit:cover;border-radius:10px"/>';
+  } else {
+    prev.textContent=document.getElementById("srv-ico-txt").value||"🏥";
+  }
+  updateSrvPreview();
+}
+
+function updateSrvPreview(){
+  var wrap=document.getElementById("srv-preview-wrap");if(!wrap)return;
+  var s={
+    id:"prev",
+    estilo:S._srvStyle||"compact",
+    icono:document.getElementById("srv-ico-txt").value||"🏥",
+    icoImg:S._srvIcoImg||"",
+    nombre:document.getElementById("srv-nombre").value||"Nombre del servicio",
+    descripcion:document.getElementById("srv-desc").value||"Descripción corta",
+    precio:document.getElementById("srv-precio").value||"",
+    duracion:document.getElementById("srv-dur").value||"",
+    categoria:document.getElementById("srv-cat").value||"",
+    visible:true
+  };
+  wrap.innerHTML=renderBarHtml(s,false);
 }
 
 function saveSrv(){
-  var nombre = document.getElementById("srv-nombre").value.trim();
-  if (!nombre){ toast("El nombre es obligatorio","err"); return; }
-  if (!S.cfg.servicios) S.cfg.servicios = [];
-  var isNew = !document.getElementById("srv-id").value;
-  var id    = document.getElementById("srv-id").value || ("s" + Date.now());
-  var d = {
-    id:          id,
-    icono:       document.getElementById("srv-ico").value || "🏥",
-    nombre:      nombre,
-    descripcion: document.getElementById("srv-desc").value.trim(),
-    precio:      document.getElementById("srv-precio").value.trim(),
-    visible:     document.getElementById("srv-vis").checked
+  var nombre=document.getElementById("srv-nombre").value.trim();
+  if(!nombre){toast("El nombre es obligatorio","err");return;}
+  if(!S.cfg.servicios) S.cfg.servicios=[];
+  var isNew=!document.getElementById("srv-id").value;
+  var id=document.getElementById("srv-id").value||("s"+Date.now());
+  var d={
+    id:id,
+    estilo:S._srvStyle||"compact",
+    icono:document.getElementById("srv-ico-txt").value||"🏥",
+    icoImg:S._srvIcoImg||"",
+    nombre:nombre,
+    descripcion:document.getElementById("srv-desc").value.trim(),
+    precio:document.getElementById("srv-precio").value.trim(),
+    duracion:document.getElementById("srv-dur").value.trim(),
+    categoria:document.getElementById("srv-cat").value.trim(),
+    visible:document.getElementById("srv-vis").checked
   };
-  if (isNew){
+  if(isNew){
     S.cfg.servicios.push(d);
   } else {
-    var idx = S.cfg.servicios.findIndex(function(x){ return x.id===id; });
-    if (idx > -1) S.cfg.servicios[idx] = d;
-    else S.cfg.servicios.push(d); // fallback: ID no encontrado → agregar
+    var idx=S.cfg.servicios.findIndex(function(x){return x.id===id;});
+    if(idx>-1) S.cfg.servicios[idx]=d; else S.cfg.servicios.push(d);
   }
-  saveCfgToLS();
-  closeM("m-srv");
-  renderServiciosCfg();
-  toast(isNew ? "✅ Servicio agregado" : "✅ Servicio actualizado", "ok");
+  saveCfgToLS();closeM("m-srv");renderServiciosCfg();
+  toast(isNew?"✅ Servicio agregado":"✅ Servicio actualizado","ok");
 }
 
 function delSrv(){
-  var id = document.getElementById("srv-id").value;
-  if (!id) return;
-  if (!confirm("¿Eliminar este servicio?")) return;
-  S.cfg.servicios = (S.cfg.servicios||[]).filter(function(s){ return s.id!==id; });
-  saveCfgToLS();
-  closeM("m-srv");
-  renderServiciosCfg();
-  toast("Servicio eliminado","ok");
+  var id=document.getElementById("srv-id").value;if(!id)return;
+  if(!confirm("¿Eliminar este servicio?"))return;
+  S.cfg.servicios=(S.cfg.servicios||[]).filter(function(s){return s.id!==id;});
+  saveCfgToLS();closeM("m-srv");renderServiciosCfg();toast("Servicio eliminado","ok");
 }
 
 // ══════════════════════════════════════════════
 //  NAVEGACIÓN
 // ══════════════════════════════════════════════
 function navClick(btn){
-  document.querySelectorAll(".ni").forEach(function(n){ n.classList.remove("on"); });
-  btn.classList.add("on");
-  goPage(btn.dataset.p);
+  document.querySelectorAll(".ni").forEach(function(n){n.classList.remove("on");});
+  btn.classList.add("on");goPage(btn.dataset.p);
 }
-
 function goPage(id){
-  if (!id.startsWith("p-")) id = "p-" + id;
-  document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("on"); });
-  var el = document.getElementById(id);
-  if (el) el.classList.add("on");
-  S.page = id;
-  if (id==="p-agenda")  renderAgenda();
-  if (id==="p-pac")     renderPac();
-  if (id==="p-rec")     renderRec();
-  if (id==="p-pago")    renderPago();
-  if (id==="p-inv")     renderInv();
-  if (id==="p-dash")    renderDash();
+  if(!id.startsWith("p-")) id="p-"+id;
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("on");});
+  var el=document.getElementById(id);if(el)el.classList.add("on");S.page=id;
+  if(id==="p-agenda")renderAgenda();
+  if(id==="p-pac")renderPac();
+  if(id==="p-rec")renderRec();
+  if(id==="p-pago")renderPago();
+  if(id==="p-inv")renderInv();
+  if(id==="p-dash")renderDash();
 }
 
 // ══════════════════════════════════════════════
 //  CARGA DE DATOS
 // ══════════════════════════════════════════════
 async function loadAll(manual){
-  if (!S.user || !S.user.sheetId) { renderDash(); if(manual) toast("Sin sheetId configurado","err"); return; }
-  try {
-    var rs = await Promise.all([
-      api("getPacientes"),
-      api("getCitas"),
-      api("getPagos"),
-      api("getInventario"),
-      api("getRecetas")
-    ]);
-    if (rs[0].ok) S.pac   = rs[0].rows || [];
-    if (rs[1].ok) S.citas = rs[1].rows || [];
-    if (rs[2].ok) S.pagos = rs[2].rows || [];
-    if (rs[3].ok) S.inv   = rs[3].rows || [];
-    if (rs[4].ok) S.rec   = rs[4].rows || [];
-    setOnline(true);
-    if (manual) toast("✅ Datos actualizados","ok");
-  } catch(e) {
-    setOnline(false);
-    if (manual) toast("⚠ Sin conexión","err");
-  }
-  renderDash();
-  if (S.page !== "p-dash") goPage(S.page);
+  if(!S.user||!S.user.sheetId){renderDash();if(manual)toast("Sin sheetId configurado","err");return;}
+  try{
+    var rs=await Promise.all([api("getPacientes"),api("getCitas"),api("getPagos"),api("getInventario"),api("getRecetas")]);
+    if(rs[0].ok)S.pac=rs[0].rows||[];
+    if(rs[1].ok)S.citas=rs[1].rows||[];
+    if(rs[2].ok)S.pagos=rs[2].rows||[];
+    if(rs[3].ok)S.inv=rs[3].rows||[];
+    if(rs[4].ok)S.rec=rs[4].rows||[];
+    setOnline(true);if(manual)toast("✅ Datos actualizados","ok");
+  }catch(e){setOnline(false);if(manual)toast("⚠ Sin conexión","err");}
+  renderDash();if(S.page!=="p-dash")goPage(S.page);
 }
-
-function setOnline(v){
-  S.online = v;
-  var d = document.getElementById("dot");
-  d.className = "dot" + (v?"":" off");
-  d.title = v ? "En línea" : "Sin conexión";
-}
+function setOnline(v){S.online=v;var d=document.getElementById("dot");d.className="dot"+(v?"":" off");d.title=v?"En línea":"Sin conexión";}
 
 // ══════════════════════════════════════════════
 //  DASHBOARD
 // ══════════════════════════════════════════════
 function renderDash(){
-  var hoy = today();
-  var mes = hoy.slice(0,7);
-  var citasH = S.citas.filter(function(c){ return c.fecha===hoy && c.estado!=="Cancelada"; });
-  var ingD = S.pagos.filter(function(p){ return p.fecha===hoy; }).reduce(function(a,p){ return a+(parseFloat(p.monto)||0); },0);
-  var ingM = S.pagos.filter(function(p){ return (p.fecha||"").startsWith(mes); }).reduce(function(a,p){ return a+(parseFloat(p.monto)||0); },0);
-  document.getElementById("s-pac").textContent = S.pac.length;
-  document.getElementById("s-cit").textContent = citasH.length;
-  document.getElementById("s-dia").textContent = "$"+ingD.toFixed(0);
-  document.getElementById("s-mes").textContent = "$"+ingM.toFixed(0);
-
-  var el = document.getElementById("dash-citas");
-  if (!citasH.length) { el.innerHTML=emp("📅","Sin citas para hoy"); }
-  else el.innerHTML = citasH.sort(function(a,b){return a.hora.localeCompare(b.hora);}).map(function(c){
+  var hoy=today(),mes=hoy.slice(0,7);
+  var citasH=S.citas.filter(function(c){return c.fecha===hoy&&c.estado!=="Cancelada";});
+  var ingD=S.pagos.filter(function(p){return p.fecha===hoy;}).reduce(function(a,p){return a+(parseFloat(p.monto)||0);},0);
+  var ingM=S.pagos.filter(function(p){return (p.fecha||"").startsWith(mes);}).reduce(function(a,p){return a+(parseFloat(p.monto)||0);},0);
+  document.getElementById("s-pac").textContent=S.pac.length;
+  document.getElementById("s-cit").textContent=citasH.length;
+  document.getElementById("s-dia").textContent="$"+ingD.toFixed(0);
+  document.getElementById("s-mes").textContent="$"+ingM.toFixed(0);
+  var el=document.getElementById("dash-citas");
+  if(!citasH.length){el.innerHTML=emp("📅","Sin citas para hoy");}
+  else el.innerHTML=citasH.sort(function(a,b){return a.hora.localeCompare(b.hora);}).map(function(c){
     return '<div class="cita" onclick="editCita(\''+c.id+'\')" style="border-left-color:'+citaColor(c.estado)+'">'
       +'<div style="display:flex;align-items:center;gap:10px">'
       +'<div><div class="cita-h">'+esc(c.hora)+'</div><div style="font-size:10px;color:var(--txt3)">'+esc(c.duracion)+'min</div></div>'
       +'<div style="flex:1"><div class="cita-n">'+esc(c.pacienteNombre)+'</div><div class="cita-m">'+esc(c.motivo)+'</div></div>'
       +'<span class="badge '+badgeCita(c.estado)+'">'+c.estado+'</span></div></div>';
   }).join("");
-
-  var alertas = S.inv.filter(function(i){ return parseFloat(i.stock)<=parseFloat(i.stockMin||0); });
-  var el2 = document.getElementById("dash-inv");
-  if (!alertas.length) el2.innerHTML='<div class="card-s" style="color:var(--txt2);font-size:13px">✅ Sin alertas de stock</div>';
+  var alertas=S.inv.filter(function(i){return parseFloat(i.stock)<=parseFloat(i.stockMin||0);});
+  var el2=document.getElementById("dash-inv");
+  if(!alertas.length)el2.innerHTML='<div class="card-s" style="color:var(--txt2);font-size:13px">✅ Sin alertas de stock</div>';
   else el2.innerHTML=alertas.map(function(i){
     return '<div class="card-s" style="display:flex;align-items:center;gap:10px;margin-bottom:7px;border-color:rgba(220,38,38,.3)">'
       +'<span style="font-size:18px">⚠️</span><div>'
@@ -1203,41 +1546,37 @@ function renderDash(){
       +'</div></div>';
   }).join("");
 }
-
-function badgeCita(e){ return {Programada:"b-blue",Confirmada:"b-green","En consulta":"b-yellow",Completada:"b-green",Cancelada:"b-red","No asistió":"b-gray"}[e]||"b-gray"; }
-function citaColor(e){ return {Programada:"#93C5FD",Confirmada:"#86EFAC","En consulta":"#FDE68A",Completada:"#4ADE80",Cancelada:"#FCA5A5","No asistió":"#D1D5DB"}[e]||"var(--p)"; }
+function badgeCita(e){return {Programada:"b-blue",Confirmada:"b-green","En consulta":"b-yellow",Completada:"b-green",Cancelada:"b-red","No asistió":"b-gray"}[e]||"b-gray";}
+function citaColor(e){return {Programada:"#93C5FD",Confirmada:"#86EFAC","En consulta":"#FDE68A",Completada:"#4ADE80",Cancelada:"#FCA5A5","No asistió":"#D1D5DB"}[e]||"var(--p)";}
 
 // ══════════════════════════════════════════════
 //  PACIENTES
 // ══════════════════════════════════════════════
 function renderPac(q){
-  q = q||"";
-  var list = S.pac;
-  if (q) { var lq=q.toLowerCase(); list=list.filter(function(p){ return (p.nombre||"").toLowerCase().includes(lq)||(p.telefono||"").includes(q)||(p.email||"").toLowerCase().includes(lq); }); }
-  document.getElementById("pac-cnt").textContent = list.length+" registros";
-  var el = document.getElementById("pac-list");
-  if (!list.length){ el.innerHTML=emp("👤","Sin pacientes","Agrega el primero con + Nuevo"); return; }
-  el.innerHTML = list.map(function(p){
+  q=q||"";var list=S.pac;
+  if(q){var lq=q.toLowerCase();list=list.filter(function(p){return (p.nombre||"").toLowerCase().includes(lq)||(p.telefono||"").includes(q)||(p.email||"").toLowerCase().includes(lq);});}
+  document.getElementById("pac-cnt").textContent=list.length+" registros";
+  var el=document.getElementById("pac-list");
+  if(!list.length){el.innerHTML=emp("👤","Sin pacientes","Agrega el primero con + Nuevo");return;}
+  el.innerHTML=list.map(function(p){
     var ini=(p.nombre||"?")[0].toUpperCase();
     var edad=p.fechaNac?Math.floor((new Date()-new Date(p.fechaNac+"T12:00:00"))/31557600000)+" años":"";
-    return '<div class="li" onclick="editPac(\''+p.id+'\')" ><div class="li-av">'+ini+'</div>'
+    return '<div class="li" onclick="editPac(\''+p.id+'\')"><div class="li-av">'+ini+'</div>'
       +'<div class="li-b"><div class="li-n">'+esc(p.nombre)+'</div>'
       +'<div class="li-s">'+[p.sexo,edad,p.telefono].filter(Boolean).join(" · ")+'</div>'
       +(p.alergias?'<div style="font-size:11px;color:var(--err);margin-top:2px">⚠ '+esc(p.alergias)+'</div>':"")
       +'</div><div class="li-r" style="font-size:11px;color:var(--txt3)">'+(p.consultas||0)+' consultas</div></div>';
   }).join("");
 }
-
 function resetPac(){
   document.getElementById("m-pac-t").textContent="Nuevo Paciente";
   document.getElementById("p-id").value="";
-  ["p-nombre","p-fnac","p-tel","p-email","p-alergias","p-ant","p-notas"].forEach(function(id){ document.getElementById(id).value=""; });
+  ["p-nombre","p-fnac","p-tel","p-email","p-alergias","p-ant","p-notas"].forEach(function(id){document.getElementById(id).value="";});
   document.getElementById("p-sexo").value="F";
   document.getElementById("btn-del-pac").style.display="none";
 }
-
 function editPac(id){
-  var p=S.pac.find(function(x){return x.id===id;}); if(!p)return;
+  var p=S.pac.find(function(x){return x.id===id;});if(!p)return;
   document.getElementById("m-pac-t").textContent="Editar Paciente";
   document.getElementById("p-id").value=p.id;
   document.getElementById("p-nombre").value=p.nombre||"";
@@ -1251,59 +1590,49 @@ function editPac(id){
   document.getElementById("btn-del-pac").style.display="";
   openM("m-pac");
 }
-
 async function savePac(){
   var nombre=document.getElementById("p-nombre").value.trim();
-  if (!nombre){ toast("El nombre es obligatorio","err"); return; }
+  if(!nombre){toast("El nombre es obligatorio","err");return;}
   var isNew=!document.getElementById("p-id").value;
   var id=document.getElementById("p-id").value||String(Date.now());
-  // Preservar campos que el frontend no edita directamente
-  var _existing = isNew ? null : S.pac.find(function(x){ return x.id===id; });
-  var d={ id:id, nombre:nombre, fechaNac:document.getElementById("p-fnac").value, sexo:document.getElementById("p-sexo").value,
-    telefono:document.getElementById("p-tel").value, email:document.getElementById("p-email").value,
-    alergias:document.getElementById("p-alergias").value, antecedentes:document.getElementById("p-ant").value,
-    notas:document.getElementById("p-notas").value, fecha:today(),
-    consultas: isNew ? "0" : ((_existing&&_existing.consultas)||"0"),
-    camposExtra: isNew ? "" : ((_existing&&_existing.camposExtra)||"") };
-  try {
-    var r=await api(isNew?"addPaciente":"updatePaciente",{data:d});
-    if(!r.ok){ toast("❌ "+r.error,"err"); return; }
-  } catch(e){ /* sin conexión — se guarda localmente */ }
-  if (isNew) S.pac.unshift(d); else { var i=S.pac.findIndex(function(x){return x.id===id;}); if(i>-1)S.pac[i]=d; }
-  closeM("m-pac"); renderPac(); toast(isNew?"✅ Paciente creado":"✅ Actualizado","ok");
+  var _existing=isNew?null:S.pac.find(function(x){return x.id===id;});
+  var d={id:id,nombre:nombre,fechaNac:document.getElementById("p-fnac").value,sexo:document.getElementById("p-sexo").value,
+    telefono:document.getElementById("p-tel").value,email:document.getElementById("p-email").value,
+    alergias:document.getElementById("p-alergias").value,antecedentes:document.getElementById("p-ant").value,
+    notas:document.getElementById("p-notas").value,fecha:today(),
+    consultas:isNew?"0":((_existing&&_existing.consultas)||"0"),
+    camposExtra:isNew?"":((_existing&&_existing.camposExtra)||"")};
+  try{var r=await api(isNew?"addPaciente":"updatePaciente",{data:d});if(!r.ok){toast("❌ "+r.error,"err");return;}}catch(e){}
+  if(isNew)S.pac.unshift(d);else{var i=S.pac.findIndex(function(x){return x.id===id;});if(i>-1)S.pac[i]=d;}
+  closeM("m-pac");renderPac();toast(isNew?"✅ Paciente creado":"✅ Actualizado","ok");
 }
-
 async function delPac(){
-  var id=document.getElementById("p-id").value; if(!id)return;
+  var id=document.getElementById("p-id").value;if(!id)return;
   if(!confirm("¿Eliminar este paciente?"))return;
-  try { await api("deletePaciente",{data:{id:id}}); } catch(e){}
+  try{await api("deletePaciente",{data:{id:id}});}catch(e){}
   S.pac=S.pac.filter(function(p){return p.id!==id;});
-  closeM("m-pac"); renderPac(); toast("Paciente eliminado","ok");
+  closeM("m-pac");renderPac();toast("Paciente eliminado","ok");
 }
 
 // ══════════════════════════════════════════════
 //  AGENDA / CITAS
 // ══════════════════════════════════════════════
-var _agendaDay = today();
-
+var _agendaDay=today();
 function renderAgenda(){
   var tabs=document.getElementById("day-tabs");
   var days=[];
-  for(var i=-1;i<=5;i++){ var d=new Date(); d.setDate(d.getDate()+i); days.push(d); }
+  for(var i=-1;i<=5;i++){var d=new Date();d.setDate(d.getDate()+i);days.push(d);}
   tabs.innerHTML=days.map(function(d){
-    var ds=fmtDate(d);
-    var act=ds===_agendaDay;
+    var ds=fmtDate(d);var act=ds===_agendaDay;
     return '<button onclick="setAgendaDay(\''+ds+'\')" data-day="'+ds+'" style="flex-shrink:0;padding:6px 13px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:'+(act?"var(--p)":"var(--card)")+';color:'+(act?"#fff":"var(--txt2)")+'">'+d.getDate()+" "+d.toLocaleDateString("es-MX",{weekday:"short"})+'</button>';
   }).join("");
   renderAgendaDay();
 }
-
-function setAgendaDay(day){ _agendaDay=day; renderAgenda(); }
-
+function setAgendaDay(day){_agendaDay=day;renderAgenda();}
 function renderAgendaDay(){
   var el=document.getElementById("agenda-list");
   var citas=S.citas.filter(function(c){return c.fecha===_agendaDay;}).sort(function(a,b){return a.hora.localeCompare(b.hora);});
-  if(!citas.length){ el.innerHTML=emp("📅","Sin citas para este día"); return; }
+  if(!citas.length){el.innerHTML=emp("📅","Sin citas para este día");return;}
   el.innerHTML=citas.map(function(c){
     return '<div class="cita" onclick="editCita(\''+c.id+'\')" style="border-left-color:'+citaColor(c.estado)+'">'
       +'<div style="display:flex;align-items:center;gap:10px">'
@@ -1312,7 +1641,6 @@ function renderAgendaDay(){
       +'<span class="badge '+badgeCita(c.estado)+'">'+c.estado+'</span></div></div>';
   }).join("");
 }
-
 function resetCita(){
   document.getElementById("m-cita-t").textContent="Nueva Cita";
   document.getElementById("cita-id").value="";
@@ -1326,11 +1654,10 @@ function resetCita(){
   document.getElementById("cita-mot").value="";
   document.getElementById("cita-notas").value="";
   document.getElementById("btn-del-cita").style.display="none";
-  S._citaPacId=""; S._citaPacNombre="";
+  S._citaPacId="";S._citaPacNombre="";
 }
-
 function editCita(id){
-  var c=S.citas.find(function(x){return x.id===id;}); if(!c)return;
+  var c=S.citas.find(function(x){return x.id===id;});if(!c)return;
   document.getElementById("m-cita-t").textContent="Editar Cita";
   document.getElementById("cita-id").value=c.id;
   document.getElementById("cita-f").value=c.fecha;
@@ -1340,47 +1667,39 @@ function editCita(id){
   document.getElementById("cita-mot").value=c.motivo||"";
   document.getElementById("cita-notas").value=c.notas||"";
   document.getElementById("cita-pq").value="";
-  S._citaPacId=c.pacienteId; S._citaPacNombre=c.pacienteNombre;
+  S._citaPacId=c.pacienteId;S._citaPacNombre=c.pacienteNombre;
   document.getElementById("cita-chip").innerHTML=makeChip(c.pacienteNombre,"clearCitaPac");
   document.getElementById("btn-del-cita").style.display="";
   openM("m-cita");
 }
-
-function setCitaPac(id,n){ S._citaPacId=id; S._citaPacNombre=n; document.getElementById("cita-pq").value=""; document.getElementById("cita-chip").innerHTML=makeChip(n,"clearCitaPac"); document.getElementById("cita-drop").classList.remove("on"); }
-function clearCitaPac(){ S._citaPacId=""; S._citaPacNombre=""; document.getElementById("cita-chip").innerHTML=""; }
-
+function setCitaPac(id,n){S._citaPacId=id;S._citaPacNombre=n;document.getElementById("cita-pq").value="";document.getElementById("cita-chip").innerHTML=makeChip(n,"clearCitaPac");document.getElementById("cita-drop").classList.remove("on");}
+function clearCitaPac(){S._citaPacId="";S._citaPacNombre="";document.getElementById("cita-chip").innerHTML="";}
 async function saveCita(){
-  if(!S._citaPacId){ toast("Selecciona un paciente","err"); return; }
-  var fecha=document.getElementById("cita-f").value;
-  var hora=document.getElementById("cita-h").value;
-  if(!fecha||!hora){ toast("Fecha y hora obligatorios","err"); return; }
+  if(!S._citaPacId){toast("Selecciona un paciente","err");return;}
+  var fecha=document.getElementById("cita-f").value,hora=document.getElementById("cita-h").value;
+  if(!fecha||!hora){toast("Fecha y hora obligatorios","err");return;}
   var isNew=!document.getElementById("cita-id").value;
   var id=document.getElementById("cita-id").value||String(Date.now());
   var dur=parseInt(document.getElementById("cita-dur").value)||30;
-  var conflict=S.citas.find(function(c){ return c.id!==id&&c.fecha===fecha&&c.estado!=="Cancelada"&&solapan(hora,dur,c.hora,parseInt(c.duracion)||30); });
+  var conflict=S.citas.find(function(c){return c.id!==id&&c.fecha===fecha&&c.estado!=="Cancelada"&&solapan(hora,dur,c.hora,parseInt(c.duracion)||30);});
   if(conflict&&!confirm("Conflicto con cita de "+conflict.pacienteNombre+" a las "+conflict.hora+". ¿Continuar?"))return;
   var d={id:id,pacienteId:S._citaPacId,pacienteNombre:S._citaPacNombre,fecha:fecha,hora:hora,duracion:String(dur),
     motivo:document.getElementById("cita-mot").value,estado:document.getElementById("cita-est").value,
     notas:document.getElementById("cita-notas").value,color:""};
-  try {
-    var r=await api(isNew?"addCita":"updateCita",{data:d});
-    if(!r.ok){ toast("❌ "+r.error,"err"); return; }
-  } catch(e){ /* sin conexión — se guarda localmente */ }
-  if(isNew)S.citas.push(d); else { var i=S.citas.findIndex(function(x){return x.id===id;}); if(i>-1)S.citas[i]=d; }
-  closeM("m-cita"); renderAgenda(); renderDash(); toast(isNew?"✅ Cita creada":"✅ Actualizada","ok");
+  try{var r=await api(isNew?"addCita":"updateCita",{data:d});if(!r.ok){toast("❌ "+r.error,"err");return;}}catch(e){}
+  if(isNew)S.citas.push(d);else{var i=S.citas.findIndex(function(x){return x.id===id;});if(i>-1)S.citas[i]=d;}
+  closeM("m-cita");renderAgenda();renderDash();toast(isNew?"✅ Cita creada":"✅ Actualizada","ok");
 }
-
 async function delCita(){
-  var id=document.getElementById("cita-id").value; if(!id)return;
+  var id=document.getElementById("cita-id").value;if(!id)return;
   if(!confirm("¿Eliminar esta cita?"))return;
-  try{ await api("deleteCita",{data:{id:id}}); }catch(e){}
+  try{await api("deleteCita",{data:{id:id}});}catch(e){}
   S.citas=S.citas.filter(function(c){return c.id!==id;});
-  closeM("m-cita"); renderAgenda(); renderDash(); toast("Cita eliminada","ok");
+  closeM("m-cita");renderAgenda();renderDash();toast("Cita eliminada","ok");
 }
-
 function solapan(h1,d1,h2,d2){
   var t=function(h){var p=h.split(":");return parseInt(p[0])*60+parseInt(p[1]);};
-  var a=t(h1),b=a+d1,c=t(h2),dd=c+d2; return a<dd&&b>c;
+  var a=t(h1),b=a+d1,c=t(h2),dd=c+d2;return a<dd&&b>c;
 }
 
 // ══════════════════════════════════════════════
@@ -1388,7 +1707,7 @@ function solapan(h1,d1,h2,d2){
 // ══════════════════════════════════════════════
 function renderRec(){
   var el=document.getElementById("rec-list");
-  if(!S.rec.length){ el.innerHTML=emp("📋","Sin recetas registradas"); return; }
+  if(!S.rec.length){el.innerHTML=emp("📋","Sin recetas registradas");return;}
   el.innerHTML=[].concat(S.rec).reverse().map(function(r){
     return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
       +'<div><div style="font-size:15px;font-weight:700">'+esc(r.pacienteNombre)+'</div>'
@@ -1397,20 +1716,22 @@ function renderRec(){
       +'<div style="font-size:13px;color:var(--txt2);white-space:pre-wrap">'+esc((r.medicamentos||"").slice(0,200))+'</div></div>';
   }).join("");
 }
-
-function resetRec(){ document.getElementById("rec-pq").value=""; document.getElementById("rec-chip").innerHTML=""; document.getElementById("rec-meds").value=""; document.getElementById("rec-ind").value=""; S._recPacId=""; S._recPacNombre=""; document.getElementById("rec-drop").classList.remove("on"); }
-function setRecPac(id,n){ S._recPacId=id; S._recPacNombre=n; document.getElementById("rec-pq").value=""; document.getElementById("rec-chip").innerHTML=makeChip(n,"clearRecPac"); document.getElementById("rec-drop").classList.remove("on"); }
-function clearRecPac(){ S._recPacId=""; S._recPacNombre=""; document.getElementById("rec-chip").innerHTML=""; }
-
+function resetRec(){
+  document.getElementById("rec-pq").value="";document.getElementById("rec-chip").innerHTML="";
+  document.getElementById("rec-meds").value="";document.getElementById("rec-ind").value="";
+  S._recPacId="";S._recPacNombre="";document.getElementById("rec-drop").classList.remove("on");
+}
+function setRecPac(id,n){S._recPacId=id;S._recPacNombre=n;document.getElementById("rec-pq").value="";document.getElementById("rec-chip").innerHTML=makeChip(n,"clearRecPac");document.getElementById("rec-drop").classList.remove("on");}
+function clearRecPac(){S._recPacId="";S._recPacNombre="";document.getElementById("rec-chip").innerHTML="";}
 async function saveRec(){
-  if(!S._recPacId){ toast("Selecciona un paciente","err"); return; }
+  if(!S._recPacId){toast("Selecciona un paciente","err");return;}
   var meds=document.getElementById("rec-meds").value.trim();
-  if(!meds){ toast("Agrega al menos un medicamento","err"); return; }
+  if(!meds){toast("Agrega al menos un medicamento","err");return;}
   var id=String(Date.now());
   var folio="R"+String(S.rec.length+1).padStart(4,"0");
   var d={id:id,pacienteId:S._recPacId,pacienteNombre:S._recPacNombre,citaId:"",fecha:today(),medicamentos:meds,indicaciones:document.getElementById("rec-ind").value,firma:S.cfg.perfil.nombre||"",folio:folio};
-  try { var r=await api("addReceta",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ /* sin conexión — se guarda localmente */ }
-  S.rec.push(d); closeM("m-rec"); renderRec(); toast("✅ Receta guardada","ok");
+  try{var r=await api("addReceta",{data:d});if(!r.ok){toast("❌ "+r.error,"err");return;}}catch(e){}
+  S.rec.push(d);closeM("m-rec");renderRec();toast("✅ Receta guardada","ok");
 }
 
 // ══════════════════════════════════════════════
@@ -1423,7 +1744,7 @@ function renderPago(){
   var html='<div class="card" style="background:linear-gradient(135deg,rgba(26,127,193,.12),rgba(56,189,248,.07));border-color:rgba(26,127,193,.25);margin-bottom:14px">'
     +'<div style="font-size:11px;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Ingresos del mes</div>'
     +'<div style="font-size:30px;font-weight:700;color:var(--p2);letter-spacing:-1px;margin-top:3px">$'+ingM.toFixed(2)+'</div></div>';
-  if(!S.pagos.length){ el.innerHTML=html+emp("💰","Sin pagos registrados"); return; }
+  if(!S.pagos.length){el.innerHTML=html+emp("💰","Sin pagos registrados");return;}
   el.innerHTML=html+[].concat(S.pagos).reverse().map(function(p){
     return '<div class="card-s" style="display:flex;align-items:center;gap:11px;margin-bottom:7px">'
       +'<div style="font-size:22px">💳</div><div style="flex:1">'
@@ -1432,31 +1753,33 @@ function renderPago(){
       +'<div style="font-size:16px;font-weight:700;color:var(--ok)">$'+parseFloat(p.monto||0).toFixed(2)+'</div></div>';
   }).join("");
 }
-
-function resetPago(){ document.getElementById("pag-pq").value=""; document.getElementById("pag-chip").innerHTML=""; document.getElementById("pag-con").value=""; document.getElementById("pag-monto").value=""; document.getElementById("pag-met").value="Efectivo"; document.getElementById("pag-notas").value=""; S._pagPacId=""; S._pagPacNombre=""; document.getElementById("pag-drop").classList.remove("on"); }
-function setPagPac(id,n){ S._pagPacId=id; S._pagPacNombre=n; document.getElementById("pag-pq").value=""; document.getElementById("pag-chip").innerHTML=makeChip(n,"clearPagPac"); document.getElementById("pag-drop").classList.remove("on"); }
-function clearPagPac(){ S._pagPacId=""; S._pagPacNombre=""; document.getElementById("pag-chip").innerHTML=""; }
-
+function resetPago(){
+  document.getElementById("pag-pq").value="";document.getElementById("pag-chip").innerHTML="";
+  document.getElementById("pag-con").value="";document.getElementById("pag-monto").value="";
+  document.getElementById("pag-met").value="Efectivo";document.getElementById("pag-notas").value="";
+  S._pagPacId="";S._pagPacNombre="";document.getElementById("pag-drop").classList.remove("on");
+}
+function setPagPac(id,n){S._pagPacId=id;S._pagPacNombre=n;document.getElementById("pag-pq").value="";document.getElementById("pag-chip").innerHTML=makeChip(n,"clearPagPac");document.getElementById("pag-drop").classList.remove("on");}
+function clearPagPac(){S._pagPacId="";S._pagPacNombre="";document.getElementById("pag-chip").innerHTML="";}
 async function savePago(){
-  if(!S._pagPacId){ toast("Selecciona un paciente","err"); return; }
+  if(!S._pagPacId){toast("Selecciona un paciente","err");return;}
   var monto=parseFloat(document.getElementById("pag-monto").value);
-  if(!monto||monto<=0){ toast("Ingresa un monto válido","err"); return; }
+  if(!monto||monto<=0){toast("Ingresa un monto válido","err");return;}
   var id=String(Date.now());
   var folio="P"+String(S.pagos.length+1).padStart(4,"0");
   var d={id:id,pacienteId:S._pagPacId,pacienteNombre:S._pagPacNombre,citaId:"",fecha:today(),concepto:document.getElementById("pag-con").value,monto:String(monto),metodo:document.getElementById("pag-met").value,notas:document.getElementById("pag-notas").value,folio:folio,recibo:"false"};
-  try { var r=await api("addPago",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ /* sin conexión — se guarda localmente */ }
-  S.pagos.push(d); closeM("m-pago"); renderPago(); renderDash(); toast("✅ Pago registrado","ok");
+  try{var r=await api("addPago",{data:d});if(!r.ok){toast("❌ "+r.error,"err");return;}}catch(e){}
+  S.pagos.push(d);closeM("m-pago");renderPago();renderDash();toast("✅ Pago registrado","ok");
 }
 
 // ══════════════════════════════════════════════
 //  INVENTARIO
 // ══════════════════════════════════════════════
 function renderInv(q){
-  q=q||"";
-  var list=S.inv;
-  if(q){ var lq=q.toLowerCase(); list=list.filter(function(i){return (i.nombre||"").toLowerCase().includes(lq)||(i.categoria||"").toLowerCase().includes(lq);}); }
+  q=q||"";var list=S.inv;
+  if(q){var lq=q.toLowerCase();list=list.filter(function(i){return (i.nombre||"").toLowerCase().includes(lq)||(i.categoria||"").toLowerCase().includes(lq);});}
   var el=document.getElementById("inv-list");
-  if(!list.length){ el.innerHTML=emp("📦","Sin insumos en inventario"); return; }
+  if(!list.length){el.innerHTML=emp("📦","Sin insumos en inventario");return;}
   el.innerHTML=list.map(function(i){
     var low=parseFloat(i.stock)<=parseFloat(i.stockMin||0);
     return '<div class="inv-i" onclick="editInv(\''+i.id+'\')">'
@@ -1466,11 +1789,16 @@ function renderInv(q){
       +'</div>';
   }).join("");
 }
-
-function resetInv(){ document.getElementById("m-inv-t").textContent="Nuevo Insumo"; document.getElementById("inv-id").value=""; ["inv-nombre","inv-notas","inv-prov"].forEach(function(id){document.getElementById(id).value="";}); document.getElementById("inv-stock").value="0"; document.getElementById("inv-min").value="5"; document.getElementById("inv-precio").value="0"; document.getElementById("inv-cat").value="Medicamentos"; document.getElementById("inv-uni").value="piezas"; document.getElementById("btn-del-inv").style.display="none"; }
-
+function resetInv(){
+  document.getElementById("m-inv-t").textContent="Nuevo Insumo";
+  document.getElementById("inv-id").value="";
+  ["inv-nombre","inv-notas","inv-prov"].forEach(function(id){document.getElementById(id).value="";});
+  document.getElementById("inv-stock").value="0";document.getElementById("inv-min").value="5";
+  document.getElementById("inv-precio").value="0";document.getElementById("inv-cat").value="Medicamentos";
+  document.getElementById("inv-uni").value="piezas";document.getElementById("btn-del-inv").style.display="none";
+}
 function editInv(id){
-  var i=S.inv.find(function(x){return x.id===id;}); if(!i)return;
+  var i=S.inv.find(function(x){return x.id===id;});if(!i)return;
   document.getElementById("m-inv-t").textContent="Editar Insumo";
   document.getElementById("inv-id").value=i.id;
   document.getElementById("inv-nombre").value=i.nombre||"";
@@ -1484,39 +1812,35 @@ function editInv(id){
   document.getElementById("btn-del-inv").style.display="";
   openM("m-inv");
 }
-
 async function saveInv(){
   var nombre=document.getElementById("inv-nombre").value.trim();
-  if(!nombre){ toast("El nombre es obligatorio","err"); return; }
+  if(!nombre){toast("El nombre es obligatorio","err");return;}
   var isNew=!document.getElementById("inv-id").value;
   var id=document.getElementById("inv-id").value||String(Date.now());
   var d={id:id,nombre:nombre,categoria:document.getElementById("inv-cat").value,stock:document.getElementById("inv-stock").value,stockMin:document.getElementById("inv-min").value,unidad:document.getElementById("inv-uni").value,precio:document.getElementById("inv-precio").value,proveedor:document.getElementById("inv-prov").value,notas:document.getElementById("inv-notas").value};
-  try { var r=await api(isNew?"addProducto":"updateProducto",{data:d}); if(!r.ok){ toast("❌ "+r.error,"err"); return; } } catch(e){ /* sin conexión — se guarda localmente */ }
-  if(isNew)S.inv.push(d); else { var i=S.inv.findIndex(function(x){return x.id===id;}); if(i>-1)S.inv[i]=d; }
-  closeM("m-inv"); renderInv(); renderDash(); toast(isNew?"✅ Insumo creado":"✅ Actualizado","ok");
+  try{var r=await api(isNew?"addProducto":"updateProducto",{data:d});if(!r.ok){toast("❌ "+r.error,"err");return;}}catch(e){}
+  if(isNew)S.inv.push(d);else{var i=S.inv.findIndex(function(x){return x.id===id;});if(i>-1)S.inv[i]=d;}
+  closeM("m-inv");renderInv();renderDash();toast(isNew?"✅ Insumo creado":"✅ Actualizado","ok");
 }
-
 async function delInv(){
-  var id=document.getElementById("inv-id").value; if(!id)return;
+  var id=document.getElementById("inv-id").value;if(!id)return;
   if(!confirm("¿Eliminar este insumo?"))return;
-  try{ await api("deleteProducto",{data:{id:id}}); }catch(e){}
+  try{await api("deleteProducto",{data:{id:id}});}catch(e){}
   S.inv=S.inv.filter(function(i){return i.id!==id;});
-  closeM("m-inv"); renderInv(); renderDash(); toast("Insumo eliminado","ok");
+  closeM("m-inv");renderInv();renderDash();toast("Insumo eliminado","ok");
 }
 
 // ══════════════════════════════════════════════
-//  BÚSQUEDA DE PACIENTES (autocomplete genérico)
+//  BÚSQUEDA DE PACIENTES
 // ══════════════════════════════════════════════
-function buscarPac(q, dropId, onSelect){
+function buscarPac(q,dropId,onSelect){
   var drop=document.getElementById(dropId);
-  if(!q||q.length<2){ drop.classList.remove("on"); return; }
+  if(!q||q.length<2){drop.classList.remove("on");return;}
   var lq=q.toLowerCase();
-  var res=S.pac.filter(function(p){ return (p.nombre||"").toLowerCase().includes(lq)||(p.telefono||"").includes(q); }).slice(0,8);
-  if(!res.length){ drop.classList.remove("on"); return; }
+  var res=S.pac.filter(function(p){return (p.nombre||"").toLowerCase().includes(lq)||(p.telefono||"").includes(q);}).slice(0,8);
+  if(!res.length){drop.classList.remove("on");return;}
   drop.innerHTML=res.map(function(p){
-    return '<div class="di" onclick="('+onSelect.toString()+')(\''+p.id+'\',\''+p.nombre.replace(/'/g,"\\'")+'\')">'
-      +'<div class="di-n">'+esc(p.nombre)+'</div>'
-      +'<div class="di-s">'+(p.telefono||p.email||"")+'</div></div>';
+    return '<div class="di" onclick="('+onSelect.toString()+')(\''+p.id+'\',\''+p.nombre.replace(/'/g,"\\'")+'\')"><div class="di-n">'+esc(p.nombre)+'</div><div class="di-s">'+(p.telefono||p.email||"")+'</div></div>';
   }).join("");
   drop.classList.add("on");
 }
@@ -1524,66 +1848,43 @@ function buscarPac(q, dropId, onSelect){
 // ══════════════════════════════════════════════
 //  HELPERS
 // ══════════════════════════════════════════════
-function today(){ return fmtDate(new Date()); }
-function fmtDate(d){ return d.toISOString().slice(0,10); }
-function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-function makeChip(n,fn){ return '<div class="chip"><span>'+esc(n)+'</span><button onclick="'+fn+'()">✕</button></div>'; }
-function emp(icon,t,s){ return '<div class="empty"><div class="empty-i">'+icon+'</div><div class="empty-t">'+t+'</div>'+(s?'<div class="empty-s">'+s+'</div>':"")+'</div>'; }
-
-function openM(id){ document.getElementById(id).classList.add("on"); }
-function closeM(id){ document.getElementById(id).classList.remove("on"); }
+function today(){return fmtDate(new Date());}
+function fmtDate(d){return d.toISOString().slice(0,10);}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function makeChip(n,fn){return '<div class="chip"><span>'+esc(n)+'</span><button onclick="'+fn+'()">✕</button></div>';}
+function emp(icon,t,s){return '<div class="empty"><div class="empty-i">'+icon+'</div><div class="empty-t">'+t+'</div>'+(s?'<div class="empty-s">'+s+'</div>':"")+'</div>';}
+function openM(id){document.getElementById(id).classList.add("on");}
+function closeM(id){document.getElementById(id).classList.remove("on");}
 
 // ══════════════════════════════════════════════
 //  LOGO
 // ══════════════════════════════════════════════
 function handleLogoFile(input){
-  var file = input.files[0];
-  if (!file) return;
-  if (file.size > 500*1024) { toast("Imagen muy grande (máx 500KB)","err"); return; }
-  var reader = new FileReader();
-  reader.onload = function(e){
-    var b64 = e.target.result;
-    S.cfg.perfil.logo = b64;
-    saveCfgToLS();
-    applyLogo(b64);
-    toast("✅ Logo guardado","ok");
-  };
+  var file=input.files[0];if(!file)return;
+  if(file.size>500*1024){toast("Imagen muy grande (máx 500KB)","err");return;}
+  var reader=new FileReader();
+  reader.onload=function(e){S.cfg.perfil.logo=e.target.result;saveCfgToLS();applyLogo(e.target.result);toast("✅ Logo guardado","ok");};
   reader.readAsDataURL(file);
 }
-
 function applyLogo(src){
-  var prev  = document.getElementById("logo-preview");
-  var ph    = document.getElementById("logo-ph");
-  var rm    = document.getElementById("btn-rm-logo");
-  var tbImg = document.getElementById("tb-logo-img");
-  var tbTxt = document.getElementById("tb-logo-txt");
-  if (src) {
-    prev.src = src; prev.classList.add("on"); ph.style.display="none";
-    rm.classList.add("on");
-    tbImg.src = src; tbImg.style.display="block";
-    tbTxt.style.display="none";
-  } else {
-    prev.src=""; prev.classList.remove("on"); ph.style.display="flex";
-    rm.classList.remove("on");
-    tbImg.style.display="none"; tbImg.src="";
-    tbTxt.style.display="";
+  var prev=document.getElementById("logo-preview"),ph=document.getElementById("logo-ph"),
+      rm=document.getElementById("btn-rm-logo"),tbImg=document.getElementById("tb-logo-img"),tbTxt=document.getElementById("tb-logo-txt");
+  if(src){
+    prev.src=src;prev.classList.add("on");ph.style.display="none";rm.classList.add("on");
+    tbImg.src=src;tbImg.style.display="block";tbTxt.style.display="none";
+  }else{
+    prev.src="";prev.classList.remove("on");ph.style.display="flex";rm.classList.remove("on");
+    tbImg.style.display="none";tbImg.src="";tbTxt.style.display="";
   }
 }
-
-function removeLogo(){
-  S.cfg.perfil.logo = "";
-  saveCfgToLS();
-  applyLogo("");
-  document.getElementById("logo-file").value="";
-  toast("Logo eliminado","ok");
-}
+function removeLogo(){S.cfg.perfil.logo="";saveCfgToLS();applyLogo("");document.getElementById("logo-file").value="";toast("Logo eliminado","ok");}
 
 var _toastT;
 function toast(msg,type){
   var t=document.getElementById("toast");
-  t.textContent=msg; t.className="toast on "+(type||"");
+  t.textContent=msg;t.className="toast on "+(type||"");
   clearTimeout(_toastT);
-  _toastT=setTimeout(function(){ t.classList.remove("on"); },3200);
+  _toastT=setTimeout(function(){t.classList.remove("on");},3200);
 }
 </script>
 </body>
