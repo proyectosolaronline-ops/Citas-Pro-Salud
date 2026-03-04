@@ -194,6 +194,26 @@ input,select,textarea{font-family:var(--ff);outline:none}
 .btn-rm{background:rgba(220,38,38,.1);color:#FCA5A5;border:1px solid rgba(220,38,38,.3);padding:5px 13px;border-radius:var(--rs);font-size:12px;cursor:pointer;display:none}
 .btn-rm.on{display:inline-block}
 
+/* UBICACIÓN */
+.loc-wrap{margin-top:8px}
+.loc-input-row{display:flex;gap:8px;margin-bottom:8px}
+.loc-input-row input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--txt);padding:10px 13px;border-radius:var(--rs);font-size:14px;transition:.2s}
+.loc-input-row input:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(26,127,193,.15)}
+.loc-btn{padding:10px 14px;border-radius:var(--rs);background:var(--p);color:#fff;font-size:13px;font-weight:600;cursor:pointer;border:none;white-space:nowrap;transition:.15s;flex-shrink:0}
+.loc-btn:hover{background:#1570A8}
+.loc-btn.sec{background:var(--card2);color:var(--txt2);border:1px solid var(--border)}
+.loc-btn.sec:hover{background:var(--border)}
+.loc-actions{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.map-preview{width:100%;height:180px;border-radius:var(--rs);border:1px solid var(--border);overflow:hidden;background:var(--bg2);display:none;position:relative}
+.map-preview.on{display:block}
+.map-preview iframe{width:100%;height:100%;border:none}
+.map-placeholder{width:100%;height:180px;border-radius:var(--rs);border:2px dashed var(--border);background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--txt3)}
+.map-placeholder span{font-size:32px}
+.map-placeholder p{font-size:12px;text-align:center;max-width:200px;line-height:1.4}
+.loc-coords{font-size:11px;color:var(--txt3);font-family:var(--fm);margin-top:6px;padding:6px 10px;background:var(--bg2);border-radius:var(--rs);border:1px solid var(--border);display:none}
+.loc-coords.on{display:block}
+.loc-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(26,127,193,.1);border:1px solid rgba(26,127,193,.25);color:var(--p2);padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;margin-top:6px}
+
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
 
@@ -327,6 +347,8 @@ input,select,textarea{font-family:var(--ff);outline:none}
     <!-- CONFIG -->
     <div class="page" id="p-cfg">
       <div class="sh"><div class="sh-title">Configuración</div></div>
+
+      <!-- Perfil -->
       <div class="cfg-sec">
         <div class="cfg-lbl">Perfil del Consultorio</div>
         <div class="field"><label>Nombre</label><input type="text" id="c-nombre" oninput="saveCfg('perfil.nombre',this.value)"/></div>
@@ -354,6 +376,46 @@ input,select,textarea{font-family:var(--ff);outline:none}
           <div class="hint">PNG, JPG o SVG — se guarda localmente en el dispositivo.</div>
         </div>
       </div>
+
+      <!-- ══ UBICACIÓN (nuevo) ══ -->
+      <div class="cfg-sec">
+        <div class="cfg-lbl">📍 Ubicación del Consultorio</div>
+
+        <div class="field">
+          <label>Dirección completa</label>
+          <div class="loc-input-row">
+            <input type="text" id="c-loc-dir" placeholder="Calle, número, colonia, ciudad..." oninput="saveCfg('perfil.locDireccion',this.value)"/>
+          </div>
+          <div class="hint">Dirección que aparecerá en recetas y comunicaciones.</div>
+        </div>
+
+        <div class="field">
+          <label>Coordenadas GPS <span style="color:var(--txt3);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
+          <div class="loc-input-row">
+            <input type="text" id="c-lat" placeholder="Latitud  ej: 20.5881" style="flex:1"/>
+            <input type="text" id="c-lng" placeholder="Longitud  ej: -100.3889" style="flex:1"/>
+            <button class="loc-btn" onclick="applyCoords()">🗺 Ver</button>
+          </div>
+          <div class="loc-actions">
+            <button class="loc-btn sec" onclick="getMyLocation()">📡 Usar mi ubicación</button>
+            <button class="loc-btn sec" onclick="clearLocation()">✕ Limpiar</button>
+            <button class="loc-btn sec" onclick="copyMapLink()">🔗 Copiar enlace</button>
+          </div>
+          <div class="hint">Las coordenadas permiten mostrar un mapa y compartir la ubicación exacta del consultorio.</div>
+        </div>
+
+        <!-- Vista previa del mapa -->
+        <div id="map-placeholder-wrap" class="map-placeholder">
+          <span>🗺️</span>
+          <p>Ingresa coordenadas o usa "Usar mi ubicación" para ver el mapa</p>
+        </div>
+        <div id="map-preview-wrap" class="map-preview">
+          <iframe id="map-iframe" src="" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div id="loc-coords-display" class="loc-coords"></div>
+      </div>
+
+      <!-- Módulos -->
       <div class="cfg-sec">
         <div class="cfg-lbl">Módulos Activos</div>
         <div class="cfg-row"><div><div class="cfg-rl">Agenda / Citas</div></div>
@@ -365,6 +427,8 @@ input,select,textarea{font-family:var(--ff);outline:none}
         <div class="cfg-row"><div><div class="cfg-rl">Inventario</div></div>
           <label class="toggle"><input type="checkbox" id="m-inv2" onchange="toggleMod('inventario',this.checked)"><div class="ttrack"><div class="tthumb"></div></div></label></div>
       </div>
+
+      <!-- Apariencia -->
       <div class="cfg-sec">
         <div class="cfg-lbl">Apariencia</div>
         <div class="cfg-row"><div><div class="cfg-rl">Modo oscuro</div></div>
@@ -372,6 +436,8 @@ input,select,textarea{font-family:var(--ff);outline:none}
         <div class="cfg-row"><div><div class="cfg-rl">Color principal</div></div>
           <div class="cpick"><input type="color" id="c-color" value="#1A7FC1" oninput="applyColor(this.value);saveCfg('tema.color',this.value)"></div></div>
       </div>
+
+      <!-- Backend -->
       <div class="cfg-sec">
         <div class="cfg-lbl">Backend</div>
         <div class="field">
@@ -381,6 +447,7 @@ input,select,textarea{font-family:var(--ff);outline:none}
         </div>
         <button class="btn" style="margin-top:4px" onclick="testConn()">🔗 Probar conexión</button>
       </div>
+
       <div style="margin-top:20px;padding-top:14px;border-top:1px solid var(--border)">
         <button class="btn btn-danger" style="margin-top:0" onclick="doLogout()">🚪 Cerrar sesión</button>
       </div>
@@ -546,7 +613,7 @@ input,select,textarea{font-family:var(--ff);outline:none}
 // ══════════════════════════════════════════════
 var S = {
   user: null,
-  cfg: { perfil:{nombre:"",especialidad:"medico",telefono:"",direccion:""}, modulos:{agenda:true,recetas:true,pagos:true,inventario:true}, tema:{dark:true,color:"#1A7FC1"}, url:"" },
+  cfg: { perfil:{nombre:"",especialidad:"medico",telefono:"",direccion:"",locDireccion:"",lat:"",lng:""}, modulos:{agenda:true,recetas:true,pagos:true,inventario:true}, tema:{dark:true,color:"#1A7FC1"}, url:"" },
   pac:[], citas:[], pagos:[], inv:[], rec:[],
   page:"p-dash", online:true,
   _citaPacId:"", _citaPacNombre:"",
@@ -575,14 +642,12 @@ async function api(action, params){
   if (!url) throw new Error("URL no configurada");
   params = params || {};
   params.action = action;
-  // Serializar data como JSON string si existe
   if (params.data && typeof params.data === "object") {
     params.data = JSON.stringify(params.data);
   }
   if (!params.sheetId && S.user && S.user.sheetId) params.sheetId = S.user.sheetId;
   var qs = new URLSearchParams();
   Object.keys(params).forEach(function(k){ if(params[k]!==undefined && params[k]!==null) qs.set(k, params[k]); });
-  // Apps Script requiere seguir la redirección — usar mode cors sin headers extras
   var res = await fetch(url + "?" + qs.toString());
   if (!res.ok) throw new Error("HTTP " + res.status);
   return await res.json();
@@ -595,11 +660,9 @@ window.addEventListener("DOMContentLoaded", function(){
   document.getElementById("fecha-hoy").textContent =
     new Date().toLocaleDateString("es-MX",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
 
-  // Teclado en login
   document.getElementById("f-email").addEventListener("keydown",function(e){ if(e.key==="Enter") document.getElementById("f-pass").focus(); });
   document.getElementById("f-pass").addEventListener("keydown",function(e){ if(e.key==="Enter") doLogin(); });
 
-  // Cerrar modal al clickear fondo
   document.querySelectorAll(".mbg").forEach(function(m){
     m.addEventListener("click",function(e){ if(e.target===m) m.classList.remove("on"); });
   });
@@ -611,7 +674,6 @@ window.addEventListener("DOMContentLoaded", function(){
 });
 
 function initApp(){
-  // Cargar config guardada
   var saved = lsGet("sp_cfg");
   if (saved) {
     if (saved.perfil)  Object.assign(S.cfg.perfil,  saved.perfil);
@@ -619,18 +681,15 @@ function initApp(){
     if (saved.tema)    Object.assign(S.cfg.tema,    saved.tema);
     if (saved.url)     S.cfg.url = saved.url;
   }
-  // Compatibilidad con clave antigua
   var oldUrl = localStorage.getItem("sp_url") || localStorage.getItem("sp_script") || "";
   if (oldUrl && !S.cfg.url) S.cfg.url = oldUrl;
 
   applyTema();
 
-  // Pre-llenar URL en login
   var urlVal = getUrl();
   document.getElementById("f-url").value = urlVal;
   document.getElementById("c-url").value = urlVal;
 
-  // Sesión guardada
   var user = lsGet("sp_user");
   if (user && user.email) {
     S.user = user;
@@ -720,6 +779,13 @@ function loadCfgUI(){
   document.getElementById("m-recetas").checked = S.cfg.modulos.recetas !== false;
   document.getElementById("m-pagos").checked   = S.cfg.modulos.pagos   !== false;
   document.getElementById("m-inv2").checked    = S.cfg.modulos.inventario !== false;
+  // Ubicación
+  document.getElementById("c-loc-dir").value = S.cfg.perfil.locDireccion || "";
+  document.getElementById("c-lat").value = S.cfg.perfil.lat || "";
+  document.getElementById("c-lng").value = S.cfg.perfil.lng || "";
+  if (S.cfg.perfil.lat && S.cfg.perfil.lng) {
+    showMapPreview(S.cfg.perfil.lat, S.cfg.perfil.lng);
+  }
 }
 
 function saveCfg(path, val){
@@ -736,7 +802,6 @@ function saveCfgToLS(){ lsSet("sp_cfg", S.cfg); }
 function applyTema(){
   document.documentElement.setAttribute("data-theme", S.cfg.tema.dark===false ? "light" : "dark");
   if (S.cfg.tema.color) applyColor(S.cfg.tema.color);
-  // Logo se aplica después de que el DOM esté listo
   if (S.cfg.perfil && S.cfg.perfil.logo) {
     setTimeout(function(){ applyLogo(S.cfg.perfil.logo); }, 100);
   }
@@ -776,6 +841,98 @@ async function testConn(){
 }
 
 // ══════════════════════════════════════════════
+//  UBICACIÓN
+// ══════════════════════════════════════════════
+function applyCoords(){
+  var lat = document.getElementById("c-lat").value.trim();
+  var lng = document.getElementById("c-lng").value.trim();
+  if (!lat || !lng) { toast("Ingresa latitud y longitud","err"); return; }
+  var latN = parseFloat(lat), lngN = parseFloat(lng);
+  if (isNaN(latN) || isNaN(lngN) || latN < -90 || latN > 90 || lngN < -180 || lngN > 180) {
+    toast("Coordenadas inválidas","err"); return;
+  }
+  S.cfg.perfil.lat = lat;
+  S.cfg.perfil.lng = lng;
+  saveCfgToLS();
+  showMapPreview(lat, lng);
+  toast("📍 Ubicación guardada","ok");
+}
+
+function showMapPreview(lat, lng){
+  var ph = document.getElementById("map-placeholder-wrap");
+  var mp = document.getElementById("map-preview-wrap");
+  var iframe = document.getElementById("map-iframe");
+  var coordsEl = document.getElementById("loc-coords-display");
+
+  // Usamos OpenStreetMap embed (sin API key necesaria)
+  var zoom = 16;
+  var src = "https://www.openstreetmap.org/export/embed.html?bbox="
+    + (parseFloat(lng)-0.003) + "%2C" + (parseFloat(lat)-0.002) + "%2C"
+    + (parseFloat(lng)+0.003) + "%2C" + (parseFloat(lat)+0.002)
+    + "&layer=mapnik&marker=" + lat + "%2C" + lng;
+
+  iframe.src = src;
+  ph.style.display = "none";
+  mp.classList.add("on");
+  coordsEl.textContent = "📍 " + parseFloat(lat).toFixed(6) + ", " + parseFloat(lng).toFixed(6);
+  coordsEl.classList.add("on");
+}
+
+function getMyLocation(){
+  if (!navigator.geolocation) { toast("Tu navegador no soporta geolocalización","err"); return; }
+  toast("📡 Obteniendo ubicación...");
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      var lat = pos.coords.latitude.toFixed(6);
+      var lng = pos.coords.longitude.toFixed(6);
+      document.getElementById("c-lat").value = lat;
+      document.getElementById("c-lng").value = lng;
+      S.cfg.perfil.lat = lat;
+      S.cfg.perfil.lng = lng;
+      saveCfgToLS();
+      showMapPreview(lat, lng);
+      toast("📍 Ubicación capturada","ok");
+    },
+    function(err){
+      var msgs = {1:"Permiso denegado",2:"Posición no disponible",3:"Tiempo agotado"};
+      toast("❌ " + (msgs[err.code] || "Error de geolocalización"), "err");
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+function clearLocation(){
+  S.cfg.perfil.lat = "";
+  S.cfg.perfil.lng = "";
+  saveCfgToLS();
+  document.getElementById("c-lat").value = "";
+  document.getElementById("c-lng").value = "";
+  document.getElementById("map-iframe").src = "";
+  document.getElementById("map-preview-wrap").classList.remove("on");
+  document.getElementById("map-placeholder-wrap").style.display = "";
+  document.getElementById("loc-coords-display").classList.remove("on");
+  toast("Ubicación eliminada","ok");
+}
+
+function copyMapLink(){
+  var lat = S.cfg.perfil.lat;
+  var lng = S.cfg.perfil.lng;
+  if (!lat || !lng) { toast("Primero guarda una ubicación","err"); return; }
+  var link = "https://www.google.com/maps?q=" + lat + "," + lng;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(function(){
+      toast("🔗 Enlace copiado","ok");
+    });
+  } else {
+    // Fallback
+    var ta = document.createElement("textarea");
+    ta.value = link; document.body.appendChild(ta);
+    ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+    toast("🔗 Enlace copiado","ok");
+  }
+}
+
+// ══════════════════════════════════════════════
 //  NAVEGACIÓN
 // ══════════════════════════════════════════════
 function navClick(btn){
@@ -785,7 +942,6 @@ function navClick(btn){
 }
 
 function goPage(id){
-  // Normalizar: cfg → p-cfg
   if (!id.startsWith("p-")) id = "p-" + id;
   document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("on"); });
   var el = document.getElementById(id);
@@ -886,7 +1042,7 @@ function renderPac(q){
   el.innerHTML = list.map(function(p){
     var ini=(p.nombre||"?")[0].toUpperCase();
     var edad=p.fechaNac?Math.floor((new Date()-new Date(p.fechaNac))/31557600000)+" años":"";
-    return '<div class="li" onclick="editPac(\''+p.id+'\')"><div class="li-av">'+ini+'</div>'
+    return '<div class="li" onclick="editPac(\''+p.id+'\')" ><div class="li-av">'+ini+'</div>'
       +'<div class="li-b"><div class="li-n">'+esc(p.nombre)+'</div>'
       +'<div class="li-s">'+[p.sexo,edad,p.telefono].filter(Boolean).join(" · ")+'</div>'
       +(p.alergias?'<div style="font-size:11px;color:var(--err);margin-top:2px">⚠ '+esc(p.alergias)+'</div>':"")
@@ -1019,7 +1175,6 @@ async function saveCita(){
   var isNew=!document.getElementById("cita-id").value;
   var id=document.getElementById("cita-id").value||String(Date.now());
   var dur=parseInt(document.getElementById("cita-dur").value)||30;
-  // Conflicto de horario
   var conflict=S.citas.find(function(c){ return c.id!==id&&c.fecha===fecha&&c.estado!=="Cancelada"&&solapan(hora,dur,c.hora,parseInt(c.duracion)||30); });
   if(conflict&&!confirm("Conflicto con cita de "+conflict.pacienteNombre+" a las "+conflict.hora+". ¿Continuar?"))return;
   var d={id:id,pacienteId:S._citaPacId,pacienteNombre:S._citaPacNombre,fecha:fecha,hora:hora,duracion:String(dur),
