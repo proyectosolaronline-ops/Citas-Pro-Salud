@@ -88,10 +88,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 
 /* ── VISTA PÚBLICA ── */
 #vista-publica{display:block}
-.hero{max-width:760px;margin:0 auto;padding:48px 24px 0;text-align:center;animation:fadeUp .6s ease both}
+.hero{max-width:760px;margin:0 auto;padding:48px 24px 0;text-align:center;animation:fadeUp .6s ease both;display:flex;flex-direction:column;align-items:center}
 .sello{display:inline-flex;align-items:center;gap:8px;background:var(--c-white);border:1.5px solid var(--c1);border-radius:99px;padding:6px 18px 6px 10px;font-size:12px;font-weight:600;color:var(--c1);box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:24px;transition:border-color .4s,color .4s}
 .avatar-wrap{position:relative;display:inline-block;margin-bottom:16px}
-.avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--c1) 0%,var(--c1d) 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:34px;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.2);border:4px solid white;overflow:hidden;transition:background .4s}
+.avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--c1) 0%,var(--c1d) 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:42px;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.2);border:4px solid white;overflow:hidden;transition:background .4s}
 .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .avatar-ring{position:absolute;inset:-6px;border-radius:50%;border:2px dashed color-mix(in srgb, var(--c1) 40%, transparent);animation:spin 18s linear infinite}
 h1{font-family:var(--font-head);font-size:clamp(24px,5vw,36px);line-height:1.15;color:var(--c-ink);margin-bottom:8px;transition:font-family .4s}
@@ -338,6 +338,7 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--c-slate);border
 <header>
   <div class="logo">Consultas Saludables</div>
   <div class="header-right">
+    <div class="cedula-badge" id="header-cedula" style="display:none;font-size:11px;font-weight:600;color:var(--c-slate);background:var(--c1l);border:1px solid var(--c-border);padding:4px 12px;border-radius:99px;transition:background .4s,border-color .4s"></div>
     <div class="lic-badge" id="lic-badge">cargando…</div>
     <button id="btn-medico-login" onclick="abrirLogin()" title="Acceso médico">🔐</button>
   </div>
@@ -361,9 +362,9 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--c-slate);border
         <div class="avatar" id="pub-avatar">?</div>
         <div class="avatar-ring"></div>
       </div>
-      <h1 id="pub-nombre">—</h1>
-      <div class="esp-tag" id="pub-esp">—</div>
-      <div class="cedula-line" id="pub-cedula"></div>
+      <h1 id="pub-nombre" style="margin-top:4px">—</h1>
+      <div class="esp-tag" id="pub-esp" style="margin-top:8px">—</div>
+      <div class="cedula-line" id="pub-cedula" style="display:none"></div>
     </div>
 
     <div class="cards" id="pub-cards"></div>
@@ -850,7 +851,10 @@ function renderPublico(cfg){
   document.getElementById("pub-nombre").textContent  = display;
   document.getElementById("pub-esp").textContent     = espTxt;
   document.getElementById("lic-badge").textContent   = LIC;
-  if(cfg.cedula) document.getElementById("pub-cedula").innerHTML='Cédula Prof. <span>'+cfg.cedula+'</span>';
+  if(cfg.cedula){
+    var hc=document.getElementById("header-cedula");
+    if(hc){ hc.textContent="Céd. "+cfg.cedula; hc.style.display="inline-flex"; }
+  }
 
   var cards=[];
   if(cfg.direccion) cards.push({icon:iconPin,  label:"Dirección",  val:cfg.direccion});
