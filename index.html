@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Consultas Saludables — Consultorio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  /* Paleta suave, relajante: violeta-rosa etéreo (muy tenues) */
+  --color-primary:   #B19CD9;     /* Malva suave – principal */
+  --color-primary-d: #8A7ABF;     /* Violeta más profundo – hover / activo */
+  --color-primary-l: #E8DFFC;     /* Lila muy claro – fondos suaves, highlights */
+  --color-text:      #4A445C;     /* Gris-violeta oscuro – texto principal */
+  --color-bg:        #FAF8FF;     /* Fondo general: blanco lavanda etéreo */
+  --color-bg-card:   #FFFFFF;     /* Tarjetas y elementos elevados */
+  --color-border:    #E0DAF2;     /* Bordes sutiles */
+
+  /* Compatibilidad con nombres antiguos (para no romper nada) */
+  --teal:     var(--color-primary);
+  --teal-d:   var(--color-primary-d);
+  --teal-l:   var(--color-primary-l);
+  --ink:      var(--color-text);
+  --mist:     var(--color-bg);
+  --slate:    #6B658A;            /* Gris medio relajante para secundarios */
+  --border:   var(--color-border);
+  --gold:     #d4b567;            /* Dorado más suave si se usa */
+  --red:      #c97d7d;            /* Rojo suave para cancelaciones / errores */
+  --white:    #fff;
+
+  --radius: 16px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'DM Sans',sans-serif;background:var(--mist);color:var(--ink);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(ellipse 80% 60% at 10% 0%,rgba(177,156,217,.10) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 50% at 90% 100%,rgba(177,156,217,.07) 0%,transparent 55%),var(--mist);}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--color-primary);letter-spacing:-.5px}
+.header-right{display:flex;align-items:center;gap:10px}
+.lic-badge{font-size:11px;font-weight:600;letter-spacing:1px;color:var(--slate);text-transform:uppercase;background:var(--color-primary-l);border:1px solid var(--border);padding:4px 12px;border-radius:99px}
+#btn-medico-login{background:none;border:none;cursor:pointer;font-size:18px;padding:4px 8px;border-radius:8px;color:var(--slate);transition:.2s;opacity:.6}
+#btn-medico-login:hover{opacity:1;background:var(--color-primary-l)}
+#vista-publica{display:block}
+.hero{max-width:760px;margin:0 auto;padding:48px 24px 0;text-align:center;animation:fadeUp .6s ease both}
+.sello{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--color-primary);border-radius:99px;padding:6px 18px 6px 10px;font-size:12px;font-weight:600;color:var(--color-primary);box-shadow:0 2px 12px rgba(177,156,217,.12);margin-bottom:24px}
+.avatar-wrap{position:relative;display:inline-block;margin-bottom:16px}
+.avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-d) 100%);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:34px;color:#fff;box-shadow:0 8px 32px rgba(177,156,217,.25);border:4px solid white;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.avatar-ring{position:absolute;inset:-6px;border-radius:50%;border:2px dashed rgba(177,156,217,.30);animation:spin 18s linear infinite}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(24px,5vw,36px);line-height:1.15;color:var(--ink);margin-bottom:8px}
+.esp-tag{display:inline-block;background:var(--color-primary-l);color:var(--color-primary);font-size:13px;font-weight:600;padding:4px 14px;border-radius:99px;margin-bottom:12px}
+.cedula-line{font-size:13px;color:var(--slate);margin-bottom:4px}
+.cedula-line span{font-weight:600;color:var(--ink)}
+.cards{max-width:760px;margin:36px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;animation:fadeUp .7s .15s ease both}
+.card{background:var(--color-bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 2px 10px rgba(177,156,217,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(177,156,217,.10)}
+.card-icon{width:38px;height:38px;border-radius:10px;background:var(--color-primary-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-icon svg{width:19px;height:19px;color:var(--color-primary)}
+.card-label{font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.card-value{font-size:13px;font-weight:500;color:var(--ink);line-height:1.4}
+.section-title{max-width:760px;margin:44px auto 18px;padding:0 24px;font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);animation:fadeUp .7s .25s ease both}
+.form-wrap{max-width:760px;margin:0 auto 50px;padding:0 24px;animation:fadeUp .7s .3s ease both}
+.form-card{background:var(--color-bg-card);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(177,156,217,.07)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+label{font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.7px}
+input,select,textarea{font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fafcff;color:var(--ink);transition:border-color .2s,box-shadow .2s;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(177,156,217,.10);background:var(--white)}
+textarea{resize:vertical;min-height:80px}
+.btn-submit{margin-top:16px;width:100%;padding:13px;background:var(--color-primary);color:var(--white);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 14px rgba(177,156,217,.30);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-submit:hover{background:var(--color-primary-d);transform:translateY(-1px);box-shadow:0 6px 20px rgba(177,156,217,.38)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.confirm-card{display:none;background:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-d) 100%);border-radius:20px;padding:32px;text-align:center;color:var(--white);box-shadow:0 8px 32px rgba(177,156,217,.35);animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both}
+.confirm-card .check{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px}
+.confirm-card h3{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:8px}
+.confirm-card p{font-size:13px;opacity:.88;line-height:1.7}
+.folio-box{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 18px;margin-top:14px;font-size:13px;font-weight:600;letter-spacing:1px}
+.tracking-section{max-width:760px;margin:0 auto 40px;padding:0 24px;animation:fadeUp .7s .35s ease both}
+.tracking-input-wrap{display:flex;gap:10px}
+.tracking-input-wrap input{flex:1}
+.btn-track{padding:10px 18px;background:var(--color-primary-l);color:var(--color-primary);border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}
+.btn-track:hover{background:#d5c8f5}
+.tracking-result{margin-top:14px;display:none;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:var(--color-bg-card)}
+.tr-header{padding:14px 18px;display:flex;align-items:center;gap:10px}
+.tr-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.dot-pending{background:var(--gold);box-shadow:0 0 0 4px rgba(212,181,103,.15)}
+.dot-confirmed{background:var(--color-primary);box-shadow:0 0 0 4px rgba(177,156,217,.15)}
+.dot-cancelled{background:var(--red);box-shadow:0 0 0 4px rgba(201,125,125,.15)}
+.tr-body{padding:0 18px 18px;display:grid;gap:5px}
+.tr-row{display:flex;gap:8px;font-size:13px}
+.tr-row strong{color:var(--slate);min-width:90px}
+footer{text-align:center;padding:24px;font-size:12px;color:var(--slate);border-top:1px solid var(--border)}
+.qr-section{max-width:760px;margin:0 auto 40px;padding:0 24px;animation:fadeUp .7s .4s ease both}
+.qr-card{background:var(--color-bg-card);border:1px solid var(--border);border-radius:20px;padding:24px 28px;box-shadow:0 4px 24px rgba(177,156,217,.07);display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.qr-left{flex:1;min-width:200px}
+.qr-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);margin-bottom:4px}
+.qr-sub{font-size:13px;color:var(--slate);margin-bottom:14px;line-height:1.5}
+.qr-url-box{font-size:11px;color:var(--color-primary);word-break:break-all;background:var(--color-primary-l);padding:7px 11px;border-radius:8px;margin-bottom:14px;font-weight:600;font-family:monospace}
+.qr-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-qr{padding:8px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.btn-qr-copy{background:var(--color-primary-l);color:var(--color-primary);border:1px solid var(--border)}
+.btn-qr-copy:hover{background:#d5c8f5}
+.btn-qr-wa{background:#e8f5e9;color:#2f855a;border:1px solid #c6f6d5}
+.btn-qr-wa:hover{background:#c6f6d5}
+.btn-qr-mail{background:#e0f2fe;color:#2b6cb0;border:1px solid #bee3f8}
+.btn-qr-mail:hover{background:#bee3f8}
+.qr-right{display:flex;flex-direction:column;align-items:center;gap:8px}
+#qr-canvas{border-radius:12px;border:3px solid var(--color-primary-l)}
+.qr-hint{font-size:11px;color:var(--slate);text-align:center}
+#modal-mapa{display:none;position:fixed;inset:0;background:rgba(74,68,92,.6);backdrop-filter:blur(6px);z-index:500;align-items:flex-end;justify-content:center;padding:0}
+#modal-mapa.on{display:flex}
+.mapa-sheet{background:#fff;border-radius:20px 20px 0 0;padding:20px 20px 32px;width:100%;max-width:540px;animation:slideUp .3s ease}
+.mapa-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);margin-bottom:4px}
+.mapa-dir{font-size:13px;color:var(--slate);margin-bottom:14px}
+.mapa-frame{width:100%;height:220px;border-radius:12px;border:1.5px solid var(--border);overflow:hidden;margin-bottom:14px}
+.mapa-frame iframe{width:100%;height:100%;border:none}
+.mapa-btns{display:flex;gap:10px}
+.btn-maps{flex:1;padding:11px;background:var(--color-primary);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-maps:hover{background:var(--color-primary-d)}
+.btn-cerrar-mapa{padding:11px 18px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--slate);cursor:pointer}
+#modal-login{display:none;position:fixed;inset:0;background:rgba(74,68,92,.6);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:20px}
+#modal-login.on{display:flex}
+.login-card{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:360px;box-shadow:0 16px 64px rgba(0,0,0,.18)}
+.login-card h2{font-family:'DM Serif Display',serif;font-size:22px;color:var(--color-primary);margin-bottom:4px}
+.login-card p{font-size:13px;color:var(--slate);margin-bottom:22px}
+.login-err{display:none;background:#fef2f2;border:1px solid #fecaca;color:var(--red);padding:9px 12px;border-radius:9px;font-size:13px;margin-bottom:14px}
+.login-err.on{display:block}
+.login-field{margin-bottom:12px}
+.login-field label{display:block;font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.login-field input{width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:.2s}
+.login-field input:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(177,156,217,.10)}
+.btn-login{width:100%;padding:12px;background:var(--color-primary);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;transition:.2s}
+.btn-login:hover{background:var(--color-primary-d)}
+.btn-cancel-login{width:100%;padding:10px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--slate);cursor:pointer;margin-top:8px}
+.panel-bar{background:var(--color-primary);color:#fff;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.panel-bar-name{font-size:14px;font-weight:600}
+.panel-bar-right{display:flex;gap:8px}
+.btn-logout{background:rgba(255,255,255,.2);border:none;color:#fff;padding:6px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-logout:hover{background:rgba(255,255,255,.35)}
+.tabs{background:#fff;border-bottom:2px solid var(--border);display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;position:sticky;top:49px;z-index:100}
+.tab{flex:1;min-width:80px;padding:13px 8px;text-align:center;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none}
+.tab.active{color:var(--color-primary);border-bottom-color:var(--color-primary)}
+.tab-body{display:none;max-width:800px;margin:0 auto;padding:20px 16px}
+.tab-body.active{display:block}
+.cita-card{background:var(--color-bg-card);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(177,156,217,.05)}
+.cita-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.cita-paciente{font-size:15px;font-weight:700;color:var(--ink)}
+.cita-sub{font-size:12px;color:var(--slate);margin-top:2px}
+.cita-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap}
+.badge-pendiente{background:#fef9c3;color:#854d0e;border:1px solid #fde68a}
+.badge-confirmada{background:#e3d9f5;color:#5c4a8a;border:1px solid #d0c3eb}
+.badge-cancelada{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+.badge-reprogramada{background:#e0f2fe;color:#075985;border:1px solid #bae6fd}
+.cita-info{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.cita-info-item{font-size:12px;color:var(--slate)}
+.cita-info-item strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink);margin-bottom:1px}
+.cita-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-accion{padding:7px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.15s}
+.btn-confirmar{background:#e3d9f5;color:#5c4a8a;border:1px solid #d0c3eb}
+.btn-confirmar:hover{background:#d0c3eb}
+.btn-cancelar{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+.btn-cancelar:hover{background:#fecaca}
+.btn-reprogramar{background:#e0f2fe;color:#075985;border:1px solid #bae6fd}
+.btn-reprogramar:hover{background:#bae6fd}
+.paginacion{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 0;flex-wrap:wrap}
+.paginacion-info{font-size:12px;color:var(--slate)}
+.btn-pag{padding:7px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--color-bg-card);color:var(--color-primary);transition:.15s}
+.btn-pag:hover{background:var(--color-primary-l)}
+.btn-pag:disabled{opacity:.4;cursor:not-allowed}
+#modal-accion{display:none;position:fixed;inset:0;background:rgba(74,68,92,.55);backdrop-filter:blur(4px);z-index:400;align-items:flex-end;justify-content:center;padding:0}
+#modal-accion.on{display:flex}
+.accion-sheet{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-width:500px;animation:slideUp .3s ease}
+.accion-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);margin-bottom:4px}
+.accion-sub{font-size:13px;color:var(--slate);margin-bottom:18px}
+.accion-field{margin-bottom:12px}
+.accion-field label{display:block;font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.accion-field input,.accion-field textarea{width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:.2s}
+.accion-field input:focus,.accion-field textarea:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(177,156,217,.10)}
+.accion-field textarea{resize:vertical;min-height:70px}
+.accion-btns{display:flex;gap:10px;margin-top:16px}
+.btn-accion-ok{flex:1;padding:12px;background:var(--color-primary);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-accion-ok:hover{background:var(--color-primary-d)}
+.btn-accion-cancel{padding:12px 20px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--slate);cursor:pointer}
+.editor-section{margin-bottom:20px}
+.editor-section-title{font-size:13px;font-weight:700;color:var(--color-primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:500px){.editor-grid{grid-template-columns:1fr}}
+.editor-field{display:flex;flex-direction:column;gap:5px}
+.editor-field.full{grid-column:1/-1}
+.editor-field label{font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.6px}
+.editor-field input,.editor-field select,.editor-field textarea{padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:.2s;background:#fafcff;color:var(--ink)}
+.editor-field input:focus,.editor-field select:focus,.editor-field textarea:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(177,156,217,.10);background:#fff}
+.editor-field textarea{resize:vertical;min-height:80px}
+.editor-field .readonly{background:#f8f6ff;color:var(--slate);cursor:not-allowed}
+.hint{font-size:11px;color:var(--slate);margin-top:3px}
+.btn-guardar{padding:12px 24px;background:var(--color-primary);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;margin-top:4px}
+.btn-guardar:hover{background:var(--color-primary-d);transform:translateY(-1px)}
+.logo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:#fafcff;position:relative}
+.logo-upload-area:hover{border-color:var(--color-primary);background:var(--color-primary-l)}
+.logo-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.logo-preview-wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo-preview-img{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--color-primary-l);box-shadow:0 4px 12px rgba(177,156,217,.18);display:none}
+.logo-upload-hint{font-size:12px;color:var(--slate);line-height:1.5}
+.logo-upload-hint strong{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
+.btn-rm-logo{padding:5px 12px;background:#fee2e2;color:#991b1b;border:1px solid #fecaca;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:none;margin-top:8px}
+.empty{text-align:center;padding:48px 20px;color:var(--slate)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-txt{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.empty-sub{font-size:13px}
+.skeleton{background:linear-gradient(90deg,#f8f6ff 25%,#e8e0ff 50%,#f8f6ff 75%);background-size:200%;animation:shimmer 1.4s infinite;border-radius:8px}
+.sk-text{height:16px;margin-bottom:8px}
+.sk-title{height:32px;width:60%;margin:0 auto 14px}
+#loading{padding:60px 24px;text-align:center}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.18);transition:transform .35s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;display:flex;align-items:center;gap:10px}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--color-primary)}
+.toast.error{background:var(--red)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{to{background-position:-200% 0}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<header>
+  <div class="logo">Consultas Saludables</div>
+  <div class="header-right">
+    <div class="lic-badge" id="lic-badge">cargando…</div>
+    <button id="btn-medico-login" onclick="abrirLogin()" title="Acceso médico">🔐</button>
+  </div>
+</header>
+
+<!-- ═══════ VISTA PÚBLICA ═══════ -->
+<div id="vista-publica">
+  <div id="loading">
+    <div class="sk-title skeleton"></div>
+    <div class="sk-text skeleton" style="width:40%;margin:0 auto 8px"></div>
+    <div class="sk-text skeleton" style="width:55%;margin:0 auto"></div>
+  </div>
+  <div id="pub-content" style="display:none">
+    <div class="hero">
+      <div class="sello">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        Consultorio verificado
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar" id="pub-avatar">?</div>
+        <div class="avatar-ring"></div>
+      </div>
+      <h1 id="pub-nombre">—</h1>
+      <div class="esp-tag" id="pub-esp">—</div>
+      <div class="cedula-line" id="pub-cedula"></div>
+    </div>
+    <div class="cards" id="pub-cards"></div>
+    <div class="section-title">Solicitar cita</div>
+    <div class="form-wrap">
+      <div class="form-card" id="form-section">
+        <div class="form-grid">
+          <div class="field"><label>Nombre completo *</label><input type="text" id="f-nombre" placeholder="Tu nombre completo"/></div>
+          <div class="field"><label>Teléfono *</label><input type="tel" id="f-tel" placeholder="55 1234 5678"/></div>
+          <div class="field"><label>Email</label><input type="email" id="f-email" placeholder="correo@ejemplo.com"/></div>
+          <div class="field"><label>Servicio</label><select id="f-servicio"></select></div>
+          <div class="field"><label>Fecha preferida</label><input type="date" id="f-fecha"/></div>
+          <div class="field"><label>Hora preferida</label><input type="time" id="f-hora"/></div>
+          <div class="field full"><label>Motivo de consulta</label><textarea id="f-motivo" placeholder="Describe brevemente el motivo de tu visita…"></textarea></div>
+        </div>
+        <button class="btn-submit" id="btn-enviar" onclick="enviarSolicitud()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Enviar solicitud
+        </button>
+      </div>
+      <div class="confirm-card" id="confirm-card">
+        <div class="check">✅</div>
+        <h3>¡Solicitud enviada!</h3>
+        <p id="confirm-msg">Tu solicitud fue recibida. El consultorio la revisará pronto.</p>
+        <div class="folio-box" id="confirm-folio"></div>
+      </div>
+    </div>
+    <div class="section-title">Seguimiento de cita</div>
+    <div class="tracking-section">
+      <div class="tracking-input-wrap">
+        <input type="text" id="folio-input" placeholder="Token de seguimiento (ej: dr-garcia_uuid)"/>
+        <button class="btn-track" onclick="buscarSeguimiento()">Buscar</button>
+      </div>
+      <div class="tracking-result" id="tracking-result"></div>
+    </div>
+    <div class="section-title">Comparte este consultorio</div>
+    <div class="qr-section">
+      <div class="qr-card">
+        <div class="qr-left">
+          <div class="qr-title">Agenda tu cita desde tu celular</div>
+          <div class="qr-sub">Escanea el código QR o comparte el enlace directo.</div>
+          <div class="qr-url-box" id="qr-url-txt">—</div>
+          <div class="qr-btns">
+            <button class="btn-qr btn-qr-copy" onclick="copiarUrlConsultorio(this)">📋 Copiar enlace</button>
+            <button class="btn-qr btn-qr-wa" onclick="compartirWhatsApp()">💬 WhatsApp</button>
+            <button class="btn-qr btn-qr-mail" onclick="compartirEmail()">✉️ Correo</button>
+            <button class="btn-qr" id="btn-qr-mapa" onclick="abrirMapa()" style="display:none;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">📍 Ver mapa</button>
+          </div>
+        </div>
+        <div class="qr-right">
+          <canvas id="qr-canvas" width="130" height="130"></canvas>
+          <div class="qr-hint">Escanea para abrir</div>
+        </div>
+      </div>
+    </div>
+    <footer>Powered by <strong>Consultas Saludables</strong> — Plataforma médica verificada</footer>
+  </div>
+  <div id="pub-error" style="display:none;text-align:center;padding:80px 24px">
+    <div style="font-size:40px;margin-bottom:16px">⚠️</div>
+    <div id="pub-error-msg" style="font-size:16px;color:var(--slate)"></div>
+  </div>
+</div>
+
+<!-- El resto del HTML (modales, vista médico, etc.) sigue exactamente igual que en tu versión original -->
+
+<!-- ═══════ MODAL MAPA ═══════ -->
+<div id="modal-mapa">
+  <div class="mapa-sheet">
+    <div class="mapa-title">📍 Ubicación del consultorio</div>
+    <div class="mapa-dir" id="mapa-dir-txt">—</div>
+    <div class="mapa-frame">
+      <iframe id="mapa-iframe" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="mapa-btns">
+      <button class="btn-maps" onclick="abrirGoogleMaps()">🗺️ Abrir en Google Maps</button>
+      <button class="btn-cerrar-mapa" onclick="cerrarMapa()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL LOGIN MÉDICO ═══════ -->
+<div id="modal-login">
+  <div class="login-card">
+    <h2>Acceso médico</h2>
+    <p id="login-sub">Ingresa tus credenciales</p>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-field"><label>Email</label><input type="email" id="l-email" placeholder="doctor@correo.com" autocomplete="username"/></div>
+    <div class="login-field"><label>Contraseña</label><input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password"/></div>
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+    <button class="btn-cancel-login" onclick="cerrarLogin()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ═══════ VISTA MÉDICO ═══════ -->
+<div id="vista-medico">
+  <div class="panel-bar">
+    <div class="panel-bar-name">👨‍⚕️ <span id="panel-nombre">Panel médico</span></div>
+    <div class="panel-bar-right">
+      <button class="btn-logout" onclick="cerrarSesion()">Salir 🚪</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="cambiarTab('agenda',this)">📅 Agenda</button>
+    <button class="tab" onclick="cambiarTab('historial',this)">📋 Historial</button>
+    <button class="tab" onclick="cambiarTab('consultorio',this)">🎨 Consultorio</button>
+  </div>
+
+  <!-- TAB AGENDA -->
+  <div class="tab-body active" id="tab-agenda">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <strong style="font-size:15px">Citas pendientes</strong>
+      <button onclick="cargarCitas()" style="background:var(--color-primary-l);color:var(--color-primary);border:1px solid var(--border);padding:7px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">🔄 Actualizar</button>
+    </div>
+    <div id="lista-pendientes"></div>
+    <div id="pag-pendientes"></div>
+  </div>
+
+  <!-- TAB HISTORIAL -->
+  <div class="tab-body" id="tab-historial">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <strong style="font-size:15px">Historial de citas</strong>
+      <select id="filtro-estado" onchange="cargarHistorial(0)" style="padding:7px 12px;border:1.5px solid #e2e8f0;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;background:#fafcff;color:var(--ink);outline:none">
+        <option value="">Todos (sin Pendientes)</option>
+        <option value="Confirmada">Confirmadas</option>
+        <option value="Cancelada">Canceladas</option>
+        <option value="Reprogramada">Reprogramadas</option>
+      </select>
+    </div>
+    <div id="lista-historial"></div>
+    <div id="pag-historial"></div>
+  </div>
+
+  <!-- TAB CONSULTORIO -->
+  <div class="tab-body" id="tab-consultorio">
+    <!-- Aquí iría el contenido del editor que ya tenías – no lo modifiqué porque no lo incluiste completo en el último mensaje -->
+    <!-- Si quieres agregar la sección de colores aquí, avísame y la integro -->
+  </div>
+</div>
+
+<!-- MODAL ACCIÓN CITA y TOAST siguen igual -->
+
+<div id="modal-accion">
+  <div class="accion-sheet">
+    <div class="accion-title" id="accion-title">Confirmar cita</div>
+    <div class="accion-sub" id="accion-sub"></div>
+    <div id="accion-extra"></div>
+    <div class="accion-field">
+      <label>Mensaje al paciente (opcional)</label>
+      <textarea id="accion-mensaje" placeholder="Escribe un mensaje adicional para el paciente…"></textarea>
+    </div>
+    <div class="accion-btns">
+      <button class="btn-accion-ok" id="accion-ok-btn" onclick="confirmarAccion()">Confirmar</button>
+      <button class="btn-accion-cancel" onclick="cerrarAccion()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Tu JavaScript original queda intacto – no necesita cambios para los colores
+// ... pega aquí todo tu <script> original completo ...
+</script>
+</body>
+</html>
