@@ -19,39 +19,49 @@
 
 /* ── PALETAS TEMÁTICAS ── */
 [data-palette="lavanda"]{
-  --c1:#7C3AED;--c1d:#6d28d9;--c1l:#ede9fe;
-  --c2:#a78bfa;--c-ink:#1e1b4b;--c-mist:#f5f3ff;
-  --c-slate:#6d28d9;--c-border:#ddd6fe;
+  --c1:#8B7EC8;--c1d:#6B5EA8;--c1l:#edeafb;
+  --c2:#c4b8f0;--c-ink:#1e1b4b;--c-mist:#f5f3ff;
+  --c-slate:#5b4e96;--c-border:#d8d2f5;
 }
 [data-palette="rosa"]{
-  --c1:#db2777;--c1d:#be185d;--c1l:#fce7f3;
-  --c2:#f9a8d4;--c-ink:#500724;--c-mist:#fdf2f8;
-  --c-slate:#9d174d;--c-border:#fbcfe8;
+  --c1:#C084A0;--c1d:#A8607E;--c1l:#fdeef5;
+  --c2:#f0abca;--c-ink:#3d1a28;--c-mist:#fdf6f9;
+  --c-slate:#8B4A63;--c-border:#f5cfe0;
+}
+[data-palette="morado"]{
+  --c1:#9B7EC8;--c1d:#7B5EA8;--c1l:#f0ebfa;
+  --c2:#c4b0e8;--c-ink:#2d1f4a;--c-mist:#f7f4fd;
+  --c-slate:#6B4E9A;--c-border:#ddd0f2;
+}
+[data-palette="violeta"]{
+  --c1:#7C6FCD;--c1d:#5E52B0;--c1l:#eeedfb;
+  --c2:#b0abea;--c-ink:#1e1c3a;--c-mist:#f4f3fd;
+  --c-slate:#5548A8;--c-border:#cdc9f0;
 }
 [data-palette="lila"]{
-  --c1:#9333ea;--c1d:#7e22ce;--c1l:#f3e8ff;
-  --c2:#d8b4fe;--c-ink:#3b0764;--c-mist:#faf5ff;
-  --c-slate:#7e22ce;--c-border:#e9d5ff;
+  --c1:#B07EC8;--c1d:#9060B0;--c1l:#f5edfb;
+  --c2:#d4b0ea;--c-ink:#2e1a3d;--c-mist:#faf5fd;
+  --c-slate:#7A4A9A;--c-border:#e8d0f5;
 }
 [data-palette="durazno"]{
-  --c1:#ea580c;--c1d:#c2410c;--c1l:#fff7ed;
-  --c2:#fdba74;--c-ink:#431407;--c-mist:#fff7ed;
-  --c-slate:#9a3412;--c-border:#fed7aa;
+  --c1:#D4956A;--c1d:#B87040;--c1l:#fff3e8;
+  --c2:#f0c8a0;--c-ink:#3a1f0a;--c-mist:#fff8f2;
+  --c-slate:#9A6040;--c-border:#f5d8b8;
 }
 [data-palette="cielo"]{
-  --c1:#0284c7;--c1d:#0369a1;--c1l:#e0f2fe;
-  --c2:#7dd3fc;--c-ink:#0c4a6e;--c-mist:#f0f9ff;
-  --c-slate:#075985;--c-border:#bae6fd;
+  --c1:#6AAED4;--c1d:#4A8EB8;--c1l:#e8f4fb;
+  --c2:#a8d4ee;--c-ink:#0c2e45;--c-mist:#f0f8fd;
+  --c-slate:#3A7A9A;--c-border:#c0dff0;
 }
 [data-palette="menta"]{
-  --c1:#059669;--c1d:#047857;--c1l:#d1fae5;
-  --c2:#6ee7b7;--c-ink:#064e3b;--c-mist:#ecfdf5;
-  --c-slate:#065f46;--c-border:#a7f3d0;
+  --c1:#5BAD8A;--c1d:#3D906C;--c1l:#e6f7f1;
+  --c2:#9dd4bc;--c-ink:#0f3628;--c-mist:#f0faf6;
+  --c-slate:#2E7A58;--c-border:#b0e0ce;
 }
 [data-palette="uva"]{
-  --c1:#6366f1;--c1d:#4f46e5;--c1l:#eef2ff;
-  --c2:#a5b4fc;--c-ink:#1e1b4b;--c-mist:#f5f3ff;
-  --c-slate:#4338ca;--c-border:#c7d2fe;
+  --c1:#7878C8;--c1d:#5858A8;--c1l:#eeeeff;
+  --c2:#b0b0e8;--c-ink:#1a1a3a;--c-mist:#f4f4fd;
+  --c-slate:#4848A0;--c-border:#d0d0f0;
 }
 
 /* FUENTES TIPOGRÁFICAS */
@@ -640,13 +650,15 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--c-slate);border
 // ════════════════════════════════════════════════
 var PALETAS = [
   { id:"teal",     name:"Teal",     c1:"#0D9488", c1d:"#0a7870", c1l:"#ccfbf1", ink:"#0f2027", mist:"#f0faf9", border:"#d1faf4", slate:"#475569" },
-  { id:"lavanda",  name:"Lavanda",  c1:"#7C3AED", c1d:"#6d28d9", c1l:"#ede9fe", ink:"#1e1b4b", mist:"#f5f3ff", border:"#ddd6fe", slate:"#5b21b6" },
-  { id:"rosa",     name:"Rosa",     c1:"#db2777", c1d:"#be185d", c1l:"#fce7f3", ink:"#500724", mist:"#fdf2f8", border:"#fbcfe8", slate:"#9d174d" },
-  { id:"lila",     name:"Lila",     c1:"#9333ea", c1d:"#7e22ce", c1l:"#f3e8ff", ink:"#3b0764", mist:"#faf5ff", border:"#e9d5ff", slate:"#7e22ce" },
-  { id:"uva",      name:"Uva",      c1:"#6366f1", c1d:"#4f46e5", c1l:"#eef2ff", ink:"#1e1b4b", mist:"#f5f3ff", border:"#c7d2fe", slate:"#4338ca" },
-  { id:"durazno",  name:"Durazno",  c1:"#ea580c", c1d:"#c2410c", c1l:"#fff7ed", ink:"#431407", mist:"#fff7ed", border:"#fed7aa", slate:"#9a3412" },
-  { id:"cielo",    name:"Cielo",    c1:"#0284c7", c1d:"#0369a1", c1l:"#e0f2fe", ink:"#0c4a6e", mist:"#f0f9ff", border:"#bae6fd", slate:"#075985" },
-  { id:"menta",    name:"Menta",    c1:"#059669", c1d:"#047857", c1l:"#d1fae5", ink:"#064e3b", mist:"#ecfdf5", border:"#a7f3d0", slate:"#065f46" },
+  { id:"rosa",     name:"Rosa",     c1:"#C084A0", c1d:"#A8607E", c1l:"#fdeef5", ink:"#3d1a28", mist:"#fdf6f9", border:"#f5cfe0", slate:"#8B4A63" },
+  { id:"morado",   name:"Morado",   c1:"#9B7EC8", c1d:"#7B5EA8", c1l:"#f0ebfa", ink:"#2d1f4a", mist:"#f7f4fd", border:"#ddd0f2", slate:"#6B4E9A" },
+  { id:"violeta",  name:"Violeta",  c1:"#7C6FCD", c1d:"#5E52B0", c1l:"#eeedfb", ink:"#1e1c3a", mist:"#f4f3fd", border:"#cdc9f0", slate:"#5548A8" },
+  { id:"lila",     name:"Lila",     c1:"#B07EC8", c1d:"#9060B0", c1l:"#f5edfb", ink:"#2e1a3d", mist:"#faf5fd", border:"#e8d0f5", slate:"#7A4A9A" },
+  { id:"lavanda",  name:"Lavanda",  c1:"#8B7EC8", c1d:"#6B5EA8", c1l:"#edeafb", ink:"#1e1b4b", mist:"#f5f3ff", border:"#d8d2f5", slate:"#5b4e96" },
+  { id:"uva",      name:"Uva",      c1:"#7878C8", c1d:"#5858A8", c1l:"#eeeeff", ink:"#1a1a3a", mist:"#f4f4fd", border:"#d0d0f0", slate:"#4848A0" },
+  { id:"cielo",    name:"Cielo",    c1:"#6AAED4", c1d:"#4A8EB8", c1l:"#e8f4fb", ink:"#0c2e45", mist:"#f0f8fd", border:"#c0dff0", slate:"#3A7A9A" },
+  { id:"menta",    name:"Menta",    c1:"#5BAD8A", c1d:"#3D906C", c1l:"#e6f7f1", ink:"#0f3628", mist:"#f0faf6", border:"#b0e0ce", slate:"#2E7A58" },
+  { id:"durazno",  name:"Durazno",  c1:"#D4956A", c1d:"#B87040", c1l:"#fff3e8", ink:"#3a1f0a", mist:"#fff8f2", border:"#f5d8b8", slate:"#9A6040" },
 ];
 
 var FUENTES = [
