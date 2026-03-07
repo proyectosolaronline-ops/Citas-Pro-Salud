@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>SaludPro — Consultorio</title>
+<title>Consultas Saludables — Consultorio</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -246,7 +246,7 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--slate);border-t
 
 <!-- ═══════ HEADER ═══════ -->
 <header>
-  <div class="logo">SaludPro</div>
+  <div class="logo">Consultas Saludables</div>
   <div class="header-right">
     <div class="lic-badge" id="lic-badge">cargando…</div>
     <button id="btn-medico-login" onclick="abrirLogin()" title="Acceso médico">🔐</button>
@@ -333,7 +333,7 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--slate);border-t
       </div>
     </div>
 
-    <footer>Powered by <strong>SaludPro</strong> — Plataforma médica verificada</footer>
+    <footer>Powered by <strong>Consultas Saludables</strong> — Plataforma médica verificada</footer>
   </div>
 
   <div id="pub-error" style="display:none;text-align:center;padding:80px 24px">
@@ -629,7 +629,7 @@ function renderPublico(cfg){
   document.getElementById("f-fecha").min=new Date().toISOString().slice(0,10);
   document.getElementById("loading").style.display="none";
   document.getElementById("pub-content").style.display="block";
-  document.title=display+" — SaludPro";
+  document.title=display+" — Consultas Saludables";
 
   DIRECCION_ACTUAL=cfg.direccion||"";
   var btnMapa=document.getElementById("btn-qr-mapa");
