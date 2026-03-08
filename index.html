@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Consultorio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#0D9488;--p2:#14B8A6;--p3:#CCFBF1;
+  --bg:#F8FAFC;--card:#fff;--card2:#F0FDF9;
+  --border:#D1FAE5;--border2:#E2F5F1;
+  --txt:#0D2137;--txt2:#4A7A72;--txt3:#8AAABF;
+  --ff:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
+  --r:16px;--rs:10px;
+}
+html,body{min-height:100%;font-family:var(--ff);background:var(--bg);color:var(--txt);font-size:15px;line-height:1.6}
+a{color:var(--p);text-decoration:none}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .4s}
+#loader.hide{opacity:0;pointer-events:none}
+.ld-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;font-weight:700;overflow:hidden;box-shadow:0 4px 24px rgba(13,148,136,.3)}
+.ld-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none}
+.ld-txt{font-size:14px;color:var(--txt2)}
+.ld-bar{width:140px;height:3px;background:var(--border);border-radius:99px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--p2));animation:ldfill 1s ease forwards}
+@keyframes ldfill{from{width:0}to{width:100%}}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:50;height:54px;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 16px;gap:10px}
+.logo{font-size:15px;font-weight:700;color:var(--p);letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+.logo-img{width:30px;height:30px;border-radius:50%;object-fit:cover;display:none;flex-shrink:0}
+.topbar-right{margin-left:auto;display:flex;gap:6px}
+.ib{width:34px;height:34px;border-radius:var(--rs);background:transparent;display:flex;align-items:center;justify-content:center;color:var(--txt2);font-size:16px;cursor:pointer;transition:.15s;border:none}
+.ib:hover{background:var(--card2)}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,#0A2F3A 0%,#0D4A3A 50%,#0A2F3A 100%);padding:36px 20px 40px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 0%,rgba(13,148,136,.3) 0%,transparent 60%);pointer-events:none}
+.hero-avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#fff;margin:0 auto 14px;border:4px solid rgba(255,255,255,.2);box-shadow:0 8px 32px rgba(13,148,136,.4);overflow:hidden;position:relative;z-index:1}
+.hero-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.hero-name{font-size:clamp(20px,5vw,28px);font-weight:700;margin-bottom:4px;position:relative;z-index:1}
+.hero-esp{display:inline-block;background:rgba(20,184,166,.2);border:1px solid rgba(20,184,166,.4);color:#5EEAD4;font-size:12px;font-weight:700;padding:3px 14px;border-radius:99px;margin-bottom:10px;letter-spacing:.3px;position:relative;z-index:1}
+.hero-cedula{font-size:12px;color:rgba(255,255,255,.5);position:relative;z-index:1}
+.hero-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.75);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:500}
+
+/* ── CTA AGENDAR ── */
+.cta-wrap{max-width:480px;margin:-20px auto 0;padding:0 16px;position:relative;z-index:10}
+.cta-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:0 4px 24px rgba(13,148,136,.12)}
+.cta-title{font-size:16px;font-weight:700;color:var(--txt);margin-bottom:4px}
+.cta-sub{font-size:13px;color:var(--txt2);margin-bottom:16px}
+.btn-agendar{width:100%;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border:none;padding:14px;border-radius:var(--rs);font-size:16px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--ff);letter-spacing:.2px}
+.btn-agendar:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,148,136,.35)}
+
+/* ── CONTENIDO ── */
+.wrap{max-width:480px;margin:0 auto;padding:20px 16px 24px}
+.sec{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);margin-bottom:14px;overflow:hidden;box-shadow:0 2px 8px rgba(13,148,136,.06)}
+.sec-hdr{padding:12px 16px;background:var(--card2);border-bottom:1px solid var(--border2);font-size:12px;font-weight:700;color:var(--p);letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.sec-body{padding:16px}
+.info-row{display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:1px solid var(--border2)}
+.info-row:last-child{border-bottom:none}
+.info-icon{width:32px;height:32px;border-radius:var(--rs);background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.info-lbl{font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.info-val{font-size:14px;color:var(--txt);font-weight:500}
+.svc-chips{display:flex;flex-wrap:wrap;gap:8px}
+.svc-chip{background:var(--card2);border:1px solid var(--border);color:var(--p);padding:6px 14px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.svc-chip:hover,.svc-chip.sel{background:var(--p);color:#fff;border-color:var(--p)}
+.contact-btns{display:flex;gap:10px;flex-wrap:wrap}
+.cbtn{flex:1;min-width:100px;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:var(--ff);transition:.2s;text-decoration:none}
+.cbtn:hover{transform:translateY(-1px)}
+.cbtn-wa{background:#22C55E;color:#fff}
+.cbtn-wa:hover{background:#16A34A;color:#fff}
+.cbtn-tel{background:var(--card2);color:var(--txt);border:1px solid var(--border)}
+.cbtn-aviso{background:transparent;color:var(--txt3);border:1px solid var(--border2);font-size:12px;flex:none;width:100%;margin-top:2px}
+.cbtn-aviso:hover{background:var(--card2)}
+
+/* ── MODAL SOLICITUD ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.overlay.on{display:flex}
+.modal{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:20px 20px 40px;animation:slideup .3s ease}
+@keyframes slideup{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-drag{width:40px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 16px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--txt2);margin-bottom:20px}
+.mfield{margin-bottom:14px}
+.mfield label{display:block;font-size:11px;font-weight:700;color:var(--txt3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.mfield input,.mfield select,.mfield textarea{width:100%;background:var(--bg);border:1px solid var(--border2);color:var(--txt);padding:10px 13px;border-radius:var(--rs);font-size:14px;font-family:var(--ff);transition:.2s}
+.mfield input:focus,.mfield select:focus,.mfield textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(13,148,136,.12);outline:none}
+.mfield textarea{resize:vertical;min-height:72px}
+.btn-enviar{width:100%;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border:none;padding:14px;border-radius:var(--rs);font-size:16px;font-weight:700;cursor:pointer;font-family:var(--ff);transition:.2s;margin-top:4px}
+.btn-enviar:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(13,148,136,.3)}
+.btn-enviar:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.modal-ok{text-align:center;padding:24px 0}
+.modal-ok-icon{font-size:48px;margin-bottom:12px}
+.modal-ok-title{font-size:20px;font-weight:700;color:var(--p);margin-bottom:6px}
+.modal-ok-sub{font-size:14px;color:var(--txt2);margin-bottom:20px}
+.btn-cerrar{background:var(--card2);border:1px solid var(--border);color:var(--txt);padding:12px 28px;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--ff);transition:.15s}
+.btn-cerrar:hover{background:var(--border)}
+
+/* ── MODAL QR ── */
+.qr-modal{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:360px;padding:24px 24px 36px;text-align:center;animation:slideup .3s ease}
+.qr-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.qr-sub{font-size:12px;color:var(--txt2);margin-bottom:16px}
+
+/* ── FOOTER ── */
+footer{padding:24px 16px 32px;text-align:center}
+.footer-plat{font-size:13px;color:var(--txt2);margin-bottom:10px}
+.footer-plat strong{color:var(--p)}
+/* Contacto generador — discreto */
+.footer-gen{margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.footer-gen-label{font-size:11px;color:var(--txt3);letter-spacing:.3px}
+.footer-gen-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.footer-gen-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--border2);color:var(--txt2);background:var(--card);cursor:pointer;transition:.15s;text-decoration:none}
+.footer-gen-btn:hover{background:var(--card2);color:var(--p);border-color:var(--border);text-decoration:none}
+.footer-aviso{font-size:11px;color:var(--txt3);margin-top:8px}
+
+/* ── ERROR ── */
+.error-state{text-align:center;padding:60px 24px;color:var(--txt2)}
+.error-state h2{color:var(--txt);margin-bottom:8px}
+
+@media(min-width:540px){
+  .overlay{align-items:center}
+  .modal,.qr-modal{border-radius:20px;max-height:80vh}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-avatar" id="ld-avatar">
+    <img id="ld-avatar-img" src="" alt=""/>
+    <span id="ld-avatar-ini">?</span>
+  </div>
+  <div class="ld-txt" id="ld-txt">Cargando consultorio...</div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">
+      <img class="logo-img" id="top-logo-img" src="" alt=""/>
+      <span id="top-logo-txt">—</span>
+    </div>
+    <div class="topbar-right">
+      <button class="ib" onclick="abrirQR()" title="QR">🔗</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-avatar" id="hero-avatar">
+      <span id="hero-avatar-ini">?</span>
+    </div>
+    <div class="hero-name" id="hero-name">Cargando...</div>
+    <div class="hero-esp" id="hero-esp">—</div>
+    <div class="hero-cedula" id="hero-cedula"></div>
+    <div class="hero-chips" id="hero-chips"></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <div class="cta-card">
+      <div class="cta-title">📅 Solicitar cita</div>
+      <div class="cta-sub">Agenda tu consulta — confirmación rápida</div>
+      <button class="btn-agendar" onclick="abrirModal()">Agendar ahora →</button>
+    </div>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="wrap">
+
+    <!-- SERVICIOS -->
+    <div class="sec" id="sec-servicios" style="display:none">
+      <div class="sec-hdr">🩺 Servicios</div>
+      <div class="sec-body">
+        <div class="svc-chips" id="svc-chips"></div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="sec">
+      <div class="sec-hdr">📍 Información del consultorio</div>
+      <div class="sec-body" id="info-body"></div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div class="sec" id="sec-contacto" style="display:none">
+      <div class="sec-hdr">📞 Contacto directo</div>
+      <div class="sec-body">
+        <div class="contact-btns" id="contact-btns"></div>
+        <div style="margin-top:10px">
+          <button class="cbtn cbtn-aviso" onclick="irAviso()">📋 Ver aviso de privacidad</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /wrap -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-plat" id="footer-plat">Powered by <strong id="footer-plat-nombre">—</strong></div>
+    <!-- Contacto generador — discreto para interesados en nuevos consultorios -->
+    <div class="footer-gen" id="footer-gen" style="display:none">
+      <div class="footer-gen-label">¿Quieres tu propio consultorio digital?</div>
+      <div class="footer-gen-btns" id="footer-gen-btns"></div>
+    </div>
+    <div class="footer-aviso">
+      <a href="#" onclick="irAviso();return false;">Aviso de privacidad</a>
+    </div>
+  </footer>
+
+</div><!-- /app -->
+
+<!-- MODAL SOLICITUD -->
+<div class="overlay" id="overlay" onclick="cerrarOverlay(event)">
+  <div class="modal" id="modal">
+    <div class="modal-drag"></div>
+
+    <!-- FORMULARIO -->
+    <div id="form-view">
+      <div class="modal-title">Solicitar cita</div>
+      <div class="modal-sub" id="modal-medico-sub">Completa tus datos y te contactaremos</div>
+      <div class="mfield"><label>Nombre completo *</label><input type="text" id="f-nombre" placeholder="Tu nombre completo" autocomplete="name"/></div>
+      <div class="mfield"><label>Teléfono / WhatsApp *</label><input type="tel" id="f-tel" placeholder="55 1234 5678" autocomplete="tel"/></div>
+      <div class="mfield"><label>Correo electrónico</label><input type="email" id="f-email" placeholder="tu@correo.com" autocomplete="email"/></div>
+      <div class="mfield"><label>Servicio</label><select id="f-servicio"></select></div>
+      <div class="mfield"><label>Fecha preferente</label><input type="date" id="f-fecha"/></div>
+      <div class="mfield"><label>Hora preferente</label>
+        <select id="f-hora">
+          <option value="">Sin preferencia</option>
+          <option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option>
+          <option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option>
+          <option>13:00</option><option>14:00</option><option>15:00</option><option>15:30</option>
+          <option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option>
+        </select>
+      </div>
+      <div class="mfield"><label>Motivo (opcional)</label><textarea id="f-motivo" placeholder="Describe brevemente el motivo de tu consulta..."></textarea></div>
+      <div id="banner-err" style="background:#FEF2F2;border:1px solid #FCA5A5;color:#991B1B;padding:10px 14px;border-radius:var(--rs);font-size:13px;margin-bottom:12px;display:none"></div>
+      <button class="btn-enviar" id="btn-enviar" onclick="enviarSolicitud()">✅ Enviar solicitud</button>
+      <div style="margin-top:12px;text-align:center">
+        <button onclick="cerrarModal()" style="background:none;border:none;color:var(--txt3);font-size:13px;cursor:pointer">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- ÉXITO -->
+    <div id="ok-view" style="display:none">
+      <div class="modal-ok">
+        <div class="modal-ok-icon">🎉</div>
+        <div class="modal-ok-title">¡Solicitud enviada!</div>
+        <div class="modal-ok-sub" id="ok-sub">Nos pondremos en contacto contigo pronto para confirmar tu cita.</div>
+        <button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL QR -->
+<div class="overlay" id="overlay-qr" onclick="cerrarQR(event)">
+  <div class="qr-modal">
+    <div class="modal-drag"></div>
+    <div class="qr-title" id="qr-title">Código QR del consultorio</div>
+    <div class="qr-sub" id="qr-sub">Comparte o escanea para acceder</div>
+    <canvas id="qr-canvas" style="max-width:100%;border-radius:var(--rs);margin-bottom:12px"></canvas>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button onclick="descargarQR()" style="padding:9px 20px;border-radius:var(--rs);font-size:13px;font-weight:700;background:var(--p);color:#fff;border:none;cursor:pointer">⬇️ Descargar</button>
+      <button onclick="cerrarModal2()" style="padding:9px 20px;border-radius:var(--rs);font-size:13px;font-weight:700;background:var(--card2);color:var(--txt);border:1px solid var(--border);cursor:pointer">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwu7VVHC3RgS1fXwOtnh3ebHf4Md9xVmYF8cVZznKekPVEDj79izRcQmECYPH4GLIsG/exec";
+var LIC = "";
+var CFG = {};
+var SERVICIOS_LISTA = [];
+
+// ── UTILS ──
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function setText(id,val){ var el=document.getElementById(id); if(el) el.textContent=val||""; }
+function setHtml(id,val){ var el=document.getElementById(id); if(el) el.innerHTML=val||""; }
+
+function irAviso(){
+  if(LIC) window.location.href="aviso_privacidad.html?lic="+encodeURIComponent(LIC);
+}
+
+// ── INIT ──
+window.addEventListener("DOMContentLoaded",function(){
+  var params=new URLSearchParams(window.location.search);
+  LIC=params.get("lic")||"";
+  if(!LIC){ mostrarError("No se especificó el consultorio (parámetro ?lic= requerido)."); return; }
+  cargarConsultorio();
+});
+
+async function cargarConsultorio(){
+  try{
+    var url=SCRIPT_URL+"?action=getCfgPublica&lic="+encodeURIComponent(LIC);
+    var r=await fetch(url).then(function(res){ return res.json(); });
+    if(!r.ok){ mostrarError(r.msg||"Consultorio no encontrado."); return; }
+    CFG=r.cfg||{};
+    renderPublico(CFG);
+  }catch(e){
+    mostrarError("Error de conexión: "+e.message);
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  renderPublico — todo desde cfg
+//  ✅ cfg.plataforma, cfg.gen_telefono, cfg.gen_correo, cfg.gen_logo
+//     vienen inyectados desde LOGIN_GENERADOR por el backend
+// ════════════════════════════════════════════════════════════════════
+function renderPublico(cfg){
+  // ── Nombre de plataforma — siempre desde cfg.plataforma ──
+  var plataforma  = cfg.plataforma || "";
+
+  // ── Nombre visible del médico ──
+  var prefijo     = cfg.prefijo||"";
+  var nombreCom   = cfg.nombre_com||cfg.nombre_legal||"";
+  var display     = prefijo?prefijo+" "+nombreCom:nombreCom;
+  var especialidad= cfg.especialidad_txt||cfg.especialidad||"Profesional de la salud";
+  var cedula      = cfg.cedula||"";
+  var telefono    = cfg.telefono||"";
+  var whatsapp    = cfg.whatsapp||"";
+  var direccion   = cfg.direccion||"";
+  var horario     = cfg.horario||"";
+  var desde       = cfg.en_plataforma_desde||new Date().getFullYear();
+
+  // ── LOADER → APP ──
+  document.getElementById("loader").classList.add("hide");
+  setTimeout(function(){ document.getElementById("loader").style.display="none"; },500);
+  document.getElementById("app").style.display="block";
+
+  // ── TITLE ──
+  // ✅ Nombre del sistema desde plataforma — sin hardcode
+  document.title = display + (plataforma?" — "+plataforma:"");
+
+  // ── TOPBAR ──
+  setText("top-logo-txt", plataforma||display);
+  if(cfg.gen_logo&&cfg.gen_logo.length>100){
+    var topImg=document.getElementById("top-logo-img");
+    topImg.src=cfg.gen_logo; topImg.style.display="block";
+  }
+
+  // ── LOADER AVATAR ──
+  var partes=(nombreCom||"?").split(" ");
+  var iniciales=((partes[0]||"")[0]||"")+((partes[1]||"")[0]||"");
+
+  // ── HERO ──
+  var heroAvatar=document.getElementById("hero-avatar");
+  if(cfg.logo&&cfg.logo.length>100){
+    heroAvatar.innerHTML='<img src="'+cfg.logo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>';
+  } else {
+    document.getElementById("hero-avatar-ini").textContent=iniciales.toUpperCase()||"?";
+  }
+  setText("hero-name",    display||"Consultorio");
+  setText("hero-esp",     especialidad);
+  setText("hero-cedula",  cedula?"Cédula: "+cedula:"");
+
+  var chips=[];
+  if(horario)   chips.push('<div class="hero-chip">🕐 '+esc(horario)+'</div>');
+  if(direccion) chips.push('<div class="hero-chip">📍 '+esc(direccion.split(",")[0])+'</div>');
+  if(cfg.verificado) chips.push('<div class="hero-chip">✅ Verificado</div>');
+  setHtml("hero-chips", chips.join(""));
+
+  // ── MODAL sub ──
+  setText("modal-medico-sub","Consulta con "+display);
+
+  // ── SERVICIOS ──
+  var servicios=cfg.servicios||[];
+  if(typeof servicios==="string"){ try{ servicios=JSON.parse(servicios); }catch(e){ servicios=servicios.split(","); } }
+  if(servicios.length>0&&typeof servicios[0]==="object") servicios=servicios.map(function(s){ return t(s.titulo)||t(s)||""; });
+  SERVICIOS_LISTA=servicios.filter(Boolean);
+  if(SERVICIOS_LISTA.length){
+    document.getElementById("sec-servicios").style.display="block";
+    setHtml("svc-chips", SERVICIOS_LISTA.map(function(s,i){
+      return '<div class="svc-chip" onclick="selServicio(this,\''+esc(s)+'\')" data-svc="'+esc(s)+'">'+esc(s)+'</div>';
+    }).join(""));
+    var sel=document.getElementById("f-servicio");
+    sel.innerHTML='<option value="">Sin preferencia</option>'+SERVICIOS_LISTA.map(function(s){ return '<option value="'+esc(s)+'">'+esc(s)+'</option>'; }).join("");
+  }
+
+  // ── INFO ──
+  var infoItems=[];
+  if(especialidad) infoItems.push({icon:"🩺",lbl:"Especialidad",val:especialidad});
+  if(cedula)       infoItems.push({icon:"📋",lbl:"Cédula profesional",val:cedula});
+  if(direccion)    infoItems.push({icon:"📍",lbl:"Dirección",val:direccion});
+  if(horario)      infoItems.push({icon:"🕐",lbl:"Horario",val:horario});
+  if(desde)        infoItems.push({icon:"⭐",lbl:"En la plataforma desde",val:String(desde)});
+  setHtml("info-body", infoItems.length?infoItems.map(function(it){
+    return '<div class="info-row"><div class="info-icon">'+it.icon+'</div><div><div class="info-lbl">'+esc(it.lbl)+'</div><div class="info-val">'+esc(it.val)+'</div></div></div>';
+  }).join(""):'<div style="color:var(--txt3);font-size:13px">Información en configuración</div>');
+
+  // ── CONTACTO ──
+  var btns=[];
+  var waNum=(whatsapp||telefono).replace(/\D/g,"");
+  if(waNum){
+    btns.push('<a class="cbtn cbtn-wa" href="https://wa.me/52'+encodeURIComponent(waNum)+'?text='+encodeURIComponent("Hola "+display+", quiero agendar una cita.")+'" target="_blank" rel="noopener">💬 WhatsApp</a>');
+  }
+  if(telefono){
+    btns.push('<a class="cbtn cbtn-tel" href="tel:'+encodeURIComponent(telefono.replace(/\s/g,""))+'">📞 Llamar</a>');
+  }
+  if(btns.length){
+    document.getElementById("sec-contacto").style.display="block";
+    setHtml("contact-btns",btns.join(""));
+  }
+
+  // ── FOOTER ──
+  // ✅ Nombre de la plataforma — desde cfg.plataforma sin hardcode
+  if(plataforma){
+    setText("footer-plat-nombre", plataforma);
+  } else {
+    document.getElementById("footer-plat").style.display="none";
+  }
+
+  // ── FOOTER GENERADOR — discreto para interesados en nuevos consultorios ──
+  // Muestra datos de contacto del generador (dueño del sistema)
+  var genTel  = cfg.gen_telefono||"";
+  var genMail = cfg.gen_correo||"";
+  if((plataforma||genTel||genMail) && (genTel||genMail)){
+    document.getElementById("footer-gen").style.display="flex";
+    var genBtns=[];
+    if(genTel){
+      var waGen=genTel.replace(/\D/g,"");
+      var msgGen="Hola, vi el consultorio de "+display+(plataforma?" en "+plataforma:"")+" y me interesa tener mi propio consultorio digital. ¿Me puedes dar información?";
+      genBtns.push('<a class="footer-gen-btn" href="https://wa.me/52'+encodeURIComponent(waGen)+'?text='+encodeURIComponent(msgGen)+'" target="_blank" rel="noopener">💬 WhatsApp</a>');
+    }
+    if(genMail){
+      var asunto="Quiero mi consultorio digital"+(plataforma?" — "+plataforma:"");
+      var cuerpo="Hola,\n\nVi el consultorio de "+display+(plataforma?" en "+plataforma:"")+"\ny me interesa obtener el mío propio.\n\n¿Me pueden dar información sobre planes y precios?\n\nGracias.";
+      genBtns.push('<a class="footer-gen-btn" href="mailto:'+encodeURIComponent(genMail)+'?subject='+encodeURIComponent(asunto)+'&body='+encodeURIComponent(cuerpo)+'">✉️ Correo</a>');
+    }
+    setHtml("footer-gen-btns", genBtns.join(""));
+  }
+
+  // ── FECHA DEFAULT FORM ──
+  var manana=new Date(); manana.setDate(manana.getDate()+1);
+  document.getElementById("f-fecha").value=manana.toISOString().slice(0,10);
+}
+
+// ── SERVICIOS ──
+function selServicio(el,svc){
+  document.querySelectorAll(".svc-chip").forEach(function(c){ c.classList.remove("sel"); });
+  el.classList.add("sel");
+  var sel=document.getElementById("f-servicio");
+  for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===svc){ sel.selectedIndex=i; break; } }
+  abrirModal();
+}
+
+// ── MODAL SOLICITUD ──
+function abrirModal(){
+  document.getElementById("form-view").style.display="block";
+  document.getElementById("ok-view").style.display="none";
+  hideBanner();
+  document.getElementById("overlay").classList.add("on");
+  setTimeout(function(){ document.getElementById("f-nombre").focus(); },200);
+}
+function cerrarModal(){
+  document.getElementById("overlay").classList.remove("on");
+}
+function cerrarOverlay(e){
+  if(e.target===document.getElementById("overlay")) cerrarModal();
+}
+function hideBanner(){ document.getElementById("banner-err").style.display="none"; }
+function showBanner(msg){ var b=document.getElementById("banner-err"); b.textContent=msg; b.style.display="block"; }
+
+async function enviarSolicitud(){
+  var nombre  = (document.getElementById("f-nombre").value||"").trim();
+  var tel     = (document.getElementById("f-tel").value||"").trim();
+  var email   = (document.getElementById("f-email").value||"").trim();
+  var servicio= document.getElementById("f-servicio").value;
+  var fecha   = document.getElementById("f-fecha").value;
+  var hora    = document.getElementById("f-hora").value;
+  var motivo  = (document.getElementById("f-motivo").value||"").trim();
+  if(!nombre){ showBanner("❌ Tu nombre es requerido."); return; }
+  if(!tel){ showBanner("❌ Tu teléfono es requerido."); return; }
+  var btn=document.getElementById("btn-enviar");
+  btn.disabled=true; btn.textContent="⏳ Enviando...";
+  hideBanner();
+  try{
+    var fd=new FormData();
+    fd.append("action","crearSolicitud");
+    fd.append("lic",LIC);
+    fd.append("data",JSON.stringify({nombre:nombre,telefono:tel,email:email,servicio:servicio,fecha:fecha,hora:hora,motivo:motivo}));
+    var r=await fetch(SCRIPT_URL,{method:"POST",body:fd}).then(function(res){ return res.json(); });
+    if(r.ok){
+      document.getElementById("form-view").style.display="none";
+      document.getElementById("ok-view").style.display="block";
+      setText("ok-sub","Tu solicitud fue enviada. Te contactaremos pronto para confirmar tu cita, "+nombre+".");
+    } else { showBanner("❌ "+(r.msg||"Error al enviar. Intenta de nuevo.")); }
+  }catch(e){ showBanner("❌ Error de conexión: "+e.message); }
+  finally{ btn.disabled=false; btn.textContent="✅ Enviar solicitud"; }
+}
+
+// ── QR ──
+function abrirQR(){
+  var canvas=document.getElementById("qr-canvas");
+  var url=window.location.href;
+  var plataforma=CFG.plataforma||"";
+  var prefijo=CFG.prefijo||""; var nombreCom=CFG.nombre_com||CFG.nombre_legal||"";
+  var display=prefijo?prefijo+" "+nombreCom:nombreCom;
+  setText("qr-title","QR — "+display);
+  setText("qr-sub",(plataforma||"Consultorio")+" · "+display);
+  dibujarQR(canvas,url,display,plataforma);
+  document.getElementById("overlay-qr").classList.add("on");
+}
+function cerrarQR(e){ if(e.target===document.getElementById("overlay-qr")) cerrarModal2(); }
+function cerrarModal2(){ document.getElementById("overlay-qr").classList.remove("on"); }
+
+function dibujarQR(canvas,url,nombre,plataforma){
+  var size=280;
+  canvas.width=size; canvas.height=size+60;
+  var ctx=canvas.getContext("2d");
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#0D9488"; ctx.fillRect(0,0,canvas.width,40);
+  ctx.fillStyle="#fff"; ctx.font="bold 13px DM Sans,sans-serif"; ctx.textAlign="center";
+  ctx.fillText(nombre||"Consultorio",size/2,26);
+  // Patrón QR simplificado
+  ctx.fillStyle="#000";
+  var modules=21; var mSize=Math.floor((size-40)/modules);
+  var startX=Math.floor((size-modules*mSize)/2);
+  var startY=46;
+  for(var r=0;r<modules;r++){
+    for(var c=0;c<modules;c++){
+      var fill=qrModule(r,c,url);
+      ctx.fillStyle=fill?"#000":"#fff";
+      ctx.fillRect(startX+c*mSize,startY+r*mSize,mSize-1,mSize-1);
+    }
+  }
+  // Footer en QR
+  ctx.fillStyle="#F0FDF9"; ctx.fillRect(0,size+20,size,40);
+  ctx.fillStyle="#0D9488"; ctx.font="bold 11px DM Sans,sans-serif";
+  ctx.fillText(plataforma||"", size/2, size+38);
+}
+
+function qrModule(r,c,seed){
+  var hash=0; var s=String(r*31+c+seed.length); for(var i=0;i<s.length;i++) hash=(hash*31+s.charCodeAt(i))&0xfffff;
+  // Esquinas (finder patterns)
+  if((r<7&&c<7)||(r<7&&c>=14)||(r>=14&&c<7)) return !((r===0||r===6||c===0||c===6)||(r>1&&r<5&&c>1&&c<5));
+  return (hash%3)===0;
+}
+
+function descargarQR(){
+  var canvas=document.getElementById("qr-canvas");
+  var a=document.createElement("a"); a.download="consultorio-qr.png"; a.href=canvas.toDataURL("image/png"); a.click();
+}
+
+// ── ERROR ──
+function mostrarError(msg){
+  document.getElementById("loader").style.display="none";
+  document.getElementById("app").style.display="block";
+  document.querySelector(".hero").innerHTML='<div class="error-state"><h2>⚠️ Error</h2><p>'+esc(msg)+'</p></div>';
+  document.querySelector(".cta-wrap").style.display="none";
+}
+
+// polyfill t()
+function t(v){ return v===undefined||v===null?"":String(v).trim(); }
+</script>
+</body>
+</html>
