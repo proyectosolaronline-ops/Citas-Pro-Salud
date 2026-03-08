@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title id="page-title">Aviso de Privacidad</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--teal:#0D9488;--teal-d:#0a7870;--teal-l:#f0faf9;--ink:#0f2027;--slate:#475569;--muted:#94a3b8;--border:#e2e8f0;--white:#fff;--radius:14px}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#fafbfc;line-height:1.8;font-size:15px}
+a{color:var(--teal)}a:hover{text-decoration:underline}
+/* LOADING / ERROR */
+#pp-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:14px;color:var(--slate)}
+.spinner{width:36px;height:36px;border:3px solid var(--teal-l);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#pp-error{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:12px;text-align:center;padding:32px}
+#pp-error .err-icon{font-size:52px}
+#pp-error h2{font-family:'DM Serif Display',serif;font-size:22px}
+#pp-error p{color:var(--slate);font-size:14px;max-width:380px}
+#pp-content{display:none}
+/* HEADER */
+.pp-header{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);color:#fff;padding:52px 24px 44px;text-align:center}
+.pp-header .eyebrow{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;margin-bottom:14px}
+.pp-header h1{font-family:'DM Serif Display',serif;font-size:clamp(24px,5vw,38px);line-height:1.2;margin-bottom:10px}
+.pp-header .sub{font-size:14px;opacity:.85;max-width:560px;margin:0 auto 18px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:5px 16px;font-size:12px;font-weight:600}
+/* WRAP */
+.pp-wrap{max-width:780px;margin:0 auto;padding:40px 24px 80px}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--teal);margin-bottom:28px;text-decoration:none;opacity:.8;transition:.2s}
+.back-link:hover{opacity:1}
+/* CARD MÉDICO */
+.resp-card{background:var(--white);border:1.5px solid var(--teal-l);border-radius:var(--radius);padding:22px 26px;margin-bottom:36px;box-shadow:0 2px 16px rgba(13,148,136,.08);display:flex;gap:18px;align-items:flex-start}
+.resp-avatar{width:58px;height:58px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:22px;flex-shrink:0;overflow:hidden}
+.resp-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.resp-info{flex:1;min-width:0}
+.resp-info h3{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:2px}
+.resp-esp{font-size:13px;color:var(--teal);font-weight:600;margin-bottom:10px}
+.resp-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px}
+.chip{background:var(--teal-l);border:1px solid #c7f4ed;border-radius:99px;padding:3px 12px;font-size:12px;font-weight:600;color:var(--teal-d)}
+.plat-note{font-size:12px;color:var(--muted)}
+/* ÍNDICE */
+.pp-index{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:36px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.pp-index h3{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.pp-index ol{padding-left:18px;columns:2;gap:24px}
+@media(max-width:520px){.pp-index ol{columns:1}}
+.pp-index li{font-size:13px;margin-bottom:5px}
+.pp-index a{color:var(--teal);font-weight:500;text-decoration:none}
+/* SECCIONES */
+.pp-section{margin-bottom:44px;scroll-margin-top:20px}
+.pp-section h2{font-family:'DM Serif Display',serif;font-size:21px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--teal-l);display:flex;align-items:center;gap:12px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;flex-shrink:0}
+.pp-section p{margin-bottom:12px}
+.pp-section ul,.pp-section ol{padding-left:22px;margin-bottom:12px}
+.pp-section li{margin-bottom:6px}
+/* TABLA */
+.pp-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+.pp-table th{background:var(--teal-l);color:var(--teal-d);font-weight:700;text-align:left;padding:9px 13px;border:1px solid #c7f4ed}
+.pp-table td{padding:8px 13px;border:1px solid var(--border);vertical-align:top}
+.pp-table tr:nth-child(even) td{background:#fafcff}
+.tag-si{display:inline-block;background:#dcfce7;color:#166534;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px}
+.tag-no{display:inline-block;background:#f1f5f9;color:var(--slate);font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px}
+.tag-sens{display:inline-block;background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px}
+/* BOXES */
+.pp-box{border-radius:var(--radius);padding:14px 18px;margin:14px 0}
+.pp-box p{margin:0;font-size:14px}
+.pp-box.green{background:var(--teal-l);border:1.5px solid #b0e8e2}
+.pp-box.green strong{color:var(--teal-d)}
+.pp-box.yellow{background:#fef9e7;border:1.5px solid #fde68a}
+.pp-box.yellow strong{color:#92400e}
+.pp-box.blue{background:#eff6ff;border:1.5px solid #bfdbfe}
+.pp-box.blue strong{color:#1d4ed8}
+/* MOCK FORMULARIO */
+.screen-mock{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.mock-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.mock-title::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+.mock-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+@media(max-width:480px){.mock-fields{grid-template-columns:1fr}}
+.mf{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+.mf .mf-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.mf .mf-v{font-size:13px;color:var(--ink);margin-top:1px}
+.mf.req .mf-l::after{content:' *';color:var(--teal)}
+.mf.opt .mf-l{color:#b8c8d0}
+.mf.sens{border-color:#fde68a;background:#fefce8}
+.mf.sens .mf-l::after{content:' (sensible)';color:#d97706;font-style:italic}
+.mf.full{grid-column:1/-1}
+/* ARCO */
+.arco-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:480px){.arco-grid{grid-template-columns:1fr}}
+.arco-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px}
+.arco-card h4{font-size:13px;font-weight:700;color:var(--teal-d);margin-bottom:4px}
+.arco-card p{font-size:13px;color:var(--slate);margin:0;line-height:1.6}
+/* CONTACTO */
+.pp-contact{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:36px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.pp-contact h2{font-family:'DM Serif Display',serif;font-size:19px;margin-bottom:16px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.contact-grid{grid-template-columns:1fr}}
+.contact-item label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:3px}
+.contact-item p{font-size:14px;font-weight:500}
+/* FOOTER */
+.pp-footer{text-align:center;padding:28px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);line-height:1.9}
+</style>
+</head>
+<body>
+
+<div id="pp-loading">
+  <div class="spinner"></div>
+  <span>Cargando aviso de privacidad…</span>
+</div>
+
+<div id="pp-error">
+  <div class="err-icon">⚠️</div>
+  <h2>Consultorio no encontrado</h2>
+  <p id="pp-error-msg">No fue posible cargar la información. Verifica la URL.</p>
+</div>
+
+<div id="pp-content">
+
+  <div class="pp-header">
+    <div class="eyebrow">Documento legal</div>
+    <h1>Aviso de Privacidad</h1>
+    <p class="sub">Información sobre el tratamiento de tus datos al solicitar una cita en <span id="hdr-plat">—</span>.</p>
+    <div class="badges">
+      <span class="badge" id="hdr-slug">—</span>
+      <span class="badge">LFPDPPP · México</span>
+      <span class="badge" id="hdr-anio">2026</span>
+    </div>
+  </div>
+
+  <div class="pp-wrap">
+
+    <a class="back-link" id="link-back" href="#">← Volver al consultorio</a>
+
+    <!-- CARD RESPONSABLE -->
+    <div class="resp-card">
+      <div class="resp-avatar" id="resp-avatar">?</div>
+      <div class="resp-info">
+        <h3 id="resp-nombre">—</h3>
+        <div class="resp-esp" id="resp-esp"></div>
+        <div class="resp-chips">
+          <span class="chip" id="chip-cedula" style="display:none"></span>
+          <span class="chip" id="chip-tel" style="display:none"></span>
+          <span class="chip" id="chip-slug" style="display:none"></span>
+        </div>
+        <p class="plat-note">Consultorio registrado en <strong id="card-plat">—</strong></p>
+      </div>
+    </div>
+
+    <!-- ÍNDICE -->
+    <div class="pp-index">
+      <h3>Contenido</h3>
+      <ol>
+        <li><a href="#responsable">Responsable del tratamiento</a></li>
+        <li><a href="#datos">Datos que recabamos</a></li>
+        <li><a href="#finalidades">Para qué usamos tus datos</a></li>
+        <li><a href="#sensibles">Datos de salud (sensibles)</a></li>
+        <li><a href="#transferencias">Con quién compartimos</a></li>
+        <li><a href="#derechos">Tus derechos ARCO</a></li>
+        <li><a href="#almacenamiento">Almacenamiento y retención</a></li>
+        <li><a href="#seguridad">Medidas de seguridad</a></li>
+        <li><a href="#cookies">Cookies y almacenamiento local</a></li>
+        <li><a href="#cambios">Cambios a este aviso</a></li>
+      </ol>
+    </div>
+
+    <div class="pp-box green">
+      <p><strong>Resumen:</strong> Cuando solicitas una cita en este consultorio pedimos únicamente tu nombre y teléfono (obligatorios) y, de forma opcional, email, motivo de visita y fecha/hora preferida. No vendemos ni rentamos tu información. Solo el médico de este consultorio puede ver tus datos.</p>
+    </div>
+
+    <!-- 1. RESPONSABLE -->
+    <div class="pp-section" id="responsable">
+      <h2><span class="num">1</span>Responsable del tratamiento</h2>
+      <p>Los datos que proporcionas son tratados por el médico titular de este consultorio, quien opera dentro de la plataforma <strong id="s1-plat">—</strong>:</p>
+      <table class="pp-table">
+        <tr><th>Dato</th><th>Información</th></tr>
+        <tr><td>Médico responsable</td><td id="tbl-nombre">—</td></tr>
+        <tr><td>Especialidad</td><td id="tbl-esp">—</td></tr>
+        <tr><td>Cédula profesional</td><td id="tbl-cedula">—</td></tr>
+        <tr><td>Teléfono del consultorio</td><td id="tbl-tel">—</td></tr>
+        <tr><td>Dirección</td><td id="tbl-dir">—</td></tr>
+        <tr><td>URL del consultorio</td><td id="tbl-url">—</td></tr>
+        <tr><td>Plataforma tecnológica</td><td id="tbl-plat">—</td></tr>
+        <tr><td>Correo de privacidad</td><td><a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a></td></tr>
+      </table>
+    </div>
+
+    <!-- 2. DATOS -->
+    <div class="pp-section" id="datos">
+      <h2><span class="num">2</span>Datos personales que recabamos</h2>
+      <p>La pantalla pública del consultorio contiene el siguiente formulario. Los campos con <strong>*</strong> son obligatorios:</p>
+      <div class="screen-mock">
+        <div class="mock-title">Formulario "Solicitar cita" — pantalla pública del consultorio</div>
+        <div class="mock-fields">
+          <div class="mf req"><div class="mf-l">Nombre completo</div><div class="mf-v">Tu nombre completo</div></div>
+          <div class="mf req"><div class="mf-l">Teléfono</div><div class="mf-v">55 1234 5678</div></div>
+          <div class="mf opt"><div class="mf-l">Email</div><div class="mf-v">correo@ejemplo.com</div></div>
+          <div class="mf opt"><div class="mf-l">Servicio</div><div class="mf-v">Consulta general…</div></div>
+          <div class="mf opt"><div class="mf-l">Fecha preferida</div><div class="mf-v">dd / mm / aaaa</div></div>
+          <div class="mf opt"><div class="mf-l">Hora preferida</div><div class="mf-v">HH : MM</div></div>
+          <div class="mf opt sens full"><div class="mf-l">Motivo de consulta</div><div class="mf-v">Describe brevemente el motivo de tu visita…</div></div>
+        </div>
+      </div>
+      <table class="pp-table">
+        <tr><th>Campo</th><th>Tipo</th><th>Obligatorio</th><th>Categoría LFPDPPP</th></tr>
+        <tr><td>Nombre completo</td><td>Identificación</td><td><span class="tag-si">Sí</span></td><td>Dato personal ordinario</td></tr>
+        <tr><td>Teléfono</td><td>Contacto</td><td><span class="tag-si">Sí</span></td><td>Dato personal ordinario</td></tr>
+        <tr><td>Correo electrónico</td><td>Contacto</td><td><span class="tag-no">No</span></td><td>Dato personal ordinario</td></tr>
+        <tr><td>Servicio solicitado</td><td>Logístico</td><td><span class="tag-no">No</span></td><td>Dato personal ordinario</td></tr>
+        <tr><td>Fecha y hora preferida</td><td>Logístico</td><td><span class="tag-no">No</span></td><td>Dato personal ordinario</td></tr>
+        <tr><td>Motivo de consulta</td><td>Salud</td><td><span class="tag-no">No</span></td><td><span class="tag-sens">Dato sensible</span></td></tr>
+      </table>
+      <p>Al enviar la solicitud el sistema genera un <strong>token de seguimiento</strong> (ej: <code id="token-ejemplo">slug_a1b2c3</code>) para que consultes el estado de tu cita. Este token no contiene datos personales.</p>
+      <div class="pp-box blue">
+        <p><strong>Lo que NO recabamos:</strong> No pedimos CURP, número de seguridad social, historial clínico, datos bancarios ni información biométrica. Esta pantalla no instala rastreadores ni publicidad.</p>
+      </div>
+    </div>
+
+    <!-- 3. FINALIDADES -->
+    <div class="pp-section" id="finalidades">
+      <h2><span class="num">3</span>Para qué usamos tus datos</h2>
+      <p><strong>Finalidades primarias</strong> — necesarias para el servicio, no requieren consentimiento adicional:</p>
+      <ul>
+        <li>Registrar tu solicitud de cita y asignarle un folio.</li>
+        <li>Mostrar la solicitud al médico para que la confirme, cancele o reprograme.</li>
+        <li>Permitirte consultar el estado de tu cita con tu token de seguimiento.</li>
+        <li>Notificarte sobre cambios en tu cita vía email o WhatsApp, si los proporcionaste.</li>
+      </ul>
+      <p><strong>Finalidades secundarias</strong> — opcionales, puedes oponerte en cualquier momento:</p>
+      <ul>
+        <li>Análisis estadísticos anónimos del uso de la plataforma.</li>
+        <li>Mejoras al servicio basadas en patrones de uso.</li>
+      </ul>
+      <div class="pp-box green">
+        <p><strong>¿Cómo oponerte?</strong> Escribe a <a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a> con el asunto <em>"Oposición finalidades secundarias"</em> e indica tu nombre y teléfono registrado.</p>
+      </div>
+    </div>
+
+    <!-- 4. SENSIBLES -->
+    <div class="pp-section" id="sensibles">
+      <h2><span class="num">4</span>Datos de salud (sensibles)</h2>
+      <p>El campo <strong>"Motivo de consulta"</strong> puede contener información sobre tu salud, clasificado como <strong>dato sensible</strong> conforme al artículo 3, fracción VI de la LFPDPPP.</p>
+      <ul>
+        <li>Su captura es <strong>completamente opcional</strong>.</li>
+        <li>Al enviarlo otorgas <strong>consentimiento expreso</strong> para que el médico lo use exclusivamente para preparar tu consulta.</li>
+        <li>Solo el médico titular de este consultorio puede leerlo. Ningún otro médico de la plataforma tiene acceso.</li>
+        <li>No se usa para mercadotecnia ni se comparte con terceros.</li>
+      </ul>
+      <div class="pp-box yellow">
+        <p><strong>Si prefieres no compartirlo en línea</strong>, deja el campo vacío y describe el motivo en persona durante tu consulta.</p>
+      </div>
+    </div>
+
+    <!-- 5. TRANSFERENCIAS -->
+    <div class="pp-section" id="transferencias">
+      <h2><span class="num">5</span>Con quién compartimos tu información</h2>
+      <p>No vendemos ni rentamos datos personales. Solo los compartimos en estos supuestos:</p>
+      <table class="pp-table">
+        <tr><th>Destinatario</th><th>Motivo</th><th>¿Requiere consentimiento?</th></tr>
+        <tr><td>El médico de este consultorio</td><td>Gestionar y confirmar tu cita — finalidad principal del servicio</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td>Google LLC (Google Sheets / Apps Script)</td><td>Infraestructura técnica de almacenamiento</td><td><span class="tag-no">No — encargado del tratamiento</span></td></tr>
+        <tr><td>Autoridades competentes</td><td>Requerimiento legal o resolución judicial</td><td><span class="tag-no">No aplica</span></td></tr>
+      </table>
+      <p>Google LLC opera bajo estándares de protección adecuados conforme al artículo 37 de la LFPDPPP.</p>
+    </div>
+
+    <!-- 6. ARCO -->
+    <div class="pp-section" id="derechos">
+      <h2><span class="num">6</span>Tus derechos ARCO</h2>
+      <div class="arco-grid">
+        <div class="arco-card"><h4>🔍 Acceso</h4><p>Saber qué datos tuyos tenemos y cómo los usamos.</p></div>
+        <div class="arco-card"><h4>✏️ Rectificación</h4><p>Corregir datos inexactos o incompletos.</p></div>
+        <div class="arco-card"><h4>🗑️ Cancelación</h4><p>Solicitar que eliminemos tus datos cuando ya no sean necesarios.</p></div>
+        <div class="arco-card"><h4>🚫 Oposición</h4><p>Oponerte al tratamiento para finalidades específicas.</p></div>
+      </div>
+      <p><strong>Cómo ejercerlos:</strong> Envía tu solicitud a <a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a> con tu nombre, teléfono registrado y copia de identificación oficial. Responderemos en máximo <strong>20 días hábiles</strong>; si procede, el cambio se hará efectivo en los siguientes <strong>15 días hábiles</strong>.</p>
+      <p>Si no quedas satisfecho puedes acudir al <strong>INAI</strong> en <a href="https://www.inai.org.mx" target="_blank" rel="noopener">www.inai.org.mx</a>.</p>
+    </div>
+
+    <!-- 7. ALMACENAMIENTO -->
+    <div class="pp-section" id="almacenamiento">
+      <h2><span class="num">7</span>Almacenamiento y retención</h2>
+      <ul>
+        <li>Los datos se guardan en la hoja privada del médico (Google Sheets), accesible solo por él.</li>
+        <li>Se conservan mientras el médico tenga cuenta activa. Al cancelarla, se eliminan en máximo 30 días.</li>
+        <li>El token de seguimiento expira funcionalmente cuando la cita llega a un estado final (Confirmada / Cancelada).</li>
+        <li>Puedes solicitar la eliminación de tus datos ejerciendo tu derecho de Cancelación.</li>
+      </ul>
+    </div>
+
+    <!-- 8. SEGURIDAD -->
+    <div class="pp-section" id="seguridad">
+      <h2><span class="num">8</span>Medidas de seguridad</h2>
+      <ul>
+        <li><strong>HTTPS obligatorio</strong> — toda comunicación viaja cifrada con TLS.</li>
+        <li><strong>Acceso restringido por consultorio</strong> — cada médico solo ve las solicitudes de su propio consultorio.</li>
+        <li><strong>Tokens de sesión firmados (HMAC-SHA256)</strong> — las sesiones del médico se autentican criptográficamente con vencimiento automático de 8 horas.</li>
+        <li><strong>Rate limiting</strong> — bloqueamos intentos repetidos de acceso no autorizado.</li>
+        <li><strong>Auditoría interna</strong> — registramos accesos y modificaciones para detectar actividad inusual.</li>
+      </ul>
+      <p>Ante un incidente que comprometa tus datos, te notificaremos conforme al artículo 20 de la LFPDPPP.</p>
+    </div>
+
+    <!-- 9. COOKIES -->
+    <div class="pp-section" id="cookies">
+      <h2><span class="num">9</span>Cookies y almacenamiento local</h2>
+      <p>La pantalla pública <strong>no instala cookies</strong>. Usa <code>localStorage</code> solo para funciones técnicas del panel del médico:</p>
+      <table class="pp-table">
+        <tr><th>Clave</th><th>Contenido</th><th>Duración</th><th>¿Afecta al paciente?</th></tr>
+        <tr><td><code>sp_user</code></td><td>Sesión del médico administrador</td><td>8 horas o al cerrar sesión</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><code>sp_token</code></td><td>Token firmado del médico</td><td>8 horas o al cerrar sesión</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><code>sp_url</code></td><td>URL del backend (configuración técnica)</td><td>Persistente</td><td><span class="tag-no">No</span></td></tr>
+      </table>
+      <p>Como paciente, <strong>ningún dato tuyo se guarda en tu dispositivo</strong>. No usamos rastreadores, píxeles publicitarios ni analítica de terceros.</p>
+    </div>
+
+    <!-- 10. CAMBIOS -->
+    <div class="pp-section" id="cambios">
+      <h2><span class="num">10</span>Cambios a este aviso</h2>
+      <p>Ante cambios relevantes publicaremos la versión actualizada en esta misma URL y, si tienes email registrado, te notificaremos con al menos <strong>30 días de anticipación</strong>. El uso continuado del servicio constituye tu aceptación.</p>
+    </div>
+
+    <!-- CONTACTO -->
+    <div class="pp-contact">
+      <h2>📬 Contacto para asuntos de privacidad</h2>
+      <div class="contact-grid">
+        <div class="contact-item"><label>Plataforma</label><p id="contact-plat">—</p></div>
+        <div class="contact-item"><label>Correo de privacidad</label><p><a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a></p></div>
+        <div class="contact-item"><label>Plazo de respuesta</label><p>Máximo 20 días hábiles</p></div>
+        <div class="contact-item"><label>Autoridad supervisora</label><p><a href="https://www.inai.org.mx" target="_blank" rel="noopener">INAI · inai.org.mx</a></p></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pp-footer">
+    <p id="footer-plat">—</p>
+    <p>Aviso conforme a la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong> y su Reglamento.</p>
+  </div>
+
+</div><!-- /pp-content -->
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────
+var SCRIPT_URL_FALLBACK = "https://script.google.com/macros/s/AKfycbwu7VVHC3RgS1fXwOtnh3ebHf4Md9xVmYF8cVZznKekPVEDj79izRcQmECYPH4GLIsG/exec";
+
+function getScriptUrl() {
+  try {
+    var u = localStorage.getItem("sp_url");
+    if (u) return u;
+  } catch(e) {}
+  return SCRIPT_URL_FALLBACK;
+}
+
+function esc(s) {
+  return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+(function init() {
+  var params = new URLSearchParams(window.location.search);
+  var lic = params.get("lic") || "";
+
+  if (!lic) {
+    mostrarError("Falta el parámetro ?lic= en la URL.");
+    return;
+  }
+
+  fetch(getScriptUrl() + "?action=getCfgPublica&lic=" + encodeURIComponent(lic))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.ok) { mostrarError(data.msg || "Consultorio no encontrado."); return; }
+      renderAviso(data.cfg, lic);
+    })
+    .catch(function() {
+      mostrarError("No se pudo conectar con el servidor. Verifica tu conexión.");
+    });
+})();
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function renderAviso(cfg, lic) {
+  // Datos del médico
+  var prefijo  = cfg.prefijo || "";
+  var nombre   = cfg.nombre_com || cfg.nombre_legal || "Médico";
+  var display  = prefijo ? prefijo + " " + nombre : nombre;
+  var esp      = cfg.especialidad_txt || cfg.especialidad || "";
+  var espMap   = { medico:"Medicina General", dentista:"Odontología", psicologo:"Psicología", quiropractico:"Quiropráctica", nutriologo:"Nutriología" };
+  var espTxt   = espMap[esp] || esp;
+  var cedula   = cfg.cedula || "";
+  var tel      = cfg.telefono || "";
+  var dir      = cfg.direccion || "";
+
+  // Nombre de la plataforma — viene del campo nombre_generador via scriptUrl/cfg
+  // El backend lo inyecta en cfg como "plataforma" o lo leemos de nombre_generador
+  // En getCfgPublica el script devuelve cfg.nombre_legal del generador o usamos fallback
+  var plataforma = cfg.plataforma || "Consultas Saludables Pro";
+
+  var anio = new Date().getFullYear();
+  var urlConsultorio = window.location.origin + window.location.pathname.replace("aviso_privacidad.html","") + "consultorio_v4.html?lic=" + lic;
+
+  // ── HEAD / TITLE ──
+  document.getElementById("page-title").textContent = "Aviso de Privacidad — " + display;
+
+  // ── HEADER ──
+  setText("hdr-plat", plataforma);
+  setText("hdr-slug", "Consultorio: " + lic);
+  setText("hdr-anio", String(anio));
+
+  // ── LINK BACK ──
+  var linkBack = document.getElementById("link-back");
+  linkBack.href = "consultorio_v4.html?lic=" + encodeURIComponent(lic);
+  linkBack.textContent = "← Volver al consultorio de " + display;
+
+  // ── AVATAR ──
+  var avatarEl = document.getElementById("resp-avatar");
+  if (cfg.logo && cfg.logo.length > 100) {
+    avatarEl.innerHTML = '<img src="' + cfg.logo + '" alt="Logo"/>';
+  } else {
+    var partes = nombre.split(" ");
+    avatarEl.textContent = ((partes[0]||"")[0]||"").toUpperCase() + ((partes[1]||"")[0]||"").toUpperCase();
+  }
+
+  // ── CARD MÉDICO ──
+  setText("resp-nombre", display);
+  setText("resp-esp", espTxt);
+  setText("card-plat", plataforma);
+  setChip("chip-cedula", cedula ? "Céd. " + cedula : "");
+  setChip("chip-tel", tel ? "☎ " + tel : "");
+  setChip("chip-slug", lic);
+
+  // ── TABLA SECCIÓN 1 ──
+  setText("tbl-nombre", display);
+  setText("tbl-esp", espTxt || "—");
+  setText("tbl-cedula", cedula || "—");
+  setText("tbl-tel", tel || "—");
+  setText("tbl-dir", dir || "—");
+  document.getElementById("tbl-url").innerHTML = '<a href="' + esc(urlConsultorio) + '" target="_blank">' + esc(urlConsultorio) + '</a>';
+  setText("tbl-plat", plataforma);
+  setText("s1-plat", plataforma);
+
+  // ── TOKEN EJEMPLO ──
+  setText("token-ejemplo", lic + "_a1b2c3");
+
+  // ── CONTACTO / FOOTER ──
+  setText("contact-plat", plataforma);
+  setText("footer-plat", "© " + anio + " " + plataforma);
+
+  // ── MOSTRAR ──
+  document.getElementById("pp-loading").style.display = "none";
+  document.getElementById("pp-content").style.display = "block";
+}
+
+function setText(id, val) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function setChip(id, val) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (val) { el.textContent = val; el.style.display = "inline-block"; }
+  else     { el.style.display = "none"; }
+}
+
+function mostrarError(msg) {
+  document.getElementById("pp-loading").style.display = "none";
+  document.getElementById("pp-error").style.display = "flex";
+  document.getElementById("pp-error-msg").textContent = msg;
+}
+</script>
+</body>
+</html>
