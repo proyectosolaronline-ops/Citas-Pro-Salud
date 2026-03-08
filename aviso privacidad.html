@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Aviso de Privacidad — SaludPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f2027;--slate:#475569;--muted:#94a3b8;
+  --teal:#0D9488;--teal-l:#f0faf9;--border:#e2e8f0;
+  --white:#fff;--radius:14px;
+}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#fafbfc;line-height:1.75;font-size:15px}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── HEADER ── */
+.pp-header{background:var(--teal);color:#fff;padding:48px 24px 40px;text-align:center}
+.pp-header .eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.75;margin-bottom:12px}
+.pp-header h1{font-family:'DM Serif Display',serif;font-size:clamp(28px,5vw,42px);line-height:1.15;margin-bottom:12px}
+.pp-header .meta{font-size:13px;opacity:.8;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.pp-header .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:4px 14px;font-size:12px;font-weight:600}
+
+/* ── LAYOUT ── */
+.pp-wrap{max-width:780px;margin:0 auto;padding:48px 24px 80px}
+
+/* ── INDEX ── */
+.pp-index{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;margin-bottom:40px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.pp-index h2{font-family:'DM Serif Display',serif;font-size:16px;color:var(--slate);margin-bottom:14px}
+.pp-index ol{padding-left:20px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
+@media(max-width:520px){.pp-index ol{grid-template-columns:1fr}}
+.pp-index li{font-size:13px}
+.pp-index a{color:var(--teal);font-weight:500}
+
+/* ── SECCIONES ── */
+.pp-section{margin-bottom:40px}
+.pp-section h2{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--teal-l);display:flex;align-items:center;gap:10px}
+.pp-section h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.pp-section p{margin-bottom:12px;color:var(--ink)}
+.pp-section ul,.pp-section ol{padding-left:22px;margin-bottom:12px}
+.pp-section li{margin-bottom:6px}
+.pp-section strong{color:var(--ink)}
+
+/* ── TABLA ── */
+.pp-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.pp-table th{background:var(--teal-l);color:var(--teal);font-weight:700;text-align:left;padding:10px 14px;border:1px solid #d1faf4}
+.pp-table td{padding:9px 14px;border:1px solid var(--border);vertical-align:top}
+.pp-table tr:nth-child(even) td{background:#fafcff}
+
+/* ── HIGHLIGHT BOX ── */
+.pp-box{background:var(--teal-l);border:1.5px solid #b0e8e2;border-radius:var(--radius);padding:18px 20px;margin:16px 0}
+.pp-box.warn{background:#fef9e7;border-color:#fde68a}
+.pp-box.blue{background:#eff6ff;border-color:#bfdbfe}
+.pp-box p{margin:0;font-size:14px}
+.pp-box strong{color:var(--teal)}
+.pp-box.warn strong{color:#92400e}
+.pp-box.blue strong{color:#1d4ed8}
+
+/* ── CONTACTO CARD ── */
+.pp-contact{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:40px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.pp-contact h2{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:16px}
+.pp-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.pp-contact-grid{grid-template-columns:1fr}}
+.pp-contact-item label{font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;display:block;margin-bottom:4px}
+.pp-contact-item p{font-size:14px;color:var(--ink);font-weight:500}
+
+/* ── FOOTER ── */
+.pp-footer{text-align:center;padding:32px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="pp-header">
+  <div class="eyebrow">Documento legal</div>
+  <h1>Aviso de Privacidad</h1>
+  <div class="meta">
+    <span>SaludPro — Plataforma de Consultorios Médicos</span>
+    <span class="badge">Última actualización: Marzo 2026</span>
+    <span class="badge">LFPDPPP México</span>
+  </div>
+</div>
+
+<div class="pp-wrap">
+
+  <!-- ÍNDICE -->
+  <div class="pp-index">
+    <h2>Contenido del aviso</h2>
+    <ol>
+      <li><a href="#identidad">Identidad del Responsable</a></li>
+      <li><a href="#datos">Datos Personales Recabados</a></li>
+      <li><a href="#finalidades">Finalidades del Tratamiento</a></li>
+      <li><a href="#transferencias">Transferencias</a></li>
+      <li><a href="#derechos">Derechos ARCO</a></li>
+      <li><a href="#cookies">Cookies y Tecnologías</a></li>
+      <li><a href="#sensibles">Datos Sensibles</a></li>
+      <li><a href="#menores">Menores de Edad</a></li>
+      <li><a href="#seguridad">Medidas de Seguridad</a></li>
+      <li><a href="#cambios">Cambios al Aviso</a></li>
+    </ol>
+  </div>
+
+  <div class="pp-box">
+    <p><strong>Resumen ejecutivo:</strong> SaludPro es una plataforma tecnológica que facilita la gestión de citas entre médicos y pacientes. Recabamos únicamente los datos necesarios para prestar el servicio. No vendemos, rentamos ni compartimos tu información con terceros con fines comerciales.</p>
+  </div>
+
+  <!-- 1. IDENTIDAD -->
+  <div class="pp-section" id="identidad">
+    <h2><span class="num">1</span>Identidad y domicilio del Responsable</h2>
+    <p>El responsable del tratamiento de tus datos personales es:</p>
+    <table class="pp-table">
+      <tr><th>Dato</th><th>Información</th></tr>
+      <tr><td><strong>Nombre / Razón social</strong></td><td>[TU NOMBRE O EMPRESA S.A. DE C.V.]</td></tr>
+      <tr><td><strong>RFC</strong></td><td>[XXXXXXXXXX000]</td></tr>
+      <tr><td><strong>Domicilio</strong></td><td>[Calle, Número, Colonia, Ciudad, C.P., Estado]</td></tr>
+      <tr><td><strong>Correo de contacto</strong></td><td>privacidad@saludpro.mx</td></tr>
+      <tr><td><strong>Teléfono</strong></td><td>[55 XXXX XXXX]</td></tr>
+      <tr><td><strong>Sitio web</strong></td><td>https://saludpro.mx</td></tr>
+    </table>
+    <div class="pp-box warn">
+      <p><strong>Nota:</strong> Completa los campos entre corchetes antes de publicar este aviso. Publicar un aviso incompleto puede constituir una infracción a la LFPDPPP.</p>
+    </div>
+  </div>
+
+  <!-- 2. DATOS RECABADOS -->
+  <div class="pp-section" id="datos">
+    <h2><span class="num">2</span>Datos personales que recabamos</h2>
+    <p>Según el tipo de usuario, recabamos las siguientes categorías de datos:</p>
+
+    <p><strong>A) Pacientes (usuarios que solicitan cita):</strong></p>
+    <table class="pp-table">
+      <tr><th>Categoría</th><th>Datos específicos</th><th>Obligatorio</th></tr>
+      <tr><td>Identificación</td><td>Nombre completo</td><td>Sí</td></tr>
+      <tr><td>Contacto</td><td>Teléfono</td><td>Sí</td></tr>
+      <tr><td>Contacto</td><td>Correo electrónico</td><td>No</td></tr>
+      <tr><td>Salud (no sensible)</td><td>Motivo de consulta (descripción libre del paciente)</td><td>No</td></tr>
+      <tr><td>Logísticos</td><td>Fecha y hora preferida, servicio solicitado</td><td>No</td></tr>
+    </table>
+
+    <p><strong>B) Médicos / Profesionales de salud (usuarios que contratan el servicio):</strong></p>
+    <table class="pp-table">
+      <tr><th>Categoría</th><th>Datos específicos</th></tr>
+      <tr><td>Identificación profesional</td><td>Nombre legal, especialidad, cédula profesional</td></tr>
+      <tr><td>Fiscales</td><td>RFC (para facturación)</td></tr>
+      <tr><td>Contacto</td><td>Email, teléfono, dirección del consultorio</td></tr>
+      <tr><td>Acceso</td><td>Email y contraseña (almacenada en texto cifrado)</td></tr>
+      <tr><td>Contenido</td><td>Logo, fotografía de perfil, descripción de servicios</td></tr>
+    </table>
+
+    <div class="pp-box blue">
+      <p><strong>Datos que NO recabamos:</strong> No solicitamos número de seguridad social, CURP, datos bancarios directos, historial clínico completo ni información biométrica.</p>
+    </div>
+  </div>
+
+  <!-- 3. FINALIDADES -->
+  <div class="pp-section" id="finalidades">
+    <h2><span class="num">3</span>Finalidades del tratamiento</h2>
+
+    <p><strong>Finalidades primarias</strong> (necesarias para el servicio — no requieren tu consentimiento adicional):</p>
+    <ul>
+      <li>Gestionar y registrar solicitudes de cita médica.</li>
+      <li>Permitir el seguimiento de citas por parte del paciente mediante un token anónimo.</li>
+      <li>Notificar al médico sobre nuevas solicitudes de cita.</li>
+      <li>Autenticar el acceso del médico a su panel de administración.</li>
+      <li>Mostrar información pública del consultorio a pacientes potenciales.</li>
+      <li>Mantener el registro y auditoría de operaciones del sistema.</li>
+      <li>Facturación y cobro del servicio a médicos suscriptores.</li>
+    </ul>
+
+    <p><strong>Finalidades secundarias</strong> (opcionales — puedes oponerte):</p>
+    <ul>
+      <li>Enviarte comunicaciones sobre nuevas funcionalidades o mejoras del servicio.</li>
+      <li>Análisis estadísticos agregados y anónimos del uso de la plataforma.</li>
+    </ul>
+
+    <div class="pp-box">
+      <p><strong>¿Cómo oponerte a las finalidades secundarias?</strong> Envía un correo a <a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a> con el asunto <em>"Oposición finalidades secundarias"</em> indicando tu nombre y correo registrado.</p>
+    </div>
+  </div>
+
+  <!-- 4. TRANSFERENCIAS -->
+  <div class="pp-section" id="transferencias">
+    <h2><span class="num">4</span>Transferencias de datos</h2>
+    <p>SaludPro no vende, renta ni cede tus datos personales a terceros con fines comerciales. Únicamente podremos compartir información en los siguientes supuestos:</p>
+
+    <table class="pp-table">
+      <tr><th>Destinatario</th><th>Finalidad</th><th>Requiere consentimiento</th></tr>
+      <tr><td>Google LLC (Google Sheets / Apps Script)</td><td>Almacenamiento e infraestructura del servicio</td><td>No — es encargado del tratamiento</td></tr>
+      <tr><td>Procesador de pagos (Stripe / Conekta / MercadoPago)</td><td>Cobro de suscripciones a médicos</td><td>No — es encargado del tratamiento</td></tr>
+      <tr><td>Autoridades competentes</td><td>Cumplimiento de obligaciones legales o resolución judicial</td><td>No aplica — obligación legal</td></tr>
+    </table>
+
+    <p>Google LLC opera bajo el Escudo de Privacidad y cumple con estándares de protección adecuados conforme al artículo 37 de la LFPDPPP.</p>
+  </div>
+
+  <!-- 5. DERECHOS ARCO -->
+  <div class="pp-section" id="derechos">
+    <h2><span class="num">5</span>Derechos ARCO y cómo ejercerlos</h2>
+    <p>Como titular de datos personales, tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> Conocer qué datos tuyos tenemos y para qué los usamos.</li>
+      <li><strong>Rectificación:</strong> Corregir datos inexactos o incompletos.</li>
+      <li><strong>Cancelación:</strong> Solicitar la eliminación de tus datos cuando no sean necesarios para las finalidades originales.</li>
+      <li><strong>Oposición:</strong> Oponerte al tratamiento de tus datos para finalidades específicas.</li>
+    </ul>
+
+    <p><strong>¿Cómo ejercer tus derechos?</strong></p>
+    <ol>
+      <li>Envía tu solicitud a <a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a></li>
+      <li>Incluye: nombre completo, correo registrado, descripción clara de la solicitud y copia de identificación oficial.</li>
+      <li>Recibirás respuesta en un plazo máximo de <strong>20 días hábiles</strong>.</li>
+      <li>De ser procedente, los cambios se harán efectivos en los siguientes <strong>15 días hábiles</strong>.</li>
+    </ol>
+
+    <div class="pp-box">
+      <p><strong>Revocación del consentimiento:</strong> Puedes revocar el consentimiento que hayas otorgado para el tratamiento de tus datos en cualquier momento, siempre que no exista una obligación legal que lo impida, enviando tu solicitud al correo indicado.</p>
+    </div>
+
+    <p>Si consideras que tu solicitud no fue atendida correctamente, puedes presentar una queja ante el <strong>INAI (Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales)</strong> en <a href="https://www.inai.org.mx" target="_blank" rel="noopener">www.inai.org.mx</a>.</p>
+  </div>
+
+  <!-- 6. COOKIES -->
+  <div class="pp-section" id="cookies">
+    <h2><span class="num">6</span>Cookies y tecnologías de seguimiento</h2>
+    <p>La plataforma SaludPro utiliza las siguientes tecnologías de almacenamiento local:</p>
+
+    <table class="pp-table">
+      <tr><th>Tecnología</th><th>Nombre</th><th>Propósito</th><th>Duración</th></tr>
+      <tr><td>localStorage</td><td>sp_user</td><td>Mantener sesión activa del médico</td><td>8 horas o hasta cerrar sesión</td></tr>
+      <tr><td>localStorage</td><td>sp_url</td><td>URL del backend (configuración)</td><td>Persistente</td></tr>
+      <tr><td>localStorage</td><td>sp_cfg</td><td>Configuración de la aplicación</td><td>Persistente</td></tr>
+    </table>
+
+    <p><strong>No utilizamos</strong> cookies de seguimiento, píxeles publicitarios ni herramientas de analítica de terceros que impliquen transferencia de datos personales a otras empresas.</p>
+
+    <p>Puedes eliminar el almacenamiento local en cualquier momento desde la configuración de tu navegador. Esto cerrará tu sesión activa si eres médico.</p>
+  </div>
+
+  <!-- 7. DATOS SENSIBLES -->
+  <div class="pp-section" id="sensibles">
+    <h2><span class="num">7</span>Datos sensibles</h2>
+    <div class="pp-box warn">
+      <p><strong>Importante:</strong> El campo "Motivo de consulta" del formulario de solicitud de cita podría contener información relacionada con la salud del paciente, lo que lo clasifica como dato sensible conforme al artículo 3, fracción VI de la LFPDPPP.</p>
+    </div>
+    <p>Para el tratamiento de este dato:</p>
+    <ul>
+      <li>Su captura es <strong>voluntaria y opcional</strong>; no es obligatorio para solicitar la cita.</li>
+      <li>Solo es accesible para el médico titular del consultorio, no para otros médicos ni para SaludPro con fines distintos a la operación del servicio.</li>
+      <li>Al enviar el formulario y rellenar dicho campo, el paciente otorga su <strong>consentimiento expreso</strong> para el tratamiento de esta información conforme a las finalidades descritas en este aviso.</li>
+    </ul>
+  </div>
+
+  <!-- 8. MENORES -->
+  <div class="pp-section" id="menores">
+    <h2><span class="num">8</span>Menores de edad</h2>
+    <p>SaludPro no está dirigido a menores de 18 años como usuarios directos de la plataforma. Si un padre, madre o tutor legal solicita una cita en nombre de un menor, se considera que actúa en representación legal del mismo y asume la responsabilidad del tratamiento de dichos datos.</p>
+    <p>En caso de que un menor haya proporcionado sus datos sin autorización de su tutor legal, este puede solicitar la cancelación mediante el procedimiento descrito en el apartado de Derechos ARCO.</p>
+  </div>
+
+  <!-- 9. SEGURIDAD -->
+  <div class="pp-section" id="seguridad">
+    <h2><span class="num">9</span>Medidas de seguridad</h2>
+    <p>Implementamos las siguientes medidas técnicas y organizacionales para proteger tus datos:</p>
+    <ul>
+      <li><strong>Transmisión cifrada:</strong> Toda la comunicación entre el cliente y el servidor utiliza HTTPS (TLS 1.2+).</li>
+      <li><strong>Tokens de sesión firmados:</strong> Las sesiones de médicos se autentican mediante tokens HMAC-SHA256, no mediante cookies de sesión simples.</li>
+      <li><strong>Acceso restringido:</strong> Cada médico solo puede acceder a los datos de su propio consultorio; no existe acceso cruzado entre médicos.</li>
+      <li><strong>Rate limiting:</strong> Limitamos los intentos de inicio de sesión para prevenir ataques de fuerza bruta.</li>
+      <li><strong>Auditoría de accesos:</strong> Registramos los accesos y modificaciones para detectar actividades inusuales.</li>
+      <li><strong>Acceso administrativo:</strong> Solo el personal autorizado de SaludPro puede acceder a datos de múltiples consultorios, y únicamente para soporte técnico.</li>
+    </ul>
+    <p>A pesar de estas medidas, ningún sistema es 100% seguro. En caso de una brecha de seguridad que afecte tus datos, te notificaremos conforme a la normativa aplicable.</p>
+  </div>
+
+  <!-- 10. CAMBIOS -->
+  <div class="pp-section" id="cambios">
+    <h2><span class="num">10</span>Cambios a este aviso de privacidad</h2>
+    <p>Podemos actualizar este Aviso de Privacidad para reflejar cambios en nuestras prácticas o por requerimientos legales. Cuando hagamos cambios materiales:</p>
+    <ul>
+      <li>Publicaremos el aviso actualizado en esta misma página con la nueva fecha de vigencia.</li>
+      <li>Si los cambios afectan significativamente el tratamiento de tus datos, te notificaremos por correo electrónico (si lo tenemos registrado) con al menos <strong>30 días de anticipación</strong>.</li>
+    </ul>
+    <p>Te recomendamos revisar este aviso periódicamente. El uso continuado de la plataforma después de publicar los cambios constituye tu aceptación de los mismos.</p>
+  </div>
+
+  <!-- CONTACTO -->
+  <div class="pp-contact">
+    <h2>📬 Contacto para asuntos de privacidad</h2>
+    <div class="pp-contact-grid">
+      <div class="pp-contact-item">
+        <label>Correo electrónico</label>
+        <p><a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a></p>
+      </div>
+      <div class="pp-contact-item">
+        <label>Tiempo de respuesta</label>
+        <p>Máximo 20 días hábiles</p>
+      </div>
+      <div class="pp-contact-item">
+        <label>Horario de atención</label>
+        <p>Lunes a viernes, 9:00–18:00 hrs</p>
+      </div>
+      <div class="pp-contact-item">
+        <label>Autoridad supervisora</label>
+        <p><a href="https://www.inai.org.mx" target="_blank" rel="noopener">INAI — inai.org.mx</a></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="pp-footer">
+  <p>© 2026 SaludPro · Aviso de Privacidad conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) y su Reglamento.</p>
+  <p style="margin-top:8px">Este documento no constituye asesoría legal. Se recomienda revisión por un abogado especialista en protección de datos antes de publicar.</p>
+</div>
+
+</body>
+</html>
