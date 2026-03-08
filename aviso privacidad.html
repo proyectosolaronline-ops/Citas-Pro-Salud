@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Aviso de Privacidad — SaludPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#0f2027;--slate:#475569;--muted:#94a3b8;--teal:#0D9488;--teal-l:#f0faf9;--border:#e2e8f0;--white:#fff;--radius:14px;}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#fafbfc;line-height:1.75;font-size:15px}
+a{color:var(--teal);text-decoration:none} a:hover{text-decoration:underline}
+.pp-header{background:var(--teal);color:#fff;padding:48px 24px 40px;text-align:center}
+.pp-header .eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.75;margin-bottom:12px}
+.pp-header h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,40px);line-height:1.15;margin-bottom:12px}
+.pp-header .meta{font-size:13px;opacity:.8;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.pp-header .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:4px 14px;font-size:12px;font-weight:600}
+.pp-wrap{max-width:780px;margin:0 auto;padding:48px 24px 80px}
+.pp-index{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;margin-bottom:40px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.pp-index h2{font-family:'DM Serif Display',serif;font-size:16px;color:var(--slate);margin-bottom:14px}
+.pp-index ol{padding-left:20px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
+@media(max-width:520px){.pp-index ol{grid-template-columns:1fr}}
+.pp-index li{font-size:13px} .pp-index a{color:var(--teal);font-weight:500}
+.pp-section{margin-bottom:44px}
+.pp-section h2{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--teal-l);display:flex;align-items:center;gap:10px}
+.pp-section h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.pp-section p{margin-bottom:12px} .pp-section ul,.pp-section ol{padding-left:22px;margin-bottom:12px} .pp-section li{margin-bottom:6px}
+.pp-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+.pp-table th{background:var(--teal-l);color:var(--teal);font-weight:700;text-align:left;padding:10px 14px;border:1px solid #c7f3ed}
+.pp-table td{padding:9px 14px;border:1px solid var(--border);vertical-align:top}
+.pp-table tr:nth-child(even) td{background:#fafcff}
+.tag-req{display:inline-block;background:#dcfce7;color:#16a34a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.tag-opt{display:inline-block;background:#fef9c3;color:#a16207;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.tag-sens{display:inline-block;background:#fee2e2;color:#dc2626;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.pp-box{background:var(--teal-l);border:1.5px solid #b0e8e2;border-radius:var(--radius);padding:18px 20px;margin:16px 0}
+.pp-box.warn{background:#fef9e7;border-color:#fde68a}
+.pp-box.red{background:#fff1f1;border-color:#fecaca}
+.pp-box p{margin:0;font-size:14px} .pp-box strong{color:var(--teal)} .pp-box.warn strong{color:#92400e} .pp-box.red strong{color:#b91c1c}
+.pp-screenshot{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin:16px 0;font-size:13px}
+.pp-screenshot h3{font-size:12px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px}
+.field-row{display:flex;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid #f1f5f9;flex-wrap:wrap}
+.field-row:last-child{border-bottom:none}
+.field-name{font-weight:600;min-width:200px;color:var(--ink)}
+.field-desc{color:var(--slate);flex:1;min-width:180px}
+.pp-contact{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:40px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.pp-contact h2{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:16px}
+.pp-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.pp-contact-grid{grid-template-columns:1fr}}
+.pp-contact-item label{font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;display:block;margin-bottom:4px}
+.pp-contact-item p{font-size:14px;font-weight:500}
+.pp-footer{text-align:center;padding:32px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<div class="pp-header">
+  <div class="eyebrow">Documento legal</div>
+  <h1>Aviso de Privacidad</h1>
+  <div class="meta">
+    <span>SaludPro &mdash; Plataforma de Consultorios M&eacute;dicos</span>
+    <span class="badge">Marzo 2026</span>
+    <span class="badge">LFPDPPP M&eacute;xico</span>
+  </div>
+</div>
+
+<div class="pp-wrap">
+
+  <div class="pp-index">
+    <h2>Contenido</h2>
+    <ol>
+      <li><a href="#identidad">Identidad del Responsable</a></li>
+      <li><a href="#datos">Datos que recabamos</a></li>
+      <li><a href="#finalidades">Finalidades</a></li>
+      <li><a href="#sensibles">Datos sensibles</a></li>
+      <li><a href="#transferencias">Transferencias</a></li>
+      <li><a href="#derechos">Derechos ARCO</a></li>
+      <li><a href="#cookies">Cookies y almacenamiento</a></li>
+      <li><a href="#menores">Menores de edad</a></li>
+      <li><a href="#seguridad">Medidas de seguridad</a></li>
+      <li><a href="#cambios">Cambios al aviso</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <div class="pp-section" id="identidad">
+    <h2><span class="num">1</span>Identidad y domicilio del Responsable</h2>
+    <table class="pp-table">
+      <tr><th>Dato</th><th>Informaci&oacute;n</th></tr>
+      <tr><td><strong>Nombre / Raz&oacute;n social</strong></td><td>[TU NOMBRE O EMPRESA S.A. DE C.V.]</td></tr>
+      <tr><td><strong>RFC</strong></td><td>[XXXXXXXXXX000]</td></tr>
+      <tr><td><strong>Domicilio</strong></td><td>[Calle, N&uacute;mero, Colonia, Ciudad, C.P., Estado, M&eacute;xico]</td></tr>
+      <tr><td><strong>Correo de contacto</strong></td><td>privacidad@saludpro.mx</td></tr>
+      <tr><td><strong>URL del consultorio</strong></td><td>saludpro.mx/<strong>[slug]</strong> — donde <em>[slug]</em> es el identificador único de tu consultorio (ej: <code>dr-garcia</code>)</td></tr>
+    </table>
+    <div class="pp-box warn">
+      <p><strong>Nota:</strong> Completa los campos entre corchetes antes de publicar. Un aviso incompleto puede constituir infracci&oacute;n a la LFPDPPP.</p>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="pp-section" id="datos">
+    <h2><span class="num">2</span>Datos personales que recabamos</h2>
+    <p>La plataforma opera con dos tipos de usuarios. Recabamos &uacute;nicamente los datos necesarios para prestar el servicio.</p>
+
+    <div class="pp-screenshot">
+      <h3>&#128203; Formulario de solicitud de cita &mdash; Pantalla p&uacute;blica del consultorio</h3>
+      <div class="field-row">
+        <span class="field-name">Nombre completo &nbsp;<span class="tag-req">Obligatorio</span></span>
+        <span class="field-desc">Nombre del paciente que solicita la cita.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Tel&eacute;fono &nbsp;<span class="tag-req">Obligatorio</span></span>
+        <span class="field-desc">N&uacute;mero de contacto para que el m&eacute;dico confirme o reagende la cita.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Correo electr&oacute;nico &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">Se usa &uacute;nicamente si el m&eacute;dico o la plataforma necesitan enviar una notificaci&oacute;n escrita.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Servicio solicitado &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">Tipo de consulta o tratamiento elegido del cat&aacute;logo del consultorio.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Fecha preferida &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">Fecha tentativa propuesta por el paciente para su cita.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Hora preferida &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">Hora tentativa propuesta por el paciente.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Motivo de consulta &nbsp;<span class="tag-opt">Opcional</span> <span class="tag-sens">Sensible</span></span>
+        <span class="field-desc">Descripci&oacute;n libre del padecimiento o raz&oacute;n de la visita. Por su naturaleza puede contener informaci&oacute;n de salud &mdash; ver secci&oacute;n 4.</span>
+      </div>
+    </div>
+
+    <div class="pp-screenshot" style="margin-top:12px">
+      <h3>&#128269; Seguimiento de cita</h3>
+      <div class="field-row">
+        <span class="field-name">Token de seguimiento &nbsp;<span class="tag-opt">Generado autom&aacute;ticamente</span></span>
+        <span class="field-desc">C&oacute;digo &uacute;nico creado al enviar la solicitud. No contiene datos personales &mdash; es un identificador an&oacute;nimo que permite consultar el estado de la cita sin crear cuenta.</span>
+      </div>
+    </div>
+
+    <div class="pp-screenshot" style="margin-top:12px">
+      <h3>&#9877; Panel del m&eacute;dico &mdash; Datos del profesional de salud (no p&uacute;blicos)</h3>
+      <div class="field-row">
+        <span class="field-name">Nombre legal &nbsp;<span class="tag-req">Obligatorio</span></span>
+        <span class="field-desc">Nombre completo tal como aparece en la c&eacute;dula profesional. Se muestra en el perfil p&uacute;blico.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Especialidad &nbsp;<span class="tag-req">Obligatorio</span></span>
+        <span class="field-desc">Se muestra en la pantalla p&uacute;blica del consultorio.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">C&eacute;dula profesional &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">Se muestra p&uacute;blicamente como elemento de confianza para los pacientes.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Tel&eacute;fono del consultorio &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">N&uacute;mero que se muestra p&uacute;blicamente para contacto directo.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">WhatsApp &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">N&uacute;mero para que los pacientes contacten directamente al m&eacute;dico v&iacute;a WhatsApp.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Direcci&oacute;n del consultorio &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">Direcci&oacute;n f&iacute;sica visible en el perfil p&uacute;blico. Al hacer clic abre Google Maps.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Horario de atenci&oacute;n &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">D&iacute;as y horas visibles en el perfil p&uacute;blico.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Logo / fotograf&iacute;a &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">Imagen del consultorio o del m&eacute;dico visible en la pantalla p&uacute;blica. Se comprime a JPEG antes de almacenarse.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Redes sociales &nbsp;<span class="tag-opt">Opcional</span></span>
+        <span class="field-desc">URLs de Facebook, Instagram y Messenger. Solo se muestran en el perfil si el m&eacute;dico las configura; se ocultan autom&aacute;ticamente si est&aacute;n vac&iacute;as.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">RFC &nbsp;<span class="tag-req">Obligatorio</span></span>
+        <span class="field-desc">Requerido exclusivamente para facturaci&oacute;n del servicio SaludPro. No se muestra p&uacute;blicamente.</span>
+      </div>
+      <div class="field-row">
+        <span class="field-name">Email y contrase&ntilde;a &nbsp;<span class="tag-req">Obligatorio</span></span>
+        <span class="field-desc">Credenciales de acceso al panel. La contrase&ntilde;a no se devuelve en ninguna respuesta del sistema.</span>
+      </div>
+    </div>
+
+    <div class="pp-box" style="margin-top:16px">
+      <p><strong>Datos que NO recabamos:</strong> CURP, n&uacute;mero de seguro social, historial cl&iacute;nico completo, datos bancarios del paciente, informaci&oacute;n biom&eacute;trica ni geolocalizaci&oacute;n en tiempo real.</p>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="pp-section" id="finalidades">
+    <h2><span class="num">3</span>Finalidades del tratamiento</h2>
+    <p><strong>Primarias</strong> &mdash; necesarias para operar, no requieren consentimiento adicional:</p>
+    <ul>
+      <li>Recibir y registrar solicitudes de cita del paciente hacia el m&eacute;dico.</li>
+      <li>Mostrar el estado de la cita al paciente mediante el token de seguimiento an&oacute;nimo.</li>
+      <li>Permitir al m&eacute;dico confirmar, cancelar o reprogramar citas desde su panel.</li>
+      <li>Mostrar el perfil p&uacute;blico del consultorio: nombre, especialidad, c&eacute;dula, tel&eacute;fono, direcci&oacute;n, horario, servicios y redes sociales.</li>
+      <li>Autenticar el acceso del m&eacute;dico a su panel privado.</li>
+      <li>Generar y mostrar el c&oacute;digo QR del consultorio para compartir el enlace p&uacute;blico.</li>
+      <li>Facturar y gestionar la suscripci&oacute;n del m&eacute;dico al servicio SaludPro.</li>
+      <li>Registrar auditor&iacute;a de accesos para seguridad de la plataforma.</li>
+    </ul>
+    <p><strong>Secundarias</strong> &mdash; opcionales, puedes oponerte:</p>
+    <ul>
+      <li>Enviarte avisos sobre nuevas funcionalidades o mejoras del servicio.</li>
+      <li>Generar estad&iacute;sticas agregadas y an&oacute;nimas de uso de la plataforma.</li>
+    </ul>
+    <div class="pp-box">
+      <p><strong>&iquest;C&oacute;mo oponerte?</strong> Escribe a <a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a> con el asunto <em>"Oposici&oacute;n finalidades secundarias"</em> y tu correo registrado.</p>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="pp-section" id="sensibles">
+    <h2><span class="num">4</span>Datos sensibles</h2>
+    <div class="pp-box red">
+      <p><strong>Dato sensible:</strong> El campo "Motivo de consulta" del formulario de cita puede contener informaci&oacute;n sobre la salud del paciente. Esto lo clasifica como dato sensible conforme al art&iacute;culo 3, fracci&oacute;n VI de la LFPDPPP.</p>
+    </div>
+    <ul>
+      <li>Su captura es <strong>completamente voluntaria</strong>; el formulario puede enviarse sin completarlo.</li>
+      <li>Solo es visible para el m&eacute;dico titular del consultorio donde se hizo la solicitud.</li>
+      <li>SaludPro no accede a este contenido salvo por requerimiento de soporte t&eacute;cnico expl&iacute;citamente solicitado por el m&eacute;dico.</li>
+      <li>Al enviar el formulario habiendo completado este campo, el paciente otorga su <strong>consentimiento expreso</strong> conforme al art&iacute;culo 9 de la LFPDPPP.</li>
+    </ul>
+  </div>
+
+  <!-- 5 -->
+  <div class="pp-section" id="transferencias">
+    <h2><span class="num">5</span>Transferencias de datos</h2>
+    <p>SaludPro no vende, renta ni cede datos personales a terceros con fines comerciales. Las &uacute;nicas transferencias son a encargados del tratamiento necesarios para operar:</p>
+    <table class="pp-table">
+      <tr><th>Destinatario</th><th>Prop&oacute;sito</th><th>&iquest;Requiere consentimiento?</th></tr>
+      <tr><td><strong>Google LLC</strong> (Google Sheets / Apps Script)</td><td>Infraestructura de almacenamiento y procesamiento del backend</td><td>No &mdash; encargado del tratamiento</td></tr>
+      <tr><td><strong>Procesador de pagos</strong></td><td>Cobro de suscripciones a m&eacute;dicos</td><td>No &mdash; encargado del tratamiento</td></tr>
+      <tr><td><strong>Autoridades competentes</strong></td><td>Cumplimiento de obligaci&oacute;n legal o resoluci&oacute;n judicial</td><td>No aplica</td></tr>
+    </table>
+  </div>
+
+  <!-- 6 -->
+  <div class="pp-section" id="derechos">
+    <h2><span class="num">6</span>Derechos ARCO</h2>
+    <p>Tienes derecho a <strong>Acceder</strong> a tus datos, <strong>Rectificarlos</strong>, solicitar su <strong>Cancelaci&oacute;n</strong> y <strong>Oponerte</strong> a su tratamiento.</p>
+    <ol>
+      <li>Env&iacute;a tu solicitud a <a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a></li>
+      <li>Incluye: nombre completo, correo registrado, descripci&oacute;n de la solicitud y copia de identificaci&oacute;n oficial.</li>
+      <li>Respuesta en m&aacute;ximo <strong>20 d&iacute;as h&aacute;biles</strong>. Cambios procedentes en los siguientes <strong>15 d&iacute;as h&aacute;biles</strong>.</li>
+    </ol>
+    <p>Si tu solicitud no fue atendida correctamente, puedes presentar queja ante el <strong>INAI</strong> en <a href="https://www.inai.org.mx" target="_blank" rel="noopener">www.inai.org.mx</a>.</p>
+  </div>
+
+  <!-- 7 -->
+  <div class="pp-section" id="cookies">
+    <h2><span class="num">7</span>Cookies y almacenamiento local</h2>
+    <p>No usamos cookies de rastreo ni anal&iacute;tica de terceros. Solo usamos <code>localStorage</code> del navegador:</p>
+    <table class="pp-table">
+      <tr><th>Clave</th><th>Contenido</th><th>Duraci&oacute;n</th></tr>
+      <tr><td><code>sp_token</code></td><td>Token de sesi&oacute;n firmado del m&eacute;dico. No contiene contrase&ntilde;a.</td><td>8 horas o al cerrar sesi&oacute;n</td></tr>
+      <tr><td><code>sp_user</code></td><td>Email y nombre del m&eacute;dico autenticado.</td><td>8 horas o al cerrar sesi&oacute;n</td></tr>
+      <tr><td><code>sp_url</code></td><td>URL del backend de este consultorio.</td><td>Persistente</td></tr>
+      <tr><td><code>sp_cfg</code></td><td>Configuraci&oacute;n de apariencia (paleta, fuente).</td><td>Persistente</td></tr>
+    </table>
+    <p>Puedes borrar estos datos desde la configuraci&oacute;n de tu navegador en cualquier momento.</p>
+  </div>
+
+  <!-- 8 -->
+  <div class="pp-section" id="menores">
+    <h2><span class="num">8</span>Menores de edad</h2>
+    <p>La plataforma no est&aacute; dirigida a menores de 18 a&ntilde;os como usuarios directos. Si un padre, madre o tutor solicita una cita en nombre de un menor, se entiende que act&uacute;a en representaci&oacute;n legal y asume la responsabilidad correspondiente. En ese caso, los datos capturados son los del menor como paciente.</p>
+  </div>
+
+  <!-- 9 -->
+  <div class="pp-section" id="seguridad">
+    <h2><span class="num">9</span>Medidas de seguridad</h2>
+    <ul>
+      <li><strong>HTTPS / TLS:</strong> Toda comunicaci&oacute;n entre navegador y servidor viaja cifrada.</li>
+      <li><strong>Tokens de sesi&oacute;n HMAC-SHA256:</strong> Sesi&oacute;n del m&eacute;dico autenticada con token criptogr&aacute;fico con expiraci&oacute;n de 8 horas.</li>
+      <li><strong>Rate limiting:</strong> M&aacute;ximo 5 intentos de login fallidos en 10 minutos; pasado ese l&iacute;mite la cuenta se bloquea temporalmente.</li>
+      <li><strong>Aislamiento de datos:</strong> Cada m&eacute;dico tiene su propia base de datos. No existe acceso cruzado entre consultorios.</li>
+      <li><strong>Whitelist de escritura:</strong> Solo se pueden modificar campos previamente autorizados.</li>
+      <li><strong>Auditor&iacute;a:</strong> Todos los accesos y modificaciones relevantes se registran con fecha, hora y usuario.</li>
+    </ul>
+  </div>
+
+  <!-- 10 -->
+  <div class="pp-section" id="cambios">
+    <h2><span class="num">10</span>Cambios a este aviso</h2>
+    <p>Este aviso puede actualizarse por cambios en el servicio o por requerimientos legales. Para cambios materiales notificaremos a los m&eacute;dicos registrados por correo electr&oacute;nico con al menos <strong>30 d&iacute;as de anticipaci&oacute;n</strong> y publicaremos la nueva versi&oacute;n en esta p&aacute;gina.</p>
+  </div>
+
+  <div class="pp-contact">
+    <h2>&#128236; Contacto &mdash; Privacidad</h2>
+    <div class="pp-contact-grid">
+      <div class="pp-contact-item"><label>Correo</label><p><a href="mailto:privacidad@saludpro.mx">privacidad@saludpro.mx</a></p></div>
+      <div class="pp-contact-item"><label>Respuesta</label><p>M&aacute;ximo 20 d&iacute;as h&aacute;biles</p></div>
+      <div class="pp-contact-item"><label>Horario</label><p>Lunes a viernes, 9:00&ndash;18:00 hrs</p></div>
+      <div class="pp-contact-item"><label>Autoridad supervisora</label><p><a href="https://www.inai.org.mx" target="_blank" rel="noopener">INAI &mdash; inai.org.mx</a></p></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="pp-footer">
+  <p>&copy; 2026 SaludPro &middot; Conforme a la LFPDPPP y su Reglamento.</p>
+  <p style="margin-top:8px">Se recomienda revisi&oacute;n por abogado especialista antes de publicar.</p>
+</div>
+
+</body>
+</html>
