@@ -622,7 +622,7 @@ window.addEventListener('DOMContentLoaded', function(){
         var cfgUrl = localStorage.getItem('sp_url');
         if(cfgUrl) S.scriptUrl = cfgUrl;
         cargarAgenda();
-        cargarServicios(); 
+        cargarServiciosDesdeCfg();
         return;
       }
     }
@@ -713,6 +713,25 @@ function poblarFiltroServicio(){
   Object.keys(srv).sort().forEach(function(v){
     nc.innerHTML += '<option value="'+esc(v)+'">'+esc(v)+'</option>';
   });
+  // Si no hay servicios de solicitudes, cargar desde cfg
+  if(!Object.keys(srv).length) cargarServiciosDesdeCfg();
+}
+
+async function cargarServiciosDesdeCfg(){
+  try{
+    var url = getUrl() + '?action=getCfgPublica&lic=' + SLUG;
+    var r   = await fetch(url).then(function(x){ return x.json(); });
+    if(!r.ok) return;
+    var lista = r.cfg && r.cfg.servicios;
+    if(!lista) return;
+    if(typeof lista === 'string') lista = JSON.parse(lista);
+    if(!Array.isArray(lista) || !lista.length) return;
+    var nc = document.getElementById('nc-srv');
+    nc.innerHTML = '<option value="">Seleccionar…</option>';
+    lista.forEach(function(s){
+      nc.innerHTML += '<option value="'+esc(s)+'">'+esc(s)+'</option>';
+    });
+  }catch(e){}
 }
 
 /* ════════════════════════════
@@ -969,24 +988,7 @@ function _preLlenarNueva(c){
 /* ════════════════════════════
    NUEVA CITA (desde panel)
 ════════════════════════════ */
-  
-
-  async function cargarServicios(){
-  try{
-    var r = await fetch(getUrl() + '?action=getCfgPublica&lic=' + SLUG);
-    var j = await r.json();
-    if(!j.ok) return;
-    var lista = j.cfg && j.cfg.servicios;
-    if(!lista) return;
-    if(typeof lista === 'string') lista = JSON.parse(lista);
-    var sel = document.getElementById('nc-srv');
-    sel.innerHTML = '<option value="">Seleccionar…</option>';
-    lista.forEach(function(s){
-      sel.innerHTML += '<option value="'+esc(s)+'">'+esc(s)+'</option>';
-    });
-  }catch(e){ console.warn('Servicios:', e); }
-}
-  async function crearCita(){
+async function crearCita(){
   var nombre = document.getElementById('nc-nombre').value.trim();
   var tel    = document.getElementById('nc-tel').value.trim();
   var email  = document.getElementById('nc-email').value.trim();
