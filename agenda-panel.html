@@ -970,32 +970,23 @@ function _preLlenarNueva(c){
    NUEVA CITA (desde panel)
 ════════════════════════════ */
   
-async function cargarServicios(){
+
+  async function cargarServicios(){
   try{
-    var r = await api({action:'getCfgMedico'});
-    if(!r.ok) return;
-    var cfg = r.cfg || r.data || r;
-    var srvRaw = cfg.servicios || cfg.servicios_json || '';
-    if(!srvRaw) return;
-    var lista = [];
-    if(typeof srvRaw === 'string'){
-      srvRaw = srvRaw.trim();
-      if(srvRaw[0] === '['){
-        lista = JSON.parse(srvRaw);
-      } else {
-        lista = srvRaw.split(',').map(function(s){ return s.trim(); });
-      }
-    } else if(Array.isArray(srvRaw)){
-      lista = srvRaw;
-    }
-    if(!lista.length) return;
+    var r = await fetch(getUrl() + '?action=getCfgPublica&lic=' + SLUG);
+    var j = await r.json();
+    if(!j.ok) return;
+    var lista = j.cfg && j.cfg.servicios;
+    if(!lista) return;
+    if(typeof lista === 'string') lista = JSON.parse(lista);
     var sel = document.getElementById('nc-srv');
     sel.innerHTML = '<option value="">Seleccionar…</option>';
     lista.forEach(function(s){
       sel.innerHTML += '<option value="'+esc(s)+'">'+esc(s)+'</option>';
     });
   }catch(e){ console.warn('Servicios:', e); }
-}  async function crearCita(){
+}
+  async function crearCita(){
   var nombre = document.getElementById('nc-nombre').value.trim();
   var tel    = document.getElementById('nc-tel').value.trim();
   var email  = document.getElementById('nc-email').value.trim();
