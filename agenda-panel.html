@@ -622,6 +622,7 @@ window.addEventListener('DOMContentLoaded', function(){
         var cfgUrl = localStorage.getItem('sp_url');
         if(cfgUrl) S.scriptUrl = cfgUrl;
         cargarAgenda();
+        cargarServicios(); 
         return;
       }
     }
@@ -968,7 +969,22 @@ function _preLlenarNueva(c){
 /* ════════════════════════════
    NUEVA CITA (desde panel)
 ════════════════════════════ */
-async function crearCita(){
+  
+async function cargarServicios(){
+  try{
+    var r = await api({action:'getCfgMedico'});
+    if(!r.ok) return;
+    var srvRaw = r.cfg && r.cfg.servicios;
+    if(!srvRaw) return;
+    var lista = typeof srvRaw === 'string' ? JSON.parse(srvRaw) : srvRaw;
+    var sel = document.getElementById('nc-srv');
+    sel.innerHTML = '<option value="">Seleccionar…</option>';
+    lista.forEach(function(s){
+      sel.innerHTML += '<option value="'+esc(s)+'">'+esc(s)+'</option>';
+    });
+  }catch(e){ console.warn('No se cargaron servicios:', e); }
+}
+  async function crearCita(){
   var nombre = document.getElementById('nc-nombre').value.trim();
   var tel    = document.getElementById('nc-tel').value.trim();
   var email  = document.getElementById('nc-email').value.trim();
