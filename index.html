@@ -542,13 +542,13 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--c-slate);border
 
 <!-- VISTA MÉDICO -->
 <div id="vista-medico">
-  <div class="panel-bar">
-    <div class="panel-bar-name">👨‍⚕️ <span id="panel-nombre">Panel médico</span></div>
-    <div class="panel-bar-right">
-      <button class="btn-logout" onclick="cerrarSesion()">Salir 🚪</button>
-    </div>
+<div class="panel-bar">
+  <div class="panel-bar-name">👨‍⚕️ <span id="panel-nombre">Panel médico</span></div>
+  <div class="panel-bar-right">
+    <button class="btn-logout" onclick="window.location.href='agenda-panel.html?lic='+LIC">📅 Agenda</button>
+    <button class="btn-logout" onclick="cerrarSesion()">Salir 🚪</button>
   </div>
-
+</div>
   <div class="tabs">
     <button class="tab active" onclick="cambiarTab('agenda',this)">📅 Agenda</button>
     <button class="tab" onclick="cambiarTab('historial',this)">📋 Historial</button>
