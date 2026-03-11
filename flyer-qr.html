@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Flyer QR — Consultas Saludables</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* ══════════════════════════════════
+   VARIABLES / PALETAS (mismo sistema)
+══════════════════════════════════ */
+:root{
+  --c1:#0D9488;--c1d:#0a7870;--c1l:#ccfbf1;
+  --c2:#f59e0b;--c-ink:#0f2027;--c-mist:#f0faf9;
+  --c-slate:#475569;--c-border:#d1faf4;--c-white:#fff;
+  --font-head:'DM Serif Display',serif;
+  --font-body:'DM Sans',sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:var(--font-body);background:#e8edf2;color:var(--c-ink);min-height:100vh;}
+
+/* ══════════════════════════════════
+   TOOLBAR (solo pantalla)
+══════════════════════════════════ */
+@media screen {
+  #toolbar{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid #e2e8f0;
+    padding:12px 24px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .toolbar-logo{font-family:var(--font-head);font-size:18px;color:var(--c1);margin-right:auto;}
+  .btn-tool{
+    padding:8px 18px;border-radius:9px;font-family:var(--font-body);
+    font-size:13px;font-weight:600;cursor:pointer;border:none;
+    display:inline-flex;align-items:center;gap:7px;transition:.15s;
+  }
+  .btn-print{background:var(--c1);color:#fff;box-shadow:0 3px 12px color-mix(in srgb,var(--c1) 35%,transparent);}
+  .btn-print:hover{background:var(--c1d);}
+  .btn-edit{background:var(--c1l);color:var(--c1);border:1px solid var(--c-border);}
+  .btn-edit:hover{filter:brightness(.95);}
+  .loading-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--c-slate);
+    background:#f8fafc;border:1px solid #e2e8f0;padding:6px 12px;border-radius:99px;}
+  .dot-live{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 1.5s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+}
+
+/* ══════════════════════════════════
+   HOJA CARTA (pantalla y print)
+══════════════════════════════════ */
+.page-wrap{
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+}
+.sheet{
+  width:215.9mm; /* carta */
+  min-height:279.4mm;
+  background:#fff;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:0;
+  box-shadow:0 8px 48px rgba(0,0,0,.18);
+  position:relative;
+  overflow:hidden;
+}
+
+/* ══════════════════════════════════
+   TARJETA QR (cada 1/4 de hoja)
+══════════════════════════════════ */
+.qr-card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:18px 20px 14px;
+  border:1px solid #e8edf2;
+  overflow:hidden;
+  gap:0;
+}
+
+/* Fondo decorativo sutil */
+.qr-card::before{
+  content:'';
+  position:absolute;
+  top:-40px;right:-40px;
+  width:140px;height:140px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--c1l) 0%,transparent 70%);
+  opacity:.6;
+  pointer-events:none;
+}
+.qr-card::after{
+  content:'';
+  position:absolute;
+  bottom:-30px;left:-30px;
+  width:110px;height:110px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--c1l) 0%,transparent 70%);
+  opacity:.5;
+  pointer-events:none;
+}
+
+/* ── CABECERA ── */
+.card-header{
+  width:100%;
+  text-align:center;
+  margin-bottom:10px;
+  position:relative;z-index:1;
+}
+.card-logo-wrap{
+  width:48px;height:48px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--c1) 0%,var(--c1d) 100%);
+  border:3px solid var(--c-white);
+  box-shadow:0 3px 12px rgba(0,0,0,.18);
+  margin:0 auto 8px;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-head);font-size:18px;color:#fff;
+  flex-shrink:0;
+}
+.card-logo-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.card-nombre{
+  font-family:var(--font-head);
+  font-size:13.5px;
+  color:var(--c-ink);
+  line-height:1.2;
+  margin-bottom:3px;
+  letter-spacing:-.2px;
+}
+.card-especialidad{
+  display:inline-block;
+  background:var(--c1l);
+  color:var(--c1);
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  padding:2px 10px;
+  border-radius:99px;
+  border:1px solid var(--c-border);
+}
+
+/* ── QR CENTRAL ── */
+.qr-center{
+  position:relative;
+  z-index:1;
+  margin:8px 0;
+}
+.qr-ring{
+  padding:10px;
+  background:#fff;
+  border-radius:18px;
+  border:2.5px solid var(--c-border);
+  box-shadow:0 4px 20px rgba(0,0,0,.10);
+  display:inline-flex;
+  position:relative;
+}
+.qr-ring canvas, .qr-ring img{
+  display:block;
+  border-radius:6px;
+}
+/* esquinas decorativas */
+.qr-ring::before,.qr-ring::after{
+  content:'';
+  position:absolute;
+  width:18px;height:18px;
+  border-color:var(--c1);
+  border-style:solid;
+}
+.qr-ring::before{top:-2px;left:-2px;border-width:3px 0 0 3px;border-radius:5px 0 0 0;}
+.qr-ring::after{ bottom:-2px;right:-2px;border-width:0 3px 3px 0;border-radius:0 0 5px 0;}
+
+.qr-escanea{
+  font-size:8.5px;
+  font-weight:700;
+  color:var(--c-slate);
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  margin-top:7px;
+  text-align:center;
+  position:relative;z-index:1;
+}
+
+/* ── PIE ── */
+.card-footer{
+  width:100%;
+  margin-top:8px;
+  position:relative;z-index:1;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.footer-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:9.5px;
+  color:var(--c-slate);
+  line-height:1.3;
+}
+.footer-icon{
+  width:18px;height:18px;
+  border-radius:6px;
+  background:var(--c1l);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  font-size:10px;
+}
+.footer-text{flex:1;font-weight:500;color:var(--c-ink);}
+
+/* ── BANNER INFERIOR ── */
+.card-banner{
+  width:100%;
+  margin-top:10px;
+  padding:6px 12px;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--c1) 0%,var(--c1d) 100%);
+  text-align:center;
+  font-size:9px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:.4px;
+  position:relative;z-index:1;
+  line-height:1.4;
+  min-height:22px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ── DIVISOR CENTRAL (cruz) ── */
+.sheet-divider-h{
+  position:absolute;
+  left:0;right:0;
+  top:50%;
+  height:1px;
+  background:repeating-linear-gradient(90deg,#c8d0d8 0,#c8d0d8 6px,transparent 6px,transparent 12px);
+  pointer-events:none;
+  z-index:10;
+}
+.sheet-divider-v{
+  position:absolute;
+  top:0;bottom:0;
+  left:50%;
+  width:1px;
+  background:repeating-linear-gradient(180deg,#c8d0d8 0,#c8d0d8 6px,transparent 6px,transparent 12px);
+  pointer-events:none;
+  z-index:10;
+}
+.cut-label{
+  position:absolute;
+  top:calc(50% - 9px);
+  left:calc(50% - 30px);
+  font-size:8px;
+  color:#94a3b8;
+  background:#fff;
+  padding:1px 6px;
+  border-radius:4px;
+  letter-spacing:.5px;
+  z-index:11;
+  font-family:var(--font-body);
+}
+.scissors{
+  position:absolute;
+  font-size:13px;
+}
+.sc-top   {top:calc(50% - 10px);left:4px;}
+.sc-right {top:4px;right:calc(50% - 10px);}
+
+/* ══════════════════════════════════
+   MODAL EDITAR BANNER
+══════════════════════════════════ */
+#modal-edit{
+  display:none;position:fixed;inset:0;
+  background:rgba(15,32,39,.65);backdrop-filter:blur(6px);
+  z-index:500;align-items:center;justify-content:center;padding:20px;
+}
+#modal-edit.on{display:flex;}
+.edit-card{
+  background:#fff;border-radius:20px;padding:28px;
+  width:100%;max-width:420px;
+  box-shadow:0 16px 64px rgba(0,0,0,.2);
+  animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;
+}
+.edit-card h3{font-family:var(--font-head);font-size:20px;color:var(--c1);margin-bottom:4px;}
+.edit-card p{font-size:13px;color:var(--c-slate);margin-bottom:18px;}
+.edit-field{margin-bottom:14px;}
+.edit-field label{display:block;font-size:11px;font-weight:700;color:var(--c-slate);
+  text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;}
+.edit-field input,.edit-field textarea{
+  width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;
+  font-family:var(--font-body);font-size:14px;outline:none;transition:.2s;
+  background:#fafcff;color:var(--c-ink);
+}
+.edit-field input:focus,.edit-field textarea:focus{
+  border-color:var(--c1);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--c1) 12%,transparent);
+}
+.edit-field textarea{resize:vertical;min-height:70px;}
+.edit-btns{display:flex;gap:10px;margin-top:18px;}
+.btn-save{flex:1;padding:12px;background:var(--c1);color:#fff;border:none;border-radius:10px;
+  font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-save:hover{background:var(--c1d);}
+.btn-cancel{padding:12px 18px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;
+  font-family:var(--font-body);font-size:14px;color:var(--c-slate);cursor:pointer;}
+.char-count{font-size:11px;color:var(--c-slate);margin-top:3px;text-align:right;}
+
+/* ══════════════════════════════════
+   TOAST
+══════════════════════════════════ */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--c-ink);color:#fff;padding:11px 20px;border-radius:11px;
+  font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);z-index:999;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.ok{background:var(--c1);}
+
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ══════════════════════════════════
+   PRINT — eliminar UI, solo hoja
+══════════════════════════════════ */
+@media print {
+  @page{size:letter;margin:0;}
+  html,body{background:#fff!important;margin:0!important;padding:0!important;}
+  #toolbar,#modal-edit,.toast{display:none!important;}
+  .page-wrap{padding:0!important;display:block!important;}
+  .sheet{
+    width:100vw!important;
+    min-height:100vh!important;
+    box-shadow:none!important;
+    page-break-after:always;
+  }
+  .qr-card::before,.qr-card::after{display:none!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     TOOLBAR
+══════════════════════════════════ -->
+<div id="toolbar">
+  <div class="toolbar-logo">🖨️ Flyer QR</div>
+  <div class="loading-pill" id="status-pill">
+    <div class="dot-live"></div>
+    <span id="status-txt">Cargando datos…</span>
+  </div>
+  <button class="btn-tool btn-edit" onclick="abrirEditor()">✏️ Editar banner</button>
+  <button class="btn-tool btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+</div>
+
+<!-- ══════════════════════════════════
+     HOJA CARTA
+══════════════════════════════════ -->
+<div class="page-wrap">
+  <div class="sheet" id="sheet">
+
+    <!-- 4 tarjetas -->
+    <div class="qr-card" id="card-0"></div>
+    <div class="qr-card" id="card-1"></div>
+    <div class="qr-card" id="card-2"></div>
+    <div class="qr-card" id="card-3"></div>
+
+    <!-- Líneas de corte -->
+    <div class="sheet-divider-h"></div>
+    <div class="sheet-divider-v"></div>
+    <span class="scissors sc-top">✂</span>
+    <span class="scissors sc-right">✂</span>
+    <div class="cut-label">✂ cortar</div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     MODAL EDITOR BANNER
+══════════════════════════════════ -->
+<div id="modal-edit">
+  <div class="edit-card">
+    <h3>✏️ Editar banner</h3>
+    <p>Este texto aparece en la franja inferior de cada tarjeta.</p>
+    <div class="edit-field">
+      <label>Texto del banner</label>
+      <textarea id="inp-banner" maxlength="90"
+        oninput="document.getElementById('char-cnt').textContent=this.value.length+'/90'"
+        placeholder="Ej: 📅 Agenda tu cita hoy · Atención personalizada · Primer consulta con descuento"></textarea>
+      <div class="char-count"><span id="char-cnt">0</span>/90</div>
+    </div>
+    <div class="edit-btns">
+      <button class="btn-save" onclick="guardarBanner()">💾 Aplicar</button>
+      <button class="btn-cancel" onclick="cerrarEditor()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════
+//  MISMO SISTEMA QUE consultorio.html
+// ══════════════════════════
+var LIC  = (new URLSearchParams(window.location.search)).get("lic") || "";
+
+// ── URL del Apps Script: siempre desde la hoja, nunca desde localStorage ──
+// El flyer es una vista independiente que carga directo desde el servidor.
+// Si el Sheet devuelve un scriptUrl alternativo, lo usamos para llamadas posteriores,
+// pero la primera petición SIEMPRE va al URL hardcoded para evitar contaminación de localStorage.
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwu7VVHC3RgS1fXwOtnh3ebHf4Md9xVmYF8cVZznKekPVEDj79izRcQmECYPH4GLIsG/exec";
+
+// Paletas (mismo objeto)
+var PALETAS=[
+  {id:"teal",    c1:"#0D9488",c1d:"#0a7870",c1l:"#ccfbf1",ink:"#0f2027",border:"#d1faf4"},
+  {id:"rosa",    c1:"#C084A0",c1d:"#A8607E",c1l:"#fdeef5",ink:"#3d1a28",border:"#f5cfe0"},
+  {id:"morado",  c1:"#9B7EC8",c1d:"#7B5EA8",c1l:"#f0ebfa",ink:"#2d1f4a",border:"#ddd0f2"},
+  {id:"violeta", c1:"#7C6FCD",c1d:"#5E52B0",c1l:"#eeedfb",ink:"#1e1c3a",border:"#cdc9f0"},
+  {id:"lila",    c1:"#B07EC8",c1d:"#9060B0",c1l:"#f5edfb",ink:"#2e1a3d",border:"#e8d0f5"},
+  {id:"lavanda", c1:"#8B7EC8",c1d:"#6B5EA8",c1l:"#edeafb",ink:"#1e1b4b",border:"#d8d2f5"},
+  {id:"uva",     c1:"#7878C8",c1d:"#5858A8",c1l:"#eeeeff",ink:"#1a1a3a",border:"#d0d0f0"},
+  {id:"cielo",   c1:"#6AAED4",c1d:"#4A8EB8",c1l:"#e8f4fb",ink:"#0c2e45",border:"#c0dff0"},
+  {id:"menta",   c1:"#5BAD8A",c1d:"#3D906C",c1l:"#e6f7f1",ink:"#0f3628",border:"#b0e0ce"},
+  {id:"durazno", c1:"#D4956A",c1d:"#B87040",c1l:"#fff3e8",ink:"#3a1f0a",border:"#f5d8b8"},
+];
+var FUENTES=[
+  {id:"dm",        head:"DM Serif Display",  body:"DM Sans"},
+  {id:"playfair",  head:"Playfair Display",  body:"Lora"},
+  {id:"cormorant", head:"Cormorant Garamond",body:"Nunito"},
+  {id:"nunito",    head:"Nunito",            body:"Nunito"},
+  {id:"quicksand", head:"Quicksand",         body:"Quicksand"},
+  {id:"josefin",   head:"Josefin Sans",      body:"Josefin Sans"},
+];
+
+var CFG         = {};
+var BANNER_TEXT = "📅 Agenda tu cita — Atención personalizada y profesional";
+var URL_CONSULTORIO = "";
+var QR_INSTANCES    = [];
+
+// ── Aplicar tema ──────────────────────
+function aplicarTema(paletaId,fuenteId){
+  var p=PALETAS.find(function(x){return x.id===paletaId;})||PALETAS[0];
+  var f=FUENTES.find(function(x){return x.id===fuenteId;})||FUENTES[0];
+  var r=document.documentElement.style;
+  r.setProperty('--c1',    p.c1);
+  r.setProperty('--c1d',   p.c1d);
+  r.setProperty('--c1l',   p.c1l);
+  r.setProperty('--c-ink',   p.ink);
+  r.setProperty('--c-border',p.border);
+  r.setProperty('--font-head',"'"+f.head+"',serif");
+  r.setProperty('--font-body',"'"+f.body+"',sans-serif");
+}
+
+// ── Cargar datos del consultorio — directo desde el Sheet, sin localStorage ──
+function cargar(){
+  if(!LIC){
+    document.getElementById("status-txt").textContent="⚠ Falta ?lic= en la URL";
+    renderCards(demoData()); return;
+  }
+  fetch(SCRIPT_URL+"?action=getCfgPublica&lic="+encodeURIComponent(LIC))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.ok){
+        document.getElementById("status-txt").textContent="⚠ Consultorio no encontrado: "+LIC;
+        renderCards(demoData()); return;
+      }
+      CFG=data.cfg||{};
+      // Si el Sheet devuelve scriptUrl alternativo lo usamos en esta sesión, sin tocar localStorage
+      if(CFG.scriptUrl&&CFG.scriptUrl.length>10) SCRIPT_URL=CFG.scriptUrl;
+      if(CFG.paleta||CFG.fuente) aplicarTema(CFG.paleta||"teal",CFG.fuente||"dm");
+      if(CFG.banner_activo&&CFG.banner_texto) BANNER_TEXT=CFG.banner_texto;
+      document.getElementById("status-txt").textContent="✅ "+(CFG.nombre_com||LIC);
+      renderCards(CFG);
+    })
+    .catch(function(err){
+      console.warn("flyer-qr: error al cargar Sheet →",err);
+      document.getElementById("status-txt").textContent="❌ Sin conexión con el servidor";
+      renderCards(demoData());
+    });
+}
+
+function demoData(){
+  return{
+    nombre_com:"Dr. Carlos García",prefijo:"Dr.",
+    especialidad_txt:"Medicina Familiar",cedula:"4521837",
+    direccion:"Av. Insurgentes Sur 450, Piso 3, CDMX",
+    telefono:"55 8800 1234",logo:""
+  };
+}
+
+// ── Construir URL ─────────────────────
+function getUrl(){
+  // Misma lógica que consultorio.html
+  var base=window.location.href.split("flyer-qr")[0]+"consultorio.html";
+  return base+"?lic="+encodeURIComponent(LIC||"demo");
+}
+
+// ── Render de las 4 tarjetas ──────────
+function renderCards(cfg){
+  URL_CONSULTORIO=getUrl();
+  QR_INSTANCES=[];
+
+  var prefijo   = cfg.prefijo||"";
+  var nombre    = cfg.nombre_com||cfg.nombre_legal||"Consultorio";
+  var display   = prefijo ? prefijo+" "+nombre : nombre;
+  var esp       = cfg.especialidad_txt||cfg.especialidad||"";
+  var espMap    = {medico:"Medicina General",dentista:"Odontología",psicologo:"Psicología",
+                   quiropractico:"Quiropráctica",nutriologo:"Nutriología"};
+  var espTxt    = espMap[esp]||esp;
+  var partes    = nombre.replace(/^(Dr|Dra|Lic|Mtro|Mtra|Psic|Ing)\.\s*/i,"").split(" ");
+  var iniciales = ((partes[0]||"")[0]||"").toUpperCase()+((partes[1]||"")[0]||"").toUpperCase();
+  var logo      = cfg.logo||"";
+  var dir       = cfg.direccion||"—";
+  var tel       = cfg.telefono||"—";
+
+  for(var i=0;i<4;i++){
+    var card=document.getElementById("card-"+i);
+    card.innerHTML=buildCardHTML(i,display,espTxt,iniciales,logo,dir,tel);
+  }
+
+  // Generar QR en cada tarjeta (con pequeño delay para que el DOM esté listo)
+  setTimeout(function(){
+    for(var i=0;i<4;i++){
+      generarQRTarjeta(i,logo,iniciales);
+    }
+  },80);
+}
+
+function buildCardHTML(idx,nombre,esp,iniciales,logo,dir,tel){
+  var logoHTML=(logo&&logo.length>10)
+    ?'<img src="'+esc(logo)+'" alt="logo"/>'
+    :'<span style="font-family:var(--font-head);font-size:17px;color:#fff">'+esc(iniciales||"?")+'</span>';
+
+  return ''
+    // ── CABECERA ──
+    +'<div class="card-header">'
+      +'<div class="card-logo-wrap" id="cl-'+idx+'">'+logoHTML+'</div>'
+      +'<div class="card-nombre">'+esc(nombre)+'</div>'
+      +'<span class="card-especialidad">'+esc(esp)+'</span>'
+    +'</div>'
+    // ── QR ──
+    +'<div class="qr-center">'
+      +'<div class="qr-ring" id="qr-ring-'+idx+'">'
+        +'<div id="qr-div-'+idx+'"></div>'
+      +'</div>'
+      +'<div class="qr-escanea">📱 Escanea para agendar</div>'
+    +'</div>'
+    // ── PIE ──
+    +'<div class="card-footer">'
+      +'<div class="footer-row"><div class="footer-icon">📍</div><div class="footer-text">'+esc(dir)+'</div></div>'
+      +'<div class="footer-row"><div class="footer-icon">📞</div><div class="footer-text">'+esc(tel)+'</div></div>'
+    +'</div>'
+    // ── BANNER ──
+    +'<div class="card-banner" id="banner-'+idx+'">'+esc(BANNER_TEXT)+'</div>';
+}
+
+// ── Generar QR con logo superpuesto ──
+function generarQRTarjeta(idx,logo,iniciales){
+  var container=document.getElementById("qr-div-"+idx);
+  if(!container) return;
+  container.innerHTML="";
+
+  var SIZE=180; // px — grande para el flyer
+
+  try{
+    new QRCode(container,{
+      text:URL_CONSULTORIO,
+      width:SIZE,height:SIZE,
+      colorDark:"#0f2027",colorLight:"#ffffff",
+      correctLevel:QRCode.CorrectLevel.H  // H = 30% redundancia → permite logo encima
+    });
+  }catch(e){ return; }
+
+  // Superponer logo/iniciales sobre el QR via canvas
+  setTimeout(function(){
+    var qrCanvas=container.querySelector("canvas");
+    var qrImg   =container.querySelector("img");
+
+    function overlay(src){
+      // Crear canvas final
+      var out=document.createElement("canvas");
+      out.width=SIZE; out.height=SIZE;
+      var ctx=out.getContext("2d");
+
+      // Dibujar QR
+      var qrEl=new Image();
+      qrEl.onload=function(){
+        ctx.drawImage(qrEl,0,0,SIZE,SIZE);
+
+        // Círculo blanco central (área para logo)
+        var cx=SIZE/2, cy=SIZE/2, r=SIZE*0.14;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx,cy,r+3,0,2*Math.PI);
+        ctx.fillStyle="#ffffff";
+        ctx.fill();
+        ctx.restore();
+
+        if(src){
+          // Logo del consultorio
+          var logoEl=new Image();
+          logoEl.onload=function(){
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx,cy,r,0,2*Math.PI);
+            ctx.clip();
+            ctx.drawImage(logoEl,cx-r,cy-r,r*2,r*2);
+            ctx.restore();
+            // Anillo de color
+            ctx.beginPath();
+            ctx.arc(cx,cy,r,0,2*Math.PI);
+            ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--c1').trim()||"#0D9488";
+            ctx.lineWidth=2.5;
+            ctx.stroke();
+            reemplazarQR(container,out);
+          };
+          logoEl.onerror=function(){ dibujarIniciales(ctx,cx,cy,r,iniciales,out,container); };
+          logoEl.src=src;
+        } else {
+          dibujarIniciales(ctx,cx,cy,r,iniciales,out,container);
+        }
+      };
+      qrEl.onerror=function(){};
+      qrEl.src=src && src===URL_CONSULTORIO ? src : (qrCanvas ? qrCanvas.toDataURL() : src);
+    }
+
+    function dibujarIniciales(ctx,cx,cy,r,ini,out,cont){
+      var c1=getComputedStyle(document.documentElement).getPropertyValue('--c1').trim()||"#0D9488";
+      var c1d=getComputedStyle(document.documentElement).getPropertyValue('--c1d').trim()||"#0a7870";
+      // Fondo degradado
+      var grad=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+      grad.addColorStop(0,c1); grad.addColorStop(1,c1d);
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI);
+      ctx.fillStyle=grad; ctx.fill();
+      // Texto iniciales
+      ctx.fillStyle="#fff";
+      ctx.font="bold "+Math.round(r*0.85)+"px 'DM Serif Display',serif";
+      ctx.textAlign="center"; ctx.textBaseline="middle";
+      ctx.fillText((ini||"?").slice(0,2),cx,cy+1);
+      ctx.restore();
+      // Anillo
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI);
+      ctx.strokeStyle=c1; ctx.lineWidth=2.5; ctx.stroke();
+      reemplazarQR(cont,out);
+    }
+
+    function reemplazarQR(cont,outCanvas){
+      cont.innerHTML="";
+      outCanvas.style.borderRadius="6px";
+      cont.appendChild(outCanvas);
+    }
+
+    if(qrCanvas){
+      overlay(qrCanvas.toDataURL());
+    } else if(qrImg){
+      overlay(qrImg.src);
+    }
+  },200);
+}
+
+// ── Banner editable ───────────────────
+function abrirEditor(){
+  var inp=document.getElementById("inp-banner");
+  inp.value=BANNER_TEXT;
+  document.getElementById("char-cnt").textContent=BANNER_TEXT.length+"/90";
+  document.getElementById("modal-edit").classList.add("on");
+  setTimeout(function(){inp.focus();inp.select();},200);
+}
+function cerrarEditor(){ document.getElementById("modal-edit").classList.remove("on"); }
+function guardarBanner(){
+  var val=document.getElementById("inp-banner").value.trim();
+  if(!val){ showToast("Escribe algo para el banner",""); return; }
+  BANNER_TEXT=val;
+  // Actualizar los 4 banners
+  for(var i=0;i<4;i++){
+    var b=document.getElementById("banner-"+i);
+    if(b) b.textContent=BANNER_TEXT;
+  }
+  cerrarEditor();
+  showToast("✅ Banner actualizado","ok");
+}
+
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape") cerrarEditor();
+  if(e.key==="Enter"&&document.getElementById("modal-edit").classList.contains("on")){
+    e.preventDefault(); guardarBanner();
+  }
+});
+
+// ── Utilidades ────────────────────────
+function esc(s){
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;");
+}
+function showToast(msg,type){
+  var t=document.getElementById("toast");
+  t.textContent=msg; t.className="toast "+(type||""); t.classList.add("show");
+  setTimeout(function(){t.classList.remove("show");},3200);
+}
+
+// ── INIT ──────────────────────────────
+cargar();
+</script>
+</body>
+</html>
