@@ -48,8 +48,7 @@ html,body{font-family:var(--font-body);background:#dde3ea;min-height:100vh;}
 
 /* ══ HOJA CARTA 215.9 × 279.4 mm ══ */
 .sheet{
-  width:215.9mm;
-  height:279.4mm;
+  width:215.9mm;height:279.4mm;
   background:#fff;
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -59,140 +58,145 @@ html,body{font-family:var(--font-body);background:#dde3ea;min-height:100vh;}
   overflow:hidden;
 }
 
-/* ══ TARJETA 107.95 × 139.7 mm
-   Layout fiel a imagen de referencia:
-   nombre → subtítulo → QR grande con logo → url → datos → banner → marca
-══ */
+/* ══ TARJETA 1/4 carta  ≈ 107.95 × 139.7 mm ══ */
 .qr-card{
   position:relative;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:space-between;
-  padding:5mm 5.5mm 3.5mm;
+  padding:5mm 6mm 4mm;
   overflow:hidden;
-  background:#ffffff;
-  border:0.3px solid #dde5ee;
+  outline:1px solid #e8edf2;
 }
 
-/* ── Nombre ── */
+/* Fondo degradado sutil con colores del consultorio */
+.qr-card::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 45% at 15% 0%,  color-mix(in srgb,var(--c1) 13%,transparent) 0%,transparent 70%),
+    radial-gradient(ellipse 55% 35% at 85% 100%,color-mix(in srgb,var(--c1)  9%,transparent) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+/* Acento superior de color */
+.qr-card::after{
+  content:'';position:absolute;
+  top:0;left:8%;right:8%;height:2.5px;
+  background:linear-gradient(90deg,transparent,var(--c1),var(--c1d),transparent);
+  border-radius:0 0 3px 3px;z-index:1;
+}
+
+/* ── CABECERA ── */
+.c-head{
+  width:100%;text-align:center;
+  position:relative;z-index:1;
+  padding-top:2.5mm;margin-bottom:2mm;
+}
 .c-nombre{
   font-family:var(--font-head);
-  font-size:5mm;
-  font-weight:700;
+  font-size:4.6mm;
   color:var(--c-ink);
-  text-align:center;
-  line-height:1.2;
+  line-height:1.15;
+  margin-bottom:1.5mm;
   letter-spacing:-.2px;
-  position:relative;z-index:1;
 }
-
-/* ── Subtítulo ── */
-.c-sub{
-  font-size:2.7mm;
-  color:var(--c-slate);
-  text-align:center;
-  font-weight:400;
-  position:relative;z-index:1;
-}
-
-/* ── Especialidad pill ── */
 .c-esp{
-  display:inline-flex;align-items:center;
-  background:var(--c1l);
-  color:var(--c1d);
-  font-size:2.1mm;font-weight:700;
-  letter-spacing:.8px;text-transform:uppercase;
-  padding:.8mm 3mm;border-radius:99px;
-  border:1px solid var(--c-border);
-  position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:3px;
+  background:linear-gradient(135deg,var(--c1),var(--c1d));
+  color:#fff;
+  font-family:var(--font-body);
+  font-size:2.5mm;
+  font-weight:700;letter-spacing:.9px;text-transform:uppercase;
+  padding:1.2mm 3.5mm;border-radius:99px;
 }
 
-/* ── Contenedor QR: fondo pill suave igual que imagen ── */
+/* ── QR central ── */
 .c-qr-wrap{
   position:relative;z-index:1;
-  background:color-mix(in srgb,var(--c1l) 55%,#fff);
-  border-radius:4mm;
-  padding:3mm;
-  width:88%;
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:1.5mm 0;
+  display:flex;flex-direction:column;align-items:center;
+  flex:1;justify-content:center;width:100%;
 }
-/* El canvas/img del QR llena el contenedor */
-.c-qr-wrap canvas,
-.c-qr-wrap img{
-  display:block !important;
-  width:100% !important;
-  height:auto !important;
-  border-radius:1.5mm;
+/* Marco decorativo alrededor del QR */
+.c-qr-frame{
+  position:relative;
+  background:#fff;
+  border-radius:3.5mm;
+  padding:2.5mm;
+  box-shadow:
+    0 0 0 1px var(--c-border),
+    0 0 0 3px color-mix(in srgb,var(--c1) 18%,transparent),
+    0 6px 22px rgba(0,0,0,.13);
+  display:inline-flex;
 }
+/* Las 4 esquinas de color */
+.c-qr-frame::before,.c-qr-frame::after,
+.c-qr-frame .cr-tr,.c-qr-frame .cr-bl{
+  content:'';position:absolute;
+  width:4.5mm;height:4.5mm;
+  border-color:var(--c1);border-style:solid;
+}
+.c-qr-frame::before{top:-1.5px;left:-1.5px; border-width:2.5px 0 0 2.5px;border-radius:3px 0 0 0;}
+.c-qr-frame::after {bottom:-1.5px;right:-1.5px;border-width:0 2.5px 2.5px 0;border-radius:0 0 3px 0;}
+.c-qr-frame .cr-tr{top:-1.5px;right:-1.5px;  border-width:2.5px 2.5px 0 0;border-radius:0 3px 0 0;}
+.c-qr-frame .cr-bl{bottom:-1.5px;left:-1.5px; border-width:0 0 2.5px 2.5px;border-radius:0 0 0 3px;}
 
-/* ── URL truncada ── */
-.c-url{
+.c-qr-frame canvas,.c-qr-frame img{display:block;border-radius:1.5mm;width:100%;height:auto;}
+
+.c-hint{
+  margin-top:2mm;
+  font-size:2.3mm;font-weight:700;color:var(--c-slate);
+  text-transform:uppercase;letter-spacing:.9px;text-align:center;
   position:relative;z-index:1;
-  font-size:2mm;
-  color:var(--c-slate);
-  background:color-mix(in srgb,var(--c1l) 40%,#fff);
-  border:1px solid var(--c-border);
-  border-radius:2mm;
-  padding:1.2mm 3mm;
-  width:100%;
-  text-align:center;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  font-family:monospace;
+  display:flex;align-items:center;gap:2px;
 }
 
 /* ── Datos de contacto ── */
 .c-footer{
-  width:100%;
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;
-  gap:1.2mm;
+  width:100%;position:relative;z-index:1;
+  margin-top:2mm;
+  display:flex;flex-direction:column;gap:1.5mm;
 }
-.c-row{display:flex;align-items:flex-start;gap:2mm;}
-.c-ico{font-size:2.8mm;flex-shrink:0;width:4.5mm;text-align:center;padding-top:.15mm;}
-.c-txt{font-size:2.6mm;font-weight:500;color:var(--c-ink);line-height:1.3;flex:1;}
+.c-row{display:flex;align-items:center;gap:2.5mm;}
+.c-ico{
+  width:5mm;height:5mm;border-radius:1.5mm;
+  background:var(--c1l);border:1px solid var(--c-border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:2.8mm;
+}
+.c-txt{font-size:3mm;font-weight:500;color:var(--c-ink);line-height:1.3;flex:1;}
 
 /* ── Banner ── */
 .c-banner{
-  width:100%;
-  padding:2mm 3mm;border-radius:2mm;
-  background:linear-gradient(135deg,var(--c1),var(--c1d));
-  text-align:center;font-size:2.6mm;font-weight:700;color:#fff;
+  width:100%;margin-top:2mm;
+  padding:2mm 4mm;border-radius:2mm;
+  background:linear-gradient(135deg,var(--c1) 0%,var(--c1d) 100%);
+  text-align:center;font-size:2.7mm;font-weight:700;color:#fff;
   letter-spacing:.3px;line-height:1.4;
   position:relative;z-index:1;
-  display:flex;align-items:center;justify-content:center;
-  min-height:6mm;
-  box-shadow:0 2px 8px color-mix(in srgb,var(--c1) 35%,transparent);
+  min-height:6.5mm;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px color-mix(in srgb,var(--c1) 40%,transparent);
   overflow:hidden;
 }
 .c-banner::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:50%;
-  background:rgba(255,255,255,.13);pointer-events:none;
+  content:'';position:absolute;top:0;left:0;right:0;height:45%;
+  background:rgba(255,255,255,.14);border-radius:2mm 2mm 0 0;pointer-events:none;
 }
 
 /* ── Marca ── */
 .c-marca{
-  font-size:1.9mm;
-  color:color-mix(in srgb,var(--c-slate) 45%,transparent);
-  text-align:center;letter-spacing:.5px;
-  font-weight:600;text-transform:uppercase;
-  position:relative;z-index:1;
+  font-size:2mm;color:color-mix(in srgb,var(--c-slate) 55%,transparent);
+  text-align:center;margin-top:1.5mm;letter-spacing:.5px;
+  font-weight:600;text-transform:uppercase;position:relative;z-index:1;
 }
 
-/* ══ GUÍAS DE CORTE ══ */
-.cut-h{position:absolute;left:0;right:0;top:50%;height:0;border-top:1px dashed #b0bec5;z-index:20;pointer-events:none;}
-.cut-v{position:absolute;top:0;bottom:0;left:50%;width:0;border-left:1px dashed #b0bec5;z-index:20;pointer-events:none;}
-.cut-i{position:absolute;font-size:11px;color:#90a4ae;z-index:21;pointer-events:none;}
-.ci-tl{top:calc(50% - 8px);left:3px;}
-.ci-tr{top:calc(50% - 8px);right:3px;}
-.ci-bl{bottom:3px;left:calc(50% - 5px);}
-.ci-br{top:3px;right:calc(50% - 5px);}
+/* ══ GUÍAS CORTE ══ */
+.cut-h{position:absolute;left:0;right:0;top:50%;height:0;border-top:1px dashed #b0bec5;z-index:20;}
+.cut-v{position:absolute;top:0;bottom:0;left:50%;width:0;border-left:1px dashed #b0bec5;z-index:20;}
+.cut-i{position:absolute;font-size:11px;color:#90a4ae;z-index:21;}
+.ci-tl{top:calc(50% - 7px);left:3px;}
+.ci-tr{top:calc(50% - 7px);right:3px;}
+.ci-bl{bottom:4px;left:calc(50% - 5px);}
+.ci-br{top:4px;right:calc(50% - 5px);}
 
 /* ══ MODAL ══ */
 #modal-edit{display:none;position:fixed;inset:0;background:rgba(15,32,39,.6);
@@ -233,7 +237,8 @@ html,body{font-family:var(--font-body);background:#dde3ea;min-height:100vh;}
   html,body{background:#fff!important;margin:0!important;padding:0!important;}
   #toolbar,#modal-edit,.toast{display:none!important;}
   .page-wrap{padding:0!important;display:block!important;}
-  .sheet{width:215.9mm!important;height:279.4mm!important;box-shadow:none!important;page-break-after:always;}
+  .sheet{width:100vw!important;height:100vh!important;box-shadow:none!important;page-break-after:always;}
+  .qr-card::before{display:none!important;}
 }
 </style>
 </head>
@@ -312,7 +317,7 @@ var FUENTES=[
 var CFG         = {};
 var BANNER_TEXT = "📅 Agenda tu cita — Atención personalizada y profesional";
 var URL_QR      = "";
-var PAL         = PALETAS[0];
+var PAL         = PALETAS[0]; // paleta activa
 
 // ════════════ TEMA ════════════
 function aplicarTema(pid,fid){
@@ -325,7 +330,7 @@ function aplicarTema(pid,fid){
   r.setProperty('--font-body',"'"+f.body+"',sans-serif");
 }
 
-// ════════════ CARGA ════════════
+// ════════════ CARGA DEL SHEET (sin localStorage) ════════════
 function cargar(){
   setS("spin","Cargando…");
   if(!LIC){ setS("err","⚠ Falta ?lic="); renderCards(demo()); return; }
@@ -334,6 +339,7 @@ function cargar(){
     .then(function(d){
       if(!d.ok){ setS("err","No encontrado"); renderCards(demo()); return; }
       CFG=d.cfg||{};
+      // Si el Sheet devuelve scriptUrl alternativo → actualizar solo en memoria
       if(CFG.scriptUrl&&CFG.scriptUrl.length>10) SCRIPT_URL=CFG.scriptUrl;
       if(CFG.paleta||CFG.fuente) aplicarTema(CFG.paleta||"teal",CFG.fuente||"dm");
       if(CFG.banner_activo&&CFG.banner_texto) BANNER_TEXT=CFG.banner_texto;
@@ -355,7 +361,7 @@ function demo(){
     direccion:"Av. Insurgentes Sur 450, CDMX",telefono:"55 8800 1234",logo:""};
 }
 
-// ════════════ RENDER ════════════
+// ════════════ RENDER TARJETAS ════════════
 function renderCards(cfg){
   var base = window.location.href.split("flyer-qr")[0]+"consultorio.html";
   URL_QR   = base+"?lic="+encodeURIComponent(LIC||"demo");
@@ -379,32 +385,37 @@ function renderCards(cfg){
   setTimeout(function(){ for(var i=0;i<4;i++) mkQR(i,logo,ini); },150);
 }
 
-// ════════════ HTML TARJETA ════════════
 function mkHTML(nom,esp,dir,tel,i){
-  var urlShort = URL_QR.replace(/^https?:\/\//,"");
-  return (
-    '<div class="c-nombre">'+esc(nom)+'</div>'
-   +'<div class="c-sub">📱 Escanea para agendar tu cita</div>'
-   +(esp?'<div class="c-esp">'+esc(esp)+'</div>':'')
-   +'<div class="c-qr-wrap"><div id="qr'+i+'"></div></div>'
-   +'<div class="c-url">'+esc(urlShort)+'</div>'
-   +'<div class="c-footer">'
-     +'<div class="c-row"><div class="c-ico">📍</div><div class="c-txt">'+esc(dir)+'</div></div>'
-     +'<div class="c-row"><div class="c-ico">📞</div><div class="c-txt">'+esc(tel)+'</div></div>'
-   +'</div>'
-   +'<div class="c-banner" id="bn'+i+'">'+esc(BANNER_TEXT)+'</div>'
-   +'<div class="c-marca">Consultas Saludables</div>'
-  );
+  return '<div class="c-head">'
+      +'<div class="c-nombre">'+esc(nom)+'</div>'
+      +'<span class="c-esp">'+esc(esp)+'</span>'
+    +'</div>'
+    +'<div class="c-qr-wrap">'
+      +'<div class="c-qr-frame">'
+        +'<span class="cr-tr"></span>'
+        +'<span class="cr-bl"></span>'
+        +'<div id="qr'+i+'"></div>'
+      +'</div>'
+      +'<div class="c-hint">📱 Escanea para agendar</div>'
+    +'</div>'
+    +'<div class="c-footer">'
+      +'<div class="c-row"><div class="c-ico">📍</div><div class="c-txt">'+esc(dir)+'</div></div>'
+      +'<div class="c-row"><div class="c-ico">📞</div><div class="c-txt">'+esc(tel)+'</div></div>'
+    +'</div>'
+    +'<div class="c-banner" id="bn'+i+'">'+esc(BANNER_TEXT)+'</div>'
+    +'<div class="c-marca">Consultas Saludables</div>';
 }
 
-// ════════════ QR + LOGO CENTRAL (lógica original) ════════════
+// ════════════ QR + LOGO CENTRAL ════════════
 function mkQR(idx,logoSrc,ini){
   var cont=document.getElementById("qr"+idx);
   if(!cont) return;
   cont.innerHTML="";
 
+  // Tamaño canvas: usamos alta resolución para print nítido
   var SIZE=320;
 
+  // Generamos el QR en div oculto
   var tmp=document.createElement("div");
   tmp.style.cssText="position:fixed;bottom:-9999px;left:-9999px;visibility:hidden;";
   document.body.appendChild(tmp);
@@ -415,7 +426,7 @@ function mkQR(idx,logoSrc,ini){
       width:SIZE,height:SIZE,
       colorDark: PAL.ink||"#0f2027",
       colorLight:"#ffffff",
-      correctLevel:QRCode.CorrectLevel.H
+      correctLevel:QRCode.CorrectLevel.H   // 30% redundancia → logo seguro
     });
   }catch(e){ removeTmp(tmp); return; }
 
@@ -436,17 +447,20 @@ function compositar(qrSrc,cont,idx,logoSrc,ini,tmp){
 
   var base=new Image();
   base.onload=function(){
+    // 1. Pintar el QR completo
     ctx.drawImage(base,0,0,SIZE,SIZE);
 
     var cx=SIZE/2, cy=SIZE/2;
-    var r=Math.round(SIZE*0.14);
+    var r=Math.round(SIZE*0.14); // 14% del tamaño = zona central logo
 
+    // 2. Zona blanca de relleno (un poco más grande que el logo para margen)
     ctx.save();
     ctx.beginPath(); ctx.arc(cx,cy,r+5,0,2*Math.PI);
     ctx.fillStyle="#ffffff"; ctx.fill();
     ctx.restore();
 
     if(logoSrc&&logoSrc.length>100){
+      // 3a. Logo real del consultorio
       var li=new Image();
       li.crossOrigin="anonymous";
       li.onload=function(){
@@ -472,18 +486,21 @@ function pintarAnillo(ctx,cx,cy,r){
   ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI);
   ctx.strokeStyle=PAL.c1||"#0D9488";
   ctx.lineWidth=4; ctx.stroke();
+  // Anillo exterior más claro
   ctx.beginPath(); ctx.arc(cx,cy,r+4,0,2*Math.PI);
   ctx.strokeStyle=PAL.c1l||"#ccfbf1";
   ctx.lineWidth=2; ctx.stroke();
 }
 
 function pintarIni(ctx,cx,cy,r,ini,out,cont,tmp){
+  // Fondo circular con gradiente del color del consultorio
   var g=ctx.createRadialGradient(cx-r*.25,cy-r*.25,0,cx,cy,r);
   g.addColorStop(0,PAL.c1||"#0D9488");
   g.addColorStop(1,PAL.c1d||"#0a7870");
   ctx.save();
   ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI);
   ctx.fillStyle=g; ctx.fill();
+  // Iniciales en blanco
   ctx.fillStyle="#fff";
   var fs=Math.round(r*.88);
   ctx.font="bold "+fs+"px 'DM Serif Display',serif";
@@ -496,7 +513,7 @@ function pintarIni(ctx,cx,cy,r,ini,out,cont,tmp){
 
 function mostrar(canvas,cont,tmp){
   removeTmp(tmp);
-  canvas.style.cssText="display:block;border-radius:1.5mm;width:100%;height:auto;";
+  canvas.style.cssText="display:block;border-radius:2mm;width:100%;height:auto;";
   cont.innerHTML="";
   cont.appendChild(canvas);
 }
