@@ -155,17 +155,15 @@ html,body{font-family:var(--font-body);background:#dde3ea;min-height:100vh;}
 /* ── Banner ── */
 .c-banner{
   width:100%;
-  padding:1.8mm 3mm;
+  padding:2.5mm 3mm;
   border-radius:2mm;
   background:linear-gradient(135deg,var(--c1),var(--c1d));
   text-align:center;
   font-size:2.4mm;font-weight:700;color:#fff;
-  letter-spacing:.3px;line-height:1.4;
-  display:flex;align-items:center;justify-content:center;
-  flex:1;
-  min-height:10mm;
-  box-shadow:0 2px 8px color-mix(in srgb,var(--c1) 35%,transparent);
-  overflow:hidden;
+  letter-spacing:.3px;line-height:1.5;
+  word-break:break-word;
+  white-space:normal;
+  overflow:visible;
   position:relative;
 }
 .c-banner::before{
@@ -266,10 +264,10 @@ html,body{font-family:var(--font-body);background:#dde3ea;min-height:100vh;}
     <p>Texto que aparece en la franja inferior de cada tarjeta.</p>
     <div class="ef">
       <label>Mensaje</label>
-      <textarea id="inp-banner" maxlength="90"
-        oninput="document.getElementById('efcnt').textContent=this.value.length+'/90'"
+      <textarea id="inp-banner" maxlength="180"
+        oninput="document.getElementById('efcnt').textContent=this.value.length+'/180'"
         placeholder="📅 Agenda tu cita hoy · Primer consulta con descuento"></textarea>
-      <div class="ef-cnt"><span id="efcnt">0</span>/90</div>
+      <div class="ef-cnt"><span id="efcnt">0</span>/180</div>
     </div>
     <div class="edit-btns">
       <button class="btn-save" onclick="guardarBanner()">💾 Aplicar</button>
